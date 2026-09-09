@@ -60,7 +60,7 @@ for settimana in range(6):
             continue
 
         # Data di apertura della casella
-        data_apertura = date(2026, 12, giorno)
+        data_apertura = date(2026, 09, giorno)
 
         with colonne[i]:
 
