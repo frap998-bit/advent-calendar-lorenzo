@@ -1,5 +1,7 @@
 import streamlit as st
 from datetime import date
+import importlib
+
 
 # -------------------------
 # CONFIGURAZIONE
@@ -11,8 +13,21 @@ st.set_page_config(
     layout="centered"
 )
 
-# Data di oggi
+
+# -------------------------
+# DATA DI OGGI
+# -------------------------
+
 oggi = date.today()
+
+
+# -------------------------
+# STATO DELLA SESSIONE
+# -------------------------
+
+if "giorno_aperto" not in st.session_state:
+    st.session_state.giorno_aperto = None
+
 
 # -------------------------
 # TITOLO
@@ -27,6 +42,7 @@ st.write(
 )
 
 st.divider()
+
 
 # -------------------------
 # CALENDARIO
@@ -48,6 +64,10 @@ for settimana in range(6):
 
         with colonne[i]:
 
+            # -------------------------
+            # GIORNO DISPONIBILE
+            # -------------------------
+
             if oggi >= data_apertura:
 
                 if st.button(
@@ -55,9 +75,12 @@ for settimana in range(6):
                     key=f"giorno_{giorno}",
                     use_container_width=True
                 ):
-                    st.success(
-                        f"🎉 Hai aperto il giorno {giorno}!"
-                    )
+
+                    st.session_state.giorno_aperto = giorno
+
+            # -------------------------
+            # GIORNO BLOCCATO
+            # -------------------------
 
             else:
 
@@ -68,14 +91,67 @@ for settimana in range(6):
                     use_container_width=True
                 )
 
-st.divider()
+
+# -------------------------
+# GIOCO DEL GIORNO
+# -------------------------
+
+if st.session_state.giorno_aperto is not None:
+
+    giorno = st.session_state.giorno_aperto
+
+    st.divider()
+
+    try:
+
+        # Costruisce automaticamente il nome del file:
+        #
+        # giorno 1  → giorni.giorno01
+        # giorno 2  → giorni.giorno02
+        # ...
+        # giorno 24 → giorni.giorno24
+
+        modulo = importlib.import_module(
+            f"giorni.giorno{giorno:02d}"
+        )
+
+        # Cerca la funzione "mostra_gioco"
+        mostra_gioco = getattr(modulo, "mostra_gioco")
+
+        # Mostra il gioco
+        mostra_gioco()
+
+    except ModuleNotFoundError:
+
+        st.info(
+            f"🎁 Il gioco del Giorno {giorno} "
+            "è ancora in preparazione..."
+        )
+
+    except AttributeError:
+
+        st.error(
+            f"⚠️ Il file del Giorno {giorno} "
+            "non contiene la funzione 'mostra_gioco()'."
+        )
+
 
 # -------------------------
 # PUNTEGGIO
 # -------------------------
 
+st.divider()
+
 st.subheader("🏆 Il tuo punteggio")
 
-st.progress(0)
+# Per ora il punteggio è 0.
+# In seguito collegheremo qui il sistema
+# che assegna e salva i punti dei vari giochi.
 
-st.write("**0 / 100 punti**")
+punteggio = 0
+
+st.progress(punteggio / 100)
+
+st.write(
+    f"**{punteggio} / 100 punti**"
+)
