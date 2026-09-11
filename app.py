@@ -1,4 +1,3 @@
-
 import streamlit as st
 from datetime import date
 import importlib
@@ -44,6 +43,7 @@ if "giorno_aperto" not in st.session_state:
 # -------------------------
 
 st.title("🎄 Il Calendario di Lorenzo 🎄")
+
 st.subheader("Dicembre 2026")
 
 st.write(
@@ -58,13 +58,16 @@ st.divider()
 # CALENDARIO
 # -------------------------
 
-for settimana in range(6):
+# 2 caselle per riga:
+# più comode da vedere e premere da telefono
 
-    colonne = st.columns(4)
+for settimana in range(12):
 
-    for i in range(4):
+    colonne = st.columns(2)
 
-        giorno = settimana * 4 + i + 1
+    for i in range(2):
+
+        giorno = settimana * 2 + i + 1
 
         if giorno > 24:
             continue
@@ -81,27 +84,25 @@ for settimana in range(6):
 
             if oggi >= data_apertura:
 
-                # Se il giorno è già stato completato
+                # Giorno già completato
                 if giorno_completato(giorno):
 
                     if st.button(
-                        f"✅\n\nGiorno {giorno}",
+                        f"✅\n\nGIORNO {giorno}",
                         key=f"giorno_{giorno}",
                         use_container_width=True
                     ):
                         st.session_state.giorno_aperto = giorno
-                        st.session_state.scroll_to_game = True
 
-                # Se il giorno è disponibile ma non completato
+                # Giorno disponibile ma non completato
                 else:
 
                     if st.button(
-                        f"🎁\n\nGiorno {giorno}",
+                        f"🎁\n\nGIORNO {giorno}",
                         key=f"giorno_{giorno}",
                         use_container_width=True
                     ):
                         st.session_state.giorno_aperto = giorno
-                        st.session_state.scroll_to_game = True
 
             # -------------------------
             # GIORNO BLOCCATO
@@ -110,7 +111,7 @@ for settimana in range(6):
             else:
 
                 st.button(
-                    f"🔒\n\nGiorno {giorno}",
+                    f"🔒\n\nGIORNO {giorno}",
                     key=f"bloccato_{giorno}",
                     disabled=True,
                     use_container_width=True
@@ -122,30 +123,6 @@ for settimana in range(6):
 # -------------------------
 
 if st.session_state.giorno_aperto is not None:
-
-    # Anchor della sezione della sfida
-    st.markdown(
-        '<div id="sfida"></div>',
-        unsafe_allow_html=True
-    )
-
-    # Se è stato appena cliccato un giorno,
-    # porta automaticamente alla sfida
-    if st.session_state.get("scroll_to_game", False):
-
-        st.session_state.scroll_to_game = False
-
-        st.markdown(
-            """
-            <script>
-                window.parent.document.getElementById("sfida").scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
-            </script>
-            """,
-            unsafe_allow_html=True
-        )
 
     giorno = st.session_state.giorno_aperto
 
