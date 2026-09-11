@@ -1,4 +1,4 @@
-```python
+
 import streamlit as st
 from datetime import date
 import importlib
@@ -206,4 +206,3 @@ st.progress(punteggio / 100)
 st.write(
     f"**{punteggio} / 100 punti**"
 )
-```
