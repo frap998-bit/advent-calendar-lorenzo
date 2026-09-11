@@ -31,8 +31,8 @@ st.markdown(
     /* Elimina lo spazio orizzontale in eccesso */
     [data-testid="stHorizontalBlock"] {
         gap: 0.15rem !important;
-        width: 50% !important;
-        max-width: 50% !important;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     [data-testid="column"] {
@@ -58,7 +58,7 @@ st.markdown(
 
         [data-testid="stHorizontalBlock"] {
             gap: 0.1rem !important;
-            width: 10% !important;
+            width: 30% !important;
         }
 
         [data-testid="column"] {
