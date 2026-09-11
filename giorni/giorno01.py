@@ -270,11 +270,3 @@ def mostra_gioco():
                 "❌ Non è corretto... Riprova!"
             )
 
-    # -------------------------
-    # GIOCO GIÀ COMPLETATO
-    # -------------------------
-
-    if giorno_completato(1):
-        st.info(
-            "✅ Hai già completato la sfida del Giorno 1!"
-        )
