@@ -21,81 +21,32 @@ st.set_page_config(
 
 
 # -------------------------
-# CSS
-# -------------------------
-
-st.markdown(
-    """
-    <style>
-
-    /* -------------------------
-       CALENDARIO
-       ------------------------- */
-
-    [data-testid="stHorizontalBlock"] {
-        gap: 0.15rem !important;
-    }
-
-    [data-testid="column"] {
-        min-width: 0 !important;
-        padding: 0 !important;
-    }
-
-
-    /* -------------------------
-       BOTTONI
-       ------------------------- */
-
-    [data-testid="stButton"] button {
-        width: 100% !important;
-        min-height: 52px !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        font-size: 0.9rem !important;
-    }
-
-
-    /* -------------------------
-       TELEFONO
-       ------------------------- */
-
-    @media (max-width: 640px) {
-
-        [data-testid="stAppViewContainer"] {
-            overflow-x: hidden !important;
-        }
-
-        [data-testid="stHorizontalBlock"] {
-            gap: 0.08rem !important;
-            width: 100% !important;
-            max-width: 100% !important;
-        }
-
-        [data-testid="column"] {
-            min-width: 0 !important;
-            padding: 0 !important;
-        }
-
-        [data-testid="stButton"] button {
-            min-height: 48px !important;
-            padding: 0 !important;
-            font-size: 0.8rem !important;
-        }
-    }
-
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-
-# -------------------------
 # INIZIALIZZAZIONE
 # -------------------------
 
 oggi = date.today()
 
 inizializza_punteggio()
+
+
+# -------------------------
+# GIORNO APERTO
+# -------------------------
+
+# Recupera il giorno dal link
+if "giorno" in st.query_params:
+
+    try:
+        giorno_parametro = int(
+            st.query_params["giorno"]
+        )
+
+        if 1 <= giorno_parametro <= 24:
+            st.session_state.giorno_aperto = giorno_parametro
+
+    except ValueError:
+        pass
+
 
 if "giorno_aperto" not in st.session_state:
     st.session_state.giorno_aperto = None
@@ -121,70 +72,164 @@ st.divider()
 # CALENDARIO
 # -------------------------
 
-# 5 giorni per riga
-for settimana in range(5):
+caselle = ""
 
-    colonne = st.columns(
-        5,
-        gap="small"
+for giorno in range(1, 25):
+
+    # -------------------------
+    # DATA DI APERTURA
+    # -------------------------
+    # MODALITÀ TEST:
+    # settembre 2026
+    #
+    # Per il calendario definitivo:
+    # date(2026, 12, giorno)
+    # -------------------------
+
+    data_apertura = date(
+        2026,
+        9,
+        giorno
     )
 
-    for i in range(5):
+    # -------------------------
+    # GIORNO BLOCCATO
+    # -------------------------
 
-        giorno = settimana * 5 + i + 1
+    if oggi < data_apertura:
 
-        if giorno > 24:
-            continue
+        caselle += f"""
+        <div class="casella bloccata">
+            🔒<br>
+            <span>{giorno}</span>
+        </div>
+        """
 
-        # -------------------------
-        # MODALITÀ TEST
-        # -------------------------
-        # Attualmente: settembre 2026
-        #
-        # Per il calendario definitivo:
-        # date(2026, 12, giorno)
-        # -------------------------
+    # -------------------------
+    # GIORNO COMPLETATO
+    # -------------------------
 
-        data_apertura = date(2026, 9, giorno)
+    elif giorno_completato(giorno):
 
-        with colonne[i]:
+        caselle += f"""
+        <a
+            href="?giorno={giorno}"
+            target="_self"
+            class="casella completata"
+        >
+            ✅<br>
+            <span>{giorno}</span>
+        </a>
+        """
 
-            # -------------------------
-            # GIORNO DISPONIBILE
-            # -------------------------
+    # -------------------------
+    # GIORNO DISPONIBILE
+    # -------------------------
 
-            if oggi >= data_apertura:
+    else:
 
-                if giorno_completato(giorno):
+        caselle += f"""
+        <a
+            href="?giorno={giorno}"
+            target="_self"
+            class="casella disponibile"
+        >
+            🎁<br>
+            <span>{giorno}</span>
+        </a>
+        """
 
-                    if st.button(
-                        f"✅ {giorno}",
-                        key=f"giorno_{giorno}",
-                        use_container_width=True
-                    ):
-                        st.session_state.giorno_aperto = giorno
 
-                else:
+# -------------------------
+# HTML CALENDARIO
+# -------------------------
 
-                    if st.button(
-                        f"🎁 {giorno}",
-                        key=f"giorno_{giorno}",
-                        use_container_width=True
-                    ):
-                        st.session_state.giorno_aperto = giorno
+st.markdown(
+    f"""
+    <style>
 
-            # -------------------------
-            # GIORNO BLOCCATO
-            # -------------------------
+    .calendario {{
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 6px;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }}
 
-            else:
+    .casella {{
+        box-sizing: border-box;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        min-width: 0;
 
-                st.button(
-                    f"🔒 {giorno}",
-                    key=f"bloccato_{giorno}",
-                    disabled=True,
-                    use_container_width=True
-                )
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 10px;
+        text-decoration: none;
+
+        font-size: 0.85rem;
+        line-height: 1.1;
+
+        padding: 3px;
+    }}
+
+    .casella span {{
+        font-size: 0.9rem;
+        font-weight: 600;
+    }}
+
+    .disponibile {{
+        background-color: #ffffff;
+        border: 2px solid #d62828;
+        color: #d62828;
+    }}
+
+    .disponibile:hover {{
+        background-color: #fff0f0;
+    }}
+
+    .completata {{
+        background-color: #ffffff;
+        border: 2px solid #2e8b57;
+        color: #2e8b57;
+    }}
+
+    .bloccata {{
+        background-color: #eeeeee;
+        border: 2px solid #cccccc;
+        color: #999999;
+    }}
+
+    @media (max-width: 640px) {{
+
+        .calendario {{
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 5px;
+        }}
+
+        .casella {{
+            border-radius: 8px;
+            font-size: 0.7rem;
+        }}
+
+        .casella span {{
+            font-size: 0.75rem;
+        }}
+    }}
+
+    </style>
+
+    <div class="calendario">
+        {caselle}
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 
 # -------------------------
