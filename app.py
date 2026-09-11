@@ -4,7 +4,8 @@ import importlib
 
 from utils.punteggio import (
     inizializza_punteggio,
-    get_punteggio
+    get_punteggio,
+    giorno_completato
 )
 
 
@@ -79,13 +80,25 @@ for settimana in range(6):
 
             if oggi >= data_apertura:
 
-                if st.button(
-                    f"🎁\n\nGiorno {giorno}",
-                    key=f"giorno_{giorno}",
-                    use_container_width=True
-                ):
+                # Se il giorno è già stato completato
+                if giorno_completato(giorno):
 
-                    st.session_state.giorno_aperto = giorno
+                    if st.button(
+                        f"✅\n\nGiorno {giorno}",
+                        key=f"giorno_{giorno}",
+                        use_container_width=True
+                    ):
+                        st.session_state.giorno_aperto = giorno
+
+                # Se il giorno è disponibile ma non completato
+                else:
+
+                    if st.button(
+                        f"🎁\n\nGiorno {giorno}",
+                        key=f"giorno_{giorno}",
+                        use_container_width=True
+                    ):
+                        st.session_state.giorno_aperto = giorno
 
             # -------------------------
             # GIORNO BLOCCATO
