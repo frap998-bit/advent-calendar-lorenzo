@@ -28,28 +28,31 @@ st.markdown(
     """
     <style>
 
-    /* Elimina lo spazio orizzontale in eccesso */
+    /* Le 5 colonne devono rimanere sulla stessa riga */
     [data-testid="stHorizontalBlock"] {
-        gap: 0.15rem !important;
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        gap: 0.2rem !important;
         width: 100% !important;
-        max-width: 100% !important;
     }
 
+    /* Ogni colonna occupa esattamente 1/5 dello spazio */
     [data-testid="column"] {
+        flex: 0 0 calc(20% - 0.2rem) !important;
         min-width: 0 !important;
         padding: 0 !important;
     }
 
-    /* Caselle del calendario */
+    /* Bottoni */
     [data-testid="stButton"] button {
         width: 100% !important;
-        min-height: 55px !important;
-        padding: 0.2rem 0 !important;
-        font-size: 1rem !important;
+        min-height: 52px !important;
+        padding: 0 !important;
+        font-size: 0.9rem !important;
         margin: 0 !important;
     }
 
-    /* Ancora più compatto su telefono */
+    /* Telefono */
     @media (max-width: 640px) {
 
         [data-testid="stAppViewContainer"] {
@@ -57,19 +60,22 @@ st.markdown(
         }
 
         [data-testid="stHorizontalBlock"] {
-            gap: 0.1rem !important;
-            width: 30% !important;
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            gap: 0.15rem !important;
+            width: 100% !important;
         }
 
         [data-testid="column"] {
+            flex: 0 0 calc(20% - 0.15rem) !important;
             min-width: 0 !important;
             padding: 0 !important;
         }
 
         [data-testid="stButton"] button {
-            min-height: 52px !important;
-            font-size: 0.9rem !important;
-            padding: 0.1rem 0 !important;
+            min-height: 50px !important;
+            font-size: 0.85rem !important;
+            padding: 0 !important;
         }
     }
 
@@ -77,7 +83,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
 
 # -------------------------
 # INIZIALIZZAZIONE
