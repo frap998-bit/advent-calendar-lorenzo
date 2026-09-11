@@ -1,33 +1,41 @@
 import streamlit as st
 
+from utils.punteggio import (
+    aggiungi_punti,
+    giorno_completato
+)
+
 
 def mostra_gioco():
 
     st.header("🔢 Giorno 1 — Sudoku")
 
     st.write(
-        "Cominciamo con una piccola sfida! "
-        "Completa il Sudoku usando i numeri da 1 a 4."
+        "Cominciamo con una piccola sfida!"
     )
 
     st.write(
-        "Ogni numero può comparire una sola volta "
+        "Completa il Sudoku usando i numeri da 1 a 4. "
+        "Ogni numero deve comparire una sola volta "
         "in ogni riga, colonna e quadrato 2×2."
     )
 
     st.write("### 🎄 Buona fortuna!")
 
     # -------------------------
-    # SUDOKU
+    # SOLUZIONE
     # -------------------------
 
-    # Soluzione:
-    #
-    # 1 2 | 3 4
-    # 3 4 | 1 2
-    # ---------
-    # 2 1 | 4 3
-    # 4 3 | 2 1
+    soluzione = [
+        [1, 2, 3, 4],
+        [3, 4, 1, 2],
+        [2, 1, 4, 3],
+        [4, 3, 2, 1]
+    ]
+
+    # -------------------------
+    # SUDOKU
+    # -------------------------
 
     # Riga 1
     col1, col2, col3, col4 = st.columns(4)
@@ -219,14 +227,7 @@ def mostra_gioco():
             [r4c1, 3, r4c3, 1]
         ]
 
-        soluzione = [
-            [1, 2, 3, 4],
-            [3, 4, 1, 2],
-            [2, 1, 4, 3],
-            [4, 3, 2, 1]
-        ]
-
-        # Controlliamo che non ci siano caselle vuote
+        # Controlla se è completo
         completo = all(
             valore is not None
             for riga in risposta
@@ -241,17 +242,36 @@ def mostra_gioco():
 
         elif risposta == soluzione:
 
+            # Assegna i punti solo la prima volta
+            punti_assegnati = aggiungi_punti(1, 5)
+
             st.success(
                 "🎉 PERFETTO! Sudoku completato!"
             )
 
             st.balloons()
 
-            st.write("🏆 **Hai conquistato 5 punti!**")
+            if punti_assegnati:
+                st.write(
+                    "🏆 **Hai conquistato 5 punti!**"
+                )
+            else:
+                st.info(
+                    "I 5 punti di questo gioco "
+                    "sono già stati assegnati 😉"
+                )
 
         else:
 
             st.error(
-                "❌ Non è corretto... "
-                "Riprova!"
+                "❌ Non è corretto... Riprova!"
             )
+
+    # -------------------------
+    # GIOCO GIÀ COMPLETATO
+    # -------------------------
+
+    if giorno_completato(1):
+        st.info(
+            "✅ Hai già completato la sfida del Giorno 1!"
+        )
