@@ -2,6 +2,11 @@ import streamlit as st
 from datetime import date
 import importlib
 
+from utils.punteggio import (
+    inizializza_punteggio,
+    get_punteggio
+)
+
 
 # -------------------------
 # CONFIGURAZIONE
@@ -19,6 +24,9 @@ st.set_page_config(
 # -------------------------
 
 oggi = date.today()
+
+# Inizializza il sistema del punteggio
+inizializza_punteggio()
 
 
 # -------------------------
@@ -60,6 +68,7 @@ for settimana in range(6):
             continue
 
         # Data di apertura della casella
+        # PER ORA è settembre per permettere i test
         data_apertura = date(2026, 9, giorno)
 
         with colonne[i]:
@@ -116,7 +125,10 @@ if st.session_state.giorno_aperto is not None:
         )
 
         # Cerca la funzione "mostra_gioco"
-        mostra_gioco = getattr(modulo, "mostra_gioco")
+        mostra_gioco = getattr(
+            modulo,
+            "mostra_gioco"
+        )
 
         # Mostra il gioco
         mostra_gioco()
@@ -144,14 +156,13 @@ st.divider()
 
 st.subheader("🏆 Il tuo punteggio")
 
-# Per ora il punteggio è 0.
-# In seguito collegheremo qui il sistema
-# che assegna e salva i punti dei vari giochi.
+# Recupera il punteggio reale
+punteggio = get_punteggio()
 
-punteggio = 0
-
+# Barra di avanzamento
 st.progress(punteggio / 100)
 
+# Mostra il punteggio
 st.write(
     f"**{punteggio} / 100 punti**"
 )
