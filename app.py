@@ -58,7 +58,7 @@ st.markdown(
 
         [data-testid="stHorizontalBlock"] {
             gap: 0.1rem !important;
-            width: 100% !important;
+            width: 10% !important;
         }
 
         [data-testid="column"] {
