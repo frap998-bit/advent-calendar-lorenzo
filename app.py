@@ -28,31 +28,37 @@ st.markdown(
     """
     <style>
 
-    /* Le 5 colonne devono rimanere sulla stessa riga */
+    /* -------------------------
+       CALENDARIO
+       ------------------------- */
+
     [data-testid="stHorizontalBlock"] {
-        display: flex !important;
-        flex-wrap: nowrap !important;
-        gap: 0.2rem !important;
-        width: 100% !important;
+        gap: 0.15rem !important;
     }
 
-    /* Ogni colonna occupa esattamente 1/5 dello spazio */
     [data-testid="column"] {
-        flex: 0 0 calc(20% - 0.2rem) !important;
         min-width: 0 !important;
         padding: 0 !important;
     }
 
-    /* Bottoni */
+
+    /* -------------------------
+       BOTTONI
+       ------------------------- */
+
     [data-testid="stButton"] button {
         width: 100% !important;
         min-height: 52px !important;
         padding: 0 !important;
-        font-size: 0.9rem !important;
         margin: 0 !important;
+        font-size: 0.9rem !important;
     }
 
-    /* Telefono */
+
+    /* -------------------------
+       TELEFONO
+       ------------------------- */
+
     @media (max-width: 640px) {
 
         [data-testid="stAppViewContainer"] {
@@ -60,22 +66,20 @@ st.markdown(
         }
 
         [data-testid="stHorizontalBlock"] {
-            display: flex !important;
-            flex-wrap: nowrap !important;
-            gap: 0.15rem !important;
+            gap: 0.08rem !important;
             width: 100% !important;
+            max-width: 100% !important;
         }
 
         [data-testid="column"] {
-            flex: 0 0 calc(20% - 0.15rem) !important;
             min-width: 0 !important;
             padding: 0 !important;
         }
 
         [data-testid="stButton"] button {
-            min-height: 50px !important;
-            font-size: 0.85rem !important;
+            min-height: 48px !important;
             padding: 0 !important;
+            font-size: 0.8rem !important;
         }
     }
 
@@ -83,6 +87,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 # -------------------------
 # INIZIALIZZAZIONE
@@ -131,11 +136,14 @@ for settimana in range(5):
         if giorno > 24:
             continue
 
-        # MODALITÀ TEST:
-        # settembre 2026
+        # -------------------------
+        # MODALITÀ TEST
+        # -------------------------
+        # Attualmente: settembre 2026
         #
         # Per il calendario definitivo:
         # date(2026, 12, giorno)
+        # -------------------------
 
         data_apertura = date(2026, 9, giorno)
 
