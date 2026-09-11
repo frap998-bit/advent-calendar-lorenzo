@@ -86,4 +86,3 @@ def mostra_gioco():
                 "📖 La risposta corretta era: "
                 "**La gatta persiana — Alessandro Varaldo**"
             )
-```
