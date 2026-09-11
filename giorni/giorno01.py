@@ -7,10 +7,20 @@ from utils.punteggio import (
 
 
 def mostra_gioco():
-        if giorno_completato(1):
+
+    # -------------------------
+    # CONTROLLO GIORNO GIÀ COMPLETATO
+    # -------------------------
+
+    if giorno_completato(1):
         st.success("✅ Giorno 1 completato!")
         st.write("🏆 Hai già conquistato i 5 punti di questa sfida.")
         return
+
+    # -------------------------
+    # TITOLO
+    # -------------------------
+
     st.header("🔢 Giorno 1 — Sudoku")
 
     st.write(
@@ -269,4 +279,3 @@ def mostra_gioco():
             st.error(
                 "❌ Non è corretto... Riprova!"
             )
-
