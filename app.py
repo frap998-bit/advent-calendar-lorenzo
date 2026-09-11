@@ -10,7 +10,7 @@ from utils.punteggio import (
 
 
 # -------------------------
-# CONFIGURAZIONE
+# CONFIGURAZIONE PAGINA
 # -------------------------
 
 st.set_page_config(
@@ -21,18 +21,68 @@ st.set_page_config(
 
 
 # -------------------------
-# DATA DI OGGI
+# CSS
+# -------------------------
+
+st.markdown(
+    """
+    <style>
+
+    /* Mantiene 5 colonne anche su telefono */
+    [data-testid="stHorizontalBlock"] {
+        flex-wrap: nowrap !important;
+        gap: 0.4rem !important;
+    }
+
+    [data-testid="column"] {
+        min-width: 0 !important;
+        width: 20% !important;
+        flex: 1 1 20% !important;
+    }
+
+    /* Caselle del calendario */
+    [data-testid="stButton"] button {
+        width: 100%;
+        min-height: 70px;
+        padding: 0.5rem 0.2rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    /* Su telefono */
+    @media (max-width: 640px) {
+
+        [data-testid="stHorizontalBlock"] {
+            flex-wrap: nowrap !important;
+            gap: 0.25rem !important;
+        }
+
+        [data-testid="column"] {
+            width: 20% !important;
+            flex: 1 1 20% !important;
+            min-width: 0 !important;
+        }
+
+        [data-testid="stButton"] button {
+            min-height: 60px;
+            padding: 0.3rem 0.1rem;
+            font-size: 1rem;
+        }
+    }
+
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+# -------------------------
+# INIZIALIZZAZIONE
 # -------------------------
 
 oggi = date.today()
 
-# Inizializza il sistema del punteggio
 inizializza_punteggio()
-
-
-# -------------------------
-# STATO DELLA SESSIONE
-# -------------------------
 
 if "giorno_aperto" not in st.session_state:
     st.session_state.giorno_aperto = None
@@ -58,22 +108,28 @@ st.divider()
 # CALENDARIO
 # -------------------------
 
-# 2 caselle per riga:
-# più comode da vedere e premere da telefono
+# 5 caselle per riga
+for settimana in range(5):
 
-for settimana in range(12):
+    colonne = st.columns(5)
 
-    colonne = st.columns(2)
+    for i in range(5):
 
-    for i in range(2):
-
-        giorno = settimana * 2 + i + 1
+        giorno = settimana * 5 + i + 1
 
         if giorno > 24:
             continue
 
-        # Data di apertura della casella
-        # PER ORA è settembre per permettere i test
+        # -------------------------
+        # DATA DI APERTURA
+        # -------------------------
+        # ATTUALMENTE IN MODALITÀ TEST:
+        # settembre 2026
+        #
+        # Quando sarà pronto il calendario,
+        # sostituisci 9 con 12.
+        # -------------------------
+
         data_apertura = date(2026, 9, giorno)
 
         with colonne[i]:
@@ -84,21 +140,19 @@ for settimana in range(12):
 
             if oggi >= data_apertura:
 
-                # Giorno già completato
                 if giorno_completato(giorno):
 
                     if st.button(
-                        f"✅\n\nGIORNO {giorno}",
+                        f"✅ {giorno}",
                         key=f"giorno_{giorno}",
                         use_container_width=True
                     ):
                         st.session_state.giorno_aperto = giorno
 
-                # Giorno disponibile ma non completato
                 else:
 
                     if st.button(
-                        f"🎁\n\nGIORNO {giorno}",
+                        f"🎁 {giorno}",
                         key=f"giorno_{giorno}",
                         use_container_width=True
                     ):
@@ -111,7 +165,7 @@ for settimana in range(12):
             else:
 
                 st.button(
-                    f"🔒\n\nGIORNO {giorno}",
+                    f"🔒 {giorno}",
                     key=f"bloccato_{giorno}",
                     disabled=True,
                     use_container_width=True
@@ -130,24 +184,15 @@ if st.session_state.giorno_aperto is not None:
 
     try:
 
-        # Costruisce automaticamente il nome del file:
-        #
-        # giorno 1  → giorni.giorno01
-        # giorno 2  → giorni.giorno02
-        # ...
-        # giorno 24 → giorni.giorno24
-
         modulo = importlib.import_module(
             f"giorni.giorno{giorno:02d}"
         )
 
-        # Cerca la funzione "mostra_gioco"
         mostra_gioco = getattr(
             modulo,
             "mostra_gioco"
         )
 
-        # Mostra il gioco
         mostra_gioco()
 
     except ModuleNotFoundError:
@@ -173,13 +218,10 @@ st.divider()
 
 st.subheader("🏆 Il tuo punteggio")
 
-# Recupera il punteggio reale
 punteggio = get_punteggio()
 
-# Barra di avanzamento
 st.progress(punteggio / 100)
 
-# Mostra il punteggio
 st.write(
     f"**{punteggio} / 100 punti**"
 )
