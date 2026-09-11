@@ -24,7 +24,6 @@ def inizializza_punteggio():
 
         supabase = get_supabase()
 
-        # Legge tutti i giorni completati
         risposta = (
             supabase
             .table("punteggio")
@@ -52,24 +51,56 @@ def aggiungi_punti(giorno, punti):
 
     inizializza_punteggio()
 
-    # Se il giorno è già stato completato,
-    # non assegna nuovamente i punti
+    # Controlla se il giorno è già stato completato
     if giorno in st.session_state.giorni_completati:
         return False
 
     supabase = get_supabase()
 
-    # Salva il completamento su Supabase
-    supabase.table("punteggio").update({
-        "completato": True,
-        "punti": punti
-    }).eq("giorno", giorno).execute()
+    try:
 
-    # Aggiorna anche la sessione attuale
-    st.session_state.punteggio += punti
-    st.session_state.giorni_completati.add(giorno)
+        # Aggiorna la riga su Supabase
+        risposta = (
+            supabase
+            .table("punteggio")
+            .update({
+                "completato": True,
+                "punti": punti
+            })
+            .eq("giorno", giorno)
+            .execute()
+        )
 
-    return True
+        # Controlla che Supabase abbia effettivamente
+        # restituito una riga aggiornata
+        if not risposta.data:
+
+            st.error(
+                "⚠️ Supabase non ha aggiornato nessuna riga."
+            )
+
+            st.write(
+                "Controlla che il Giorno "
+                f"{giorno} esista nella tabella 'punteggio'."
+            )
+
+            return False
+
+        # Aggiorna la sessione
+        st.session_state.punteggio += punti
+        st.session_state.giorni_completati.add(giorno)
+
+        return True
+
+    except Exception as e:
+
+        st.error(
+            "❌ Errore durante il salvataggio su Supabase:"
+        )
+
+        st.code(str(e))
+
+        return False
 
 
 # -------------------------
