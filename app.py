@@ -28,45 +28,48 @@ st.markdown(
     """
     <style>
 
-    /* Mantiene 5 colonne anche su telefono */
+    /* Elimina lo spazio orizzontale in eccesso */
     [data-testid="stHorizontalBlock"] {
-        flex-wrap: nowrap !important;
-        gap: 0.4rem !important;
+        gap: 0.15rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     [data-testid="column"] {
         min-width: 0 !important;
-        width: 20% !important;
-        flex: 1 1 20% !important;
+        padding: 0 !important;
     }
 
     /* Caselle del calendario */
     [data-testid="stButton"] button {
-        width: 100%;
-        min-height: 70px;
-        padding: 0.5rem 0.2rem;
-        font-size: 1.2rem;
-        font-weight: 600;
+        width: 100% !important;
+        min-height: 55px !important;
+        padding: 0.2rem 0 !important;
+        font-size: 1rem !important;
+        margin: 0 !important;
     }
 
-    /* Su telefono */
+    /* Ancora più compatto su telefono */
     @media (max-width: 640px) {
 
+        [data-testid="stAppViewContainer"] {
+            overflow-x: hidden !important;
+        }
+
         [data-testid="stHorizontalBlock"] {
-            flex-wrap: nowrap !important;
-            gap: 0.25rem !important;
+            gap: 0.1rem !important;
+            width: 100% !important;
         }
 
         [data-testid="column"] {
-            width: 20% !important;
-            flex: 1 1 20% !important;
             min-width: 0 !important;
+            padding: 0 !important;
         }
 
         [data-testid="stButton"] button {
-            min-height: 60px;
-            padding: 0.3rem 0.1rem;
-            font-size: 1rem;
+            min-height: 52px !important;
+            font-size: 0.9rem !important;
+            padding: 0.1rem 0 !important;
         }
     }
 
@@ -108,10 +111,13 @@ st.divider()
 # CALENDARIO
 # -------------------------
 
-# 5 caselle per riga
+# 5 giorni per riga
 for settimana in range(5):
 
-    colonne = st.columns(5)
+    colonne = st.columns(
+        5,
+        gap="small"
+    )
 
     for i in range(5):
 
@@ -120,15 +126,11 @@ for settimana in range(5):
         if giorno > 24:
             continue
 
-        # -------------------------
-        # DATA DI APERTURA
-        # -------------------------
-        # ATTUALMENTE IN MODALITÀ TEST:
+        # MODALITÀ TEST:
         # settembre 2026
         #
-        # Quando sarà pronto il calendario,
-        # sostituisci 9 con 12.
-        # -------------------------
+        # Per il calendario definitivo:
+        # date(2026, 12, giorno)
 
         data_apertura = date(2026, 9, giorno)
 
