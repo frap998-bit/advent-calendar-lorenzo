@@ -1,3 +1,4 @@
+```python
 import streamlit as st
 from datetime import date
 import importlib
@@ -89,6 +90,7 @@ for settimana in range(6):
                         use_container_width=True
                     ):
                         st.session_state.giorno_aperto = giorno
+                        st.session_state.scroll_to_game = True
 
                 # Se il giorno è disponibile ma non completato
                 else:
@@ -99,6 +101,7 @@ for settimana in range(6):
                         use_container_width=True
                     ):
                         st.session_state.giorno_aperto = giorno
+                        st.session_state.scroll_to_game = True
 
             # -------------------------
             # GIORNO BLOCCATO
@@ -119,6 +122,30 @@ for settimana in range(6):
 # -------------------------
 
 if st.session_state.giorno_aperto is not None:
+
+    # Anchor della sezione della sfida
+    st.markdown(
+        '<div id="sfida"></div>',
+        unsafe_allow_html=True
+    )
+
+    # Se è stato appena cliccato un giorno,
+    # porta automaticamente alla sfida
+    if st.session_state.get("scroll_to_game", False):
+
+        st.session_state.scroll_to_game = False
+
+        st.markdown(
+            """
+            <script>
+                window.parent.document.getElementById("sfida").scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            </script>
+            """,
+            unsafe_allow_html=True
+        )
 
     giorno = st.session_state.giorno_aperto
 
@@ -179,3 +206,4 @@ st.progress(punteggio / 100)
 st.write(
     f"**{punteggio} / 100 punti**"
 )
+```
