@@ -179,13 +179,16 @@ else:
             # Attualmente settembre 2026
             #
             # Per il calendario definitivo:
-            # date(2026, 12, giorno)
-            # -------------------------
+            # data_apertura = date(
+            #    2026,
+            #    9,
+            #    giorno
+            #  )
 
             data_apertura = date(
                 2026,
                 9,
-                giorno
+                24
             )
 
 
