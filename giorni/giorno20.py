@@ -55,7 +55,7 @@ def mostra_gioco():
         {
             "numero": 4,
             "domanda": "Il nostro motto? (Sono due parole)",
-            "lettere": 11,
+            "lettere": 10,
             "soluzione": "PIANO PIANO"
         }
     ]
@@ -94,7 +94,7 @@ def mostra_gioco():
 
         risposte[numero] = st.text_input(
             f"Risposta {numero}",
-            max_chars=numero_lettere,
+            max_chars=numero_lettere + 1,
             key=f"giorno20_risposta_{numero}",
             placeholder="Scrivi qui la risposta..."
         )
@@ -118,8 +118,15 @@ def mostra_gioco():
 
             numero = domanda["numero"]
 
-            soluzione = domanda["soluzione"]
+            # Normalizza la soluzione
+            soluzione = (
+                domanda["soluzione"]
+                .strip()
+                .upper()
+                .replace(" ", "")
+            )
 
+            # Normalizza la risposta
             risposta = (
                 risposte[numero]
                 .strip()
