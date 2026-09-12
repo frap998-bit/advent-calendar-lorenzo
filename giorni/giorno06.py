@@ -45,9 +45,8 @@ def mostra_gioco():
             "domanda": "📍 Dove siamo?",
             "opzioni": [
                 "Livigno",
-                "Numana",
-                "Sanremo",
-                "Tortoreto"
+                "Madesimo",
+                "Chiesa",
             ],
             "corretta": "Livigno"
         },
@@ -57,8 +56,7 @@ def mostra_gioco():
             "opzioni": [
                 "Sanremo",
                 "Numana",
-                "Livigno",
-                "Seregno"
+                "Tortoreto",
             ],
             "corretta": "Numana"
         },
@@ -67,7 +65,6 @@ def mostra_gioco():
             "domanda": "📍 Dove siamo?",
             "opzioni": [
                 "Tortoreto",
-                "Livigno",
                 "Sanremo",
                 "Numana"
             ],
