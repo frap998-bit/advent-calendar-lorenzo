@@ -33,7 +33,7 @@ def mostra_gioco():
     st.header("🔐 Giorno 9 — La parola misteriosa")
 
     st.write(
-        "C'è una parola che ha un significato particolare per noi. ❤️"
+        "C'è una parola che è stata nominata alcune volte durante la scorsa estate."
     )
 
     st.write(
@@ -41,7 +41,7 @@ def mostra_gioco():
     )
 
     st.info(
-        "🎯 Se indovini la parola conquisti **1 punto**. "
+        "🎯 Se indovini la parola conquisti **4 punti**. "
         "Dopo 2 tentativi sbagliati si sbloccherà un nuovo indizio..."
     )
 
@@ -95,7 +95,7 @@ def mostra_gioco():
 
         elif risposta == "cucciolone":
 
-            aggiungi_punti(9, 1)
+            aggiungi_punti(9, 4)
 
             st.session_state.giorno09_tentativi = 0
 
@@ -104,7 +104,7 @@ def mostra_gioco():
             )
 
             st.write(
-                "🏆 **Hai conquistato 1 punto!**"
+                "🏆 **Hai conquistato 4 punti!**"
             )
 
             st.balloons()
