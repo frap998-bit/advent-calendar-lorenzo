@@ -14,7 +14,7 @@ def mostra_gioco():
 
     if giorno_completato(1):
         st.success("✅ Giorno 1 completato!")
-        st.write("🏆 Hai già conquistato i 5 punti di questa sfida.")
+        st.write("🏆 Hai già conquistato i punti di questa sfida.")
         return
 
 
@@ -29,7 +29,9 @@ def mostra_gioco():
     )
 
     st.info(
-        "🎯 Devi indovinare tutte e 5 le risposte per conquistare i 5 punti! Ovviamente ho scelto io quale sia la risposta corretta, quindi per reclami o polemiche, rivolgersi non a me."
+        "🎯 Ogni risposta corretta vale 1 punto! "
+        "Ovviamente ho scelto io quale sia la risposta corretta, "
+        "quindi per reclami o polemiche, rivolgersi non a me."
     )
 
 
@@ -54,7 +56,6 @@ def mostra_gioco():
             "domanda": "Chi dei due è più disordinato?",
             "risposta": "Lorenzo"
         },
-
         {
             "domanda": "Chi dei due è più geloso?",
             "risposta": "Lorenzo"
@@ -72,7 +73,10 @@ def mostra_gioco():
     for i, domanda in enumerate(domande, start=1):
 
         st.write("")
-        st.subheader(f"{i}. {domanda['domanda']}")
+
+        st.subheader(
+            f"{i}. {domanda['domanda']}"
+        )
 
         risposta = st.radio(
             "Scegli:",
@@ -87,70 +91,82 @@ def mostra_gioco():
     st.write("")
 
 
-   # -------------------------
-# CONTROLLO
-# -------------------------
-
-if st.button(
-    "💘 Controlla le risposte",
-    use_container_width=True
-):
-
-    risposte_corrette = 0
-
-    for i, domanda in enumerate(domande):
-        if risposte[i] == domanda["risposta"]:
-            risposte_corrette += 1
-
-
     # -------------------------
-    # ASSEGNAZIONE PUNTI
+    # CONTROLLO
     # -------------------------
 
-    punti_assegnati = aggiungi_punti(
-        1,
-        risposte_corrette
-    )
+    if st.button(
+        "💘 Controlla le risposte",
+        use_container_width=True
+    ):
+
+        risposte_corrette = 0
+
+        for i, domanda in enumerate(domande):
+
+            if risposte[i] == domanda["risposta"]:
+                risposte_corrette += 1
 
 
-    # -------------------------
-    # RISULTATO
-    # -------------------------
+        # -------------------------
+        # ASSEGNAZIONE PUNTI
+        # -------------------------
 
-    if risposte_corrette == 5:
-
-        st.success(
-            "🎉 PERFETTO! Le hai azzeccate tutte!"
-        )
-
-        st.balloons()
-
-    elif risposte_corrette == 4:
-
-        st.success(
-            "🥰 Quasi perfetto! Te ne è sfuggita solo una!"
-        )
-
-    elif risposte_corrette >= 2:
-
-        st.warning(
-            f"😏 Non male! Ne hai indovinate "
-            f"{risposte_corrette} su 5."
-        )
-
-    elif risposte_corrette == 1:
-
-        st.warning(
-            "😂 Una almeno l'hai azzeccata!"
-        )
-
-    else:
-
-        st.error(
-            "😂 Zero su cinque... Dobbiamo conoscerci meglio!"
+        punti_assegnati = aggiungi_punti(
+            1,
+            risposte_corrette
         )
 
 
-    st.write(
-        f"🏆 **Hai conquistato {risposte_corrette} punti!**"
-    )
+        # -------------------------
+        # RISULTATO
+        # -------------------------
+
+        st.divider()
+
+        if risposte_corrette == 5:
+
+            st.success(
+                "🎉 PERFETTO! Le hai azzeccate tutte!"
+            )
+
+            st.balloons()
+
+        elif risposte_corrette == 4:
+
+            st.success(
+                "🥰 Quasi perfetto! Te ne è sfuggita solo una!"
+            )
+
+        elif risposte_corrette == 3:
+
+            st.info(
+                "😏 Niente male! Tre su cinque!"
+            )
+
+        elif risposte_corrette == 2:
+
+            st.warning(
+                "😂 Solo due? Devi conoscermi un po' meglio!"
+            )
+
+        elif risposte_corrette == 1:
+
+            st.warning(
+                "😂 Una almeno l'hai azzeccata!"
+            )
+
+        else:
+
+            st.error(
+                "😂 Zero su cinque... Dobbiamo conoscerci meglio!"
+            )
+
+
+        # -------------------------
+        # PUNTEGGIO
+        # -------------------------
+
+        st.write(
+            f"🏆 **Hai conquistato {risposte_corrette} punti!**"
+        )
