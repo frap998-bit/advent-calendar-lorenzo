@@ -22,14 +22,10 @@ def mostra_gioco():
     # TITOLO
     # =====================================================
 
-    st.header("❤️ Giorno 20 — Quanto ti ricordi?")
+    st.header("❤️ Giorno 20 — Quizzetto!")
 
     st.write(
-        "Vediamo quanto ti ricordi delle nostre piccole abitudini... 👀"
-    )
-
-    st.write(
-        "Rispondi alle domande e prova a indovinare tutte le parole!"
+        "Vediamo quante ne riesci ad azzeccare... 👀"
     )
 
 
