@@ -26,6 +26,10 @@ st.set_page_config(
 
 oggi = date.today()
 
+# True = tutti i giorni sono disponibili per i test
+# False = calendario normale, con apertura dal 1 al 24 dicembre
+modalita_test = True
+
 inizializza_punteggio()
 
 
@@ -174,22 +178,28 @@ else:
 
 
             # -------------------------
-            # MODALITÀ TEST
+            # DATA DI APERTURA
             # -------------------------
-            # Attualmente settembre 2026
-            #
-            # Per il calendario definitivo:
-            # data_apertura = date(
-            #    2026,
-            #    9,
-            #    giorno
-            #  )
 
-            data_apertura = date(
-                2026,
-                9,
-                24
-            )
+            if modalita_test:
+
+                # In modalità test tutti i giorni
+                # sono immediatamente disponibili
+                data_apertura = date(2026, 1, 1)
+
+            else:
+
+                # Calendario definitivo:
+                # Giorno 1 -> 1 dicembre
+                # Giorno 2 -> 2 dicembre
+                # ...
+                # Giorno 24 -> 24 dicembre
+
+                data_apertura = date(
+                    2026,
+                    12,
+                    giorno
+                )
 
 
             with colonne[i]:
