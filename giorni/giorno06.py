@@ -41,7 +41,7 @@ def mostra_gioco():
 
     domande = [
         {
-            "foto": "immagini/Livigno.jpeg",
+            "foto": "immagini/Livigno.png",
             "domanda": "📍 Dove siamo?",
             "opzioni": [
                 "Livigno",
@@ -51,7 +51,7 @@ def mostra_gioco():
             "corretta": "Livigno"
         },
         {
-            "foto": "immagini/Numana.jpeg",
+            "foto": "immagini/Numana.png",
             "domanda": "📍 Dove siamo?",
             "opzioni": [
                 "Sanremo",
@@ -61,7 +61,7 @@ def mostra_gioco():
             "corretta": "Numana"
         },
         {
-            "foto": "immagini/Sanremo.jpeg",
+            "foto": "immagini/Sanremo.png",
             "domanda": "📍 Dove siamo?",
             "opzioni": [
                 "Tortoreto",
