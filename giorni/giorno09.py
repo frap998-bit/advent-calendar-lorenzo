@@ -14,16 +14,25 @@ def mostra_gioco():
 
     if giorno_completato(9):
         st.success("✅ Giorno 9 completato!")
-        st.write("🏆 Hai già conquistato il punto di questa sfida.")
+        st.write("🏆 Hai già conquistato i 4 punti di questa sfida.")
         return
 
 
     # -------------------------
-    # INIZIALIZZAZIONE TENTATIVI
+    # INIZIALIZZAZIONE
     # -------------------------
 
     if "giorno09_tentativi" not in st.session_state:
         st.session_state.giorno09_tentativi = 0
+
+    if "giorno09_errore" not in st.session_state:
+        st.session_state.giorno09_errore = False
+
+    if "giorno09_finito" not in st.session_state:
+        st.session_state.giorno09_finito = False
+
+
+    tentativi = st.session_state.giorno09_tentativi
 
 
     # -------------------------
@@ -33,7 +42,8 @@ def mostra_gioco():
     st.header("🔐 Giorno 9 — La parola misteriosa")
 
     st.write(
-        "C'è una parola che è stata nominata alcune volte durante la scorsa estate."
+        "C'è una parola che è stata nominata alcune volte "
+        "durante la scorsa estate."
     )
 
     st.write(
@@ -58,22 +68,101 @@ def mostra_gioco():
 
     st.write("🎨 **3. 3 colori**")
 
-    if st.session_state.giorno09_tentativi >= 2:
+    if tentativi >= 2:
         st.write("🍦 **4. Gelato**")
     else:
         st.write("❓ **4. -**")
 
 
     # -------------------------
-    # TENTATIVI
+    # GIOCO FINITO
     # -------------------------
 
-    st.write("")
+    if st.session_state.giorno09_finito:
 
-    tentativo = st.text_input(
+        st.divider()
+
+        st.error(
+            "😂 Hai esaurito i 3 tentativi!"
+        )
+
+        st.write(
+            "💡 La parola misteriosa era:"
+        )
+
+        st.success(
+            "🍪 **CUCCIOLONE**"
+        )
+
+        st.write(
+            "🏆 **Hai conquistato 0 punti.**"
+        )
+
+        return
+
+
+    # -------------------------
+    # DOPO UN ERRORE
+    # -------------------------
+
+    if st.session_state.giorno09_errore:
+
+        st.divider()
+
+        if tentativi == 1:
+
+            st.warning(
+                "❌ Nooo! Non è questa..."
+            )
+
+            st.write(
+                "Hai ancora **2 tentativi**."
+            )
+
+        elif tentativi == 2:
+
+            st.warning(
+                "❌ Ancora sbagliato!"
+            )
+
+            st.write(
+                "Hai ancora **1 tentativo**."
+            )
+
+            st.info(
+                "🍦 **Nuovo indizio sbloccato: Gelato**"
+            )
+
+        if st.button(
+            "➡️ Prova ancora",
+            use_container_width=True
+        ):
+
+            st.session_state.giorno09_errore = False
+            st.rerun()
+
+        return
+
+
+    # -------------------------
+    # NUMERO TENTATIVO
+    # -------------------------
+
+    st.divider()
+
+    st.subheader(
+        f"🎯 Tentativo {tentativi + 1} di 3"
+    )
+
+
+    # -------------------------
+    # INSERIMENTO RISPOSTA
+    # -------------------------
+
+    risposta = st.text_input(
         "🤔 Qual è la parola misteriosa?",
         max_chars=30,
-        key=f"giorno09_tentativo_{st.session_state.giorno09_tentativi}"
+        key=f"giorno09_tentativo_{tentativi}"
     )
 
 
@@ -86,18 +175,26 @@ def mostra_gioco():
         use_container_width=True
     ):
 
-        risposta = tentativo.strip().lower()
+        risposta = risposta.strip().lower()
 
         if not risposta:
+
             st.warning(
                 "Scrivi prima una risposta! 😏"
             )
 
-        elif risposta == "cucciolone":
+            return
+
+
+        # -------------------------
+        # RISPOSTA CORRETTA
+        # -------------------------
+
+        if risposta == "cucciolone":
 
             aggiungi_punti(9, 4)
 
-            st.session_state.giorno09_tentativi = 0
+            st.session_state.giorno09_finito = True
 
             st.success(
                 "🎉 INDOVINATO!"
@@ -109,50 +206,49 @@ def mostra_gioco():
 
             st.balloons()
 
-        else:
+            return
 
-            st.session_state.giorno09_tentativi += 1
 
-            tentativi = st.session_state.giorno09_tentativi
+        # -------------------------
+        # RISPOSTA SBAGLIATA
+        # -------------------------
 
-            if tentativi == 1:
+        st.session_state.giorno09_tentativi += 1
 
-                st.warning(
-                    "❌ Nooo! Non è questa... "
-                    "Hai ancora **2 tentativi**! 😏"
-                )
+        tentativi = st.session_state.giorno09_tentativi
 
-                st.rerun()
 
-            elif tentativi == 2:
+        # -------------------------
+        # TERZO ERRORE → FINE GIOCO
+        # -------------------------
 
-                st.warning(
-                    "❌ Ancora sbagliato! "
-                    "Hai ancora **1 tentativo**!"
-                )
+        if tentativi >= 3:
 
-                st.info(
-                    "🍦 **Nuovo indizio sbloccato: Gelato**"
-                )
+            st.session_state.giorno09_finito = True
 
-                st.rerun()
+            st.error(
+                "😂 Niente da fare! Hai sbagliato tutti e 3 i tentativi."
+            )
 
-            else:
+            st.write(
+                "💡 La parola misteriosa era:"
+            )
 
-                st.error(
-                    "😂 Niente da fare! Hai esaurito i 3 tentativi."
-                )
+            st.success(
+                "🍪 **CUCCIOLONE**"
+            )
 
-                st.write(
-                    "💡 La parola misteriosa era:"
-                )
+            st.write(
+                "🏆 **Hai conquistato 0 punti.**"
+            )
 
-                st.success(
-                    "🍪 **CUCCIOLONE**"
-                )
+            return
 
-                st.write(
-                    "🏆 **Hai conquistato 0 punti.**"
-                )
 
-                st.session_state.giorno09_tentativi = 0
+        # -------------------------
+        # PRIMO / SECONDO ERRORE
+        # -------------------------
+
+        st.session_state.giorno09_errore = True
+
+        st.rerun()
