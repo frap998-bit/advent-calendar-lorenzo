@@ -92,9 +92,16 @@ def mostra_gioco():
         # INPUT
         # -------------------------------------------------
 
+        # PIANO PIANO = 10 lettere + 1 spazio
+        if numero == 4:
+            caratteri_massimi = 11
+        else:
+            caratteri_massimi = numero_lettere
+
+
         risposte[numero] = st.text_input(
             f"Risposta {numero}",
-            max_chars=numero_lettere + 1,
+            max_chars=caratteri_massimi,
             key=f"giorno20_risposta_{numero}",
             placeholder="Scrivi qui la risposta..."
         )
@@ -118,7 +125,10 @@ def mostra_gioco():
 
             numero = domanda["numero"]
 
-            # Normalizza la soluzione
+            # -------------------------------------------------
+            # NORMALIZZAZIONE
+            # -------------------------------------------------
+
             soluzione = (
                 domanda["soluzione"]
                 .strip()
@@ -126,7 +136,6 @@ def mostra_gioco():
                 .replace(" ", "")
             )
 
-            # Normalizza la risposta
             risposta = (
                 risposte[numero]
                 .strip()
@@ -135,8 +144,11 @@ def mostra_gioco():
             )
 
 
-            if risposta == soluzione:
+            # -------------------------------------------------
+            # CONFRONTO
+            # -------------------------------------------------
 
+            if risposta == soluzione:
                 risposte_corrette += 1
 
 
