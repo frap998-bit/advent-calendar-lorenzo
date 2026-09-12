@@ -17,6 +17,7 @@ def mostra_gioco():
         st.write("🏆 Hai già conquistato i 5 punti di questa sfida.")
         return
 
+
     # -------------------------
     # TITOLO
     # -------------------------
@@ -35,6 +36,7 @@ def mostra_gioco():
 
     st.write("### 🎄 Buona fortuna!")
 
+
     # -------------------------
     # SOLUZIONE
     # -------------------------
@@ -46,183 +48,234 @@ def mostra_gioco():
         [4, 3, 2, 1]
     ]
 
+
     # -------------------------
-    # SUDOKU
+    # CSS GRIGLIA
     # -------------------------
 
-    # Riga 1
-    col1, col2, col3, col4 = st.columns(4)
+    st.markdown(
+        """
+        <style>
 
-    with col1:
-        st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=1,
-            disabled=True,
-            key="r1c1"
-        )
+        .sudoku-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
 
-    with col2:
-        r1c2 = st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=None,
-            placeholder="?",
-            key="r1c2"
-        )
+        .sudoku-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            width: min(100%, 360px);
+            aspect-ratio: 1 / 1;
+            border: 3px solid #333;
+        }
 
-    with col3:
-        st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=3,
-            disabled=True,
-            key="r1c3"
-        )
+        .sudoku-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid #777;
+            border-bottom: 1px solid #777;
+            font-size: 24px;
+            font-weight: bold;
+            min-width: 0;
+        }
 
-    with col4:
-        r1c4 = st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=None,
-            placeholder="?",
-            key="r1c4"
-        )
+        .sudoku-cell:nth-child(4n) {
+            border-right: none;
+        }
 
-    # Riga 2
-    col1, col2, col3, col4 = st.columns(4)
+        .sudoku-cell:nth-child(n+13) {
+            border-bottom: none;
+        }
 
-    with col1:
-        r2c1 = st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=None,
-            placeholder="?",
-            key="r2c1"
-        )
+        /* Linee più spesse dei quadrati 2×2 */
 
-    with col2:
-        st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=4,
-            disabled=True,
-            key="r2c2"
-        )
+        .sudoku-cell:nth-child(2),
+        .sudoku-cell:nth-child(6),
+        .sudoku-cell:nth-child(10),
+        .sudoku-cell:nth-child(14) {
+            border-right: 3px solid #333;
+        }
 
-    with col3:
-        r2c3 = st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=None,
-            placeholder="?",
-            key="r2c3"
-        )
+        .sudoku-cell:nth-child(9),
+        .sudoku-cell:nth-child(10),
+        .sudoku-cell:nth-child(11),
+        .sudoku-cell:nth-child(12) {
+            border-top: 3px solid #333;
+        }
 
-    with col4:
-        st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=2,
-            disabled=True,
-            key="r2c4"
-        )
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
-    # Riga 3
-    col1, col2, col3, col4 = st.columns(4)
 
-    with col1:
-        st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=2,
-            disabled=True,
-            key="r3c1"
-        )
+    # -------------------------
+    # GRIGLIA VISIVA
+    # -------------------------
 
-    with col2:
-        r3c2 = st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=None,
-            placeholder="?",
-            key="r3c2"
-        )
+    st.markdown(
+        """
+        <div class="sudoku-container">
+            <div class="sudoku-grid">
 
-    with col3:
-        st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=4,
-            disabled=True,
-            key="r3c3"
-        )
+                <div class="sudoku-cell">1</div>
+                <div class="sudoku-cell">?</div>
+                <div class="sudoku-cell">3</div>
+                <div class="sudoku-cell">?</div>
 
-    with col4:
-        r3c4 = st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=None,
-            placeholder="?",
-            key="r3c4"
-        )
+                <div class="sudoku-cell">?</div>
+                <div class="sudoku-cell">4</div>
+                <div class="sudoku-cell">?</div>
+                <div class="sudoku-cell">2</div>
 
-    # Riga 4
-    col1, col2, col3, col4 = st.columns(4)
+                <div class="sudoku-cell">2</div>
+                <div class="sudoku-cell">?</div>
+                <div class="sudoku-cell">4</div>
+                <div class="sudoku-cell">?</div>
 
-    with col1:
-        r4c1 = st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=None,
-            placeholder="?",
-            key="r4c1"
-        )
+                <div class="sudoku-cell">?</div>
+                <div class="sudoku-cell">3</div>
+                <div class="sudoku-cell">?</div>
+                <div class="sudoku-cell">1</div>
 
-    with col2:
-        st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=3,
-            disabled=True,
-            key="r4c2"
-        )
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-    with col3:
-        r4c3 = st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=None,
-            placeholder="?",
-            key="r4c3"
-        )
-
-    with col4:
-        st.number_input(
-            " ",
-            min_value=1,
-            max_value=4,
-            value=1,
-            disabled=True,
-            key="r4c4"
-        )
 
     st.write("")
+
+
+    # -------------------------
+    # INSERIMENTO NUMERI
+    # -------------------------
+
+    st.write("### ✏️ Completa le caselle mancanti")
+
+    st.caption(
+        "Inserisci i numeri mancanti nell'ordine indicato."
+    )
+
+
+    # 1
+    st.write("**1. Riga 1 — seconda casella**")
+
+    r1c2 = st.number_input(
+        "Numero",
+        min_value=1,
+        max_value=4,
+        value=None,
+        placeholder="?",
+        key="r1c2",
+        label_visibility="collapsed"
+    )
+
+
+    # 2
+    st.write("**2. Riga 1 — quarta casella**")
+
+    r1c4 = st.number_input(
+        "Numero",
+        min_value=1,
+        max_value=4,
+        value=None,
+        placeholder="?",
+        key="r1c4",
+        label_visibility="collapsed"
+    )
+
+
+    # 3
+    st.write("**3. Riga 2 — prima casella**")
+
+    r2c1 = st.number_input(
+        "Numero",
+        min_value=1,
+        max_value=4,
+        value=None,
+        placeholder="?",
+        key="r2c1",
+        label_visibility="collapsed"
+    )
+
+
+    # 4
+    st.write("**4. Riga 2 — terza casella**")
+
+    r2c3 = st.number_input(
+        "Numero",
+        min_value=1,
+        max_value=4,
+        value=None,
+        placeholder="?",
+        key="r2c3",
+        label_visibility="collapsed"
+    )
+
+
+    # 5
+    st.write("**5. Riga 3 — seconda casella**")
+
+    r3c2 = st.number_input(
+        "Numero",
+        min_value=1,
+        max_value=4,
+        value=None,
+        placeholder="?",
+        key="r3c2",
+        label_visibility="collapsed"
+    )
+
+
+    # 6
+    st.write("**6. Riga 3 — quarta casella**")
+
+    r3c4 = st.number_input(
+        "Numero",
+        min_value=1,
+        max_value=4,
+        value=None,
+        placeholder="?",
+        key="r3c4",
+        label_visibility="collapsed"
+    )
+
+
+    # 7
+    st.write("**7. Riga 4 — prima casella**")
+
+    r4c1 = st.number_input(
+        "Numero",
+        min_value=1,
+        max_value=4,
+        value=None,
+        placeholder="?",
+        key="r4c1",
+        label_visibility="collapsed"
+    )
+
+
+    # 8
+    st.write("**8. Riga 4 — terza casella**")
+
+    r4c3 = st.number_input(
+        "Numero",
+        min_value=1,
+        max_value=4,
+        value=None,
+        placeholder="?",
+        key="r4c3",
+        label_visibility="collapsed"
+    )
+
+
+    st.write("")
+
 
     # -------------------------
     # CONTROLLO
@@ -240,12 +293,17 @@ def mostra_gioco():
             [r4c1, 3, r4c3, 1]
         ]
 
-        # Controlla se è completo
+
+        # -------------------------
+        # CONTROLLO COMPLETAMENTO
+        # -------------------------
+
         completo = all(
             valore is not None
             for riga in risposta
             for valore in riga
         )
+
 
         if not completo:
 
@@ -253,9 +311,13 @@ def mostra_gioco():
                 "⚠️ Completa tutte le caselle!"
             )
 
+
+        # -------------------------
+        # RISPOSTA CORRETTA
+        # -------------------------
+
         elif risposta == soluzione:
 
-            # Assegna i punti solo la prima volta
             punti_assegnati = aggiungi_punti(1, 5)
 
             st.success(
@@ -265,14 +327,22 @@ def mostra_gioco():
             st.balloons()
 
             if punti_assegnati:
+
                 st.write(
                     "🏆 **Hai conquistato 5 punti!**"
                 )
+
             else:
+
                 st.info(
                     "I 5 punti di questo gioco "
                     "sono già stati assegnati 😉"
                 )
+
+
+        # -------------------------
+        # RISPOSTA ERRATA
+        # -------------------------
 
         else:
 
