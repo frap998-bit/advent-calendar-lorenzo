@@ -87,57 +87,70 @@ def mostra_gioco():
     st.write("")
 
 
+   # -------------------------
+# CONTROLLO
+# -------------------------
+
+if st.button(
+    "💘 Controlla le risposte",
+    use_container_width=True
+):
+
+    risposte_corrette = 0
+
+    for i, domanda in enumerate(domande):
+        if risposte[i] == domanda["risposta"]:
+            risposte_corrette += 1
+
+
     # -------------------------
-    # CONTROLLO
+    # ASSEGNAZIONE PUNTI
     # -------------------------
 
-    if st.button(
-        "💘 Controlla le risposte",
-        use_container_width=True
-    ):
-
-        risposte_corrette = 0
-
-        for i, domanda in enumerate(domande):
-            if risposte[i] == domanda["risposta"]:
-                risposte_corrette += 1
+    punti_assegnati = aggiungi_punti(
+        1,
+        risposte_corrette
+    )
 
 
-        # -------------------------
-        # TUTTE CORRETTE
-        # -------------------------
+    # -------------------------
+    # RISULTATO
+    # -------------------------
 
-        if risposte_corrette == 5:
+    if risposte_corrette == 5:
 
-            punti_assegnati = aggiungi_punti(1, 5)
+        st.success(
+            "🎉 PERFETTO! Le hai azzeccate tutte!"
+        )
 
-            st.success(
-                "🎉 PERFETTO! Le hai azzeccate tutte!"
-            )
+        st.balloons()
 
-            st.balloons()
+    elif risposte_corrette == 4:
 
-            if punti_assegnati:
-                st.write(
-                    "🏆 **Hai conquistato 5 punti!**"
-                )
-            else:
-                st.info(
-                    "I 5 punti di questo gioco sono già stati assegnati 😉"
-                )
+        st.success(
+            "🥰 Quasi perfetto! Te ne è sfuggita solo una!"
+        )
+
+    elif risposte_corrette >= 2:
+
+        st.warning(
+            f"😏 Non male! Ne hai indovinate "
+            f"{risposte_corrette} su 5."
+        )
+
+    elif risposte_corrette == 1:
+
+        st.warning(
+            "😂 Una almeno l'hai azzeccata!"
+        )
+
+    else:
+
+        st.error(
+            "😂 Zero su cinque... Dobbiamo conoscerci meglio!"
+        )
 
 
-        # -------------------------
-        # NON TUTTE CORRETTE
-        # -------------------------
-
-        else:
-
-            st.error(
-                f"❌ Ne hai indovinate {risposte_corrette} su 5."
-            )
-
-            st.warning(
-                "Niente punti questa volta 😈 "
-                "Riprova e cerca di conoscerci meglio!"
-            )
+    st.write(
+        f"🏆 **Hai conquistato {risposte_corrette} punti!**"
+    )
