@@ -1,4 +1,4 @@
-```python
+
 import streamlit as st
 
 from utils.punteggio import (
@@ -93,4 +93,3 @@ def mostra_gioco():
                 "**A. «Legambiente ha organizzato la serata nazionale "
                 "della spazzata contro l'inquinamento urbano»**"
             )
-```
