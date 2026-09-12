@@ -9,9 +9,9 @@ from utils.punteggio import (
 
 def mostra_gioco():
 
-    # -------------------------
+    # =====================================================
     # CONTROLLO GIORNO GIÀ COMPLETATO
-    # -------------------------
+    # =====================================================
 
     if giorno_completato(3):
         st.success("✅ Giorno 3 completato!")
@@ -19,9 +19,9 @@ def mostra_gioco():
         return
 
 
-    # -------------------------
+    # =====================================================
     # TITOLO
-    # -------------------------
+    # =====================================================
 
     st.header("❤️ Giorno 3 — Il nostro cruciverba")
 
@@ -34,9 +34,9 @@ def mostra_gioco():
     )
 
 
-    # -------------------------
+    # =====================================================
     # DEFINIZIONI
-    # -------------------------
+    # =====================================================
 
     st.subheader("⬇️ Verticali")
 
@@ -72,48 +72,28 @@ def mostra_gioco():
     )
 
 
-    # -------------------------
-    # GRIGLIA
-    # -------------------------
-    #
-    # Coordinate:
-    #
-    #       1
-    #       ↓
-    #   Q
-    #   U
-    #   A
-    #   R
-    #   T
-    #   A
-    #
-    # ALTALENA
-    #
-    # LIVIGNO ↓
-    # LUCA    ↓
-    #
-    # GOMMA ↓
-    # GATTARA →
-    #
-    # OLMO →
-    #
-    # -------------------------
+    # =====================================================
+    # PAROLE DEL CRUCIVERBA
+    # =====================================================
 
-    # Parole e posizioni
     parole = {
+
+        # Verticali
         "1": ("QUARTA", 0, 0, "V"),
-        "2": ("ALTALENA", 5, 0, "H"),
         "3": ("LIVIGNO", 5, 1, "V"),
         "4": ("LUCA", 5, 4, "V"),
         "5v": ("GOMMA", 1, 3, "V"),
+
+        # Orizzontali
+        "2": ("ALTALENA", 5, 0, "H"),
         "5h": ("GATTARA", 1, 3, "H"),
         "6": ("OLMO", 11, 1, "H")
     }
 
 
-    # -------------------------
-    # COSTRUZIONE GRIGLIA
-    # -------------------------
+    # =====================================================
+    # COSTRUZIONE DELLE CASELLE
+    # =====================================================
 
     celle = {}
 
@@ -123,82 +103,335 @@ def mostra_gioco():
 
             if direzione == "H":
                 posizione = (r, c + i)
+
             else:
                 posizione = (r + i, c)
 
-            celle[posizione] = {
-                "numero": None,
-                "lettera": lettera
-            }
+
+            # Se la casella esiste già significa
+            # che siamo in un incrocio.
+            if posizione not in celle:
+
+                celle[posizione] = {
+                    "lettera": lettera,
+                    "numero": None
+                }
+
+            else:
+
+                # Controllo di sicurezza:
+                # le lettere degli incroci devono coincidere.
+                if celle[posizione]["lettera"] != lettera:
+                    st.error(
+                        f"Errore nel cruciverba alla casella {posizione}."
+                    )
+                    return
 
 
-    # Numerazione delle caselle iniziali
+    # =====================================================
+    # NUMERI DELLE DEFINIZIONI
+    # =====================================================
+
     numeri_iniziali = {
+
         (0, 0): "1",
+
         (5, 0): "2",
+
         (5, 1): "3",
+
         (5, 4): "4",
+
         (1, 3): "5",
+
         (11, 1): "6"
     }
 
+
     for posizione, numero in numeri_iniziali.items():
+
         if posizione in celle:
             celle[posizione]["numero"] = numero
 
 
-    # -------------------------
-    # INPUT DELLE LETTERE
-    # -------------------------
+    # =====================================================
+    # STILE
+    # =====================================================
+
+    st.markdown(
+        """
+        <style>
+
+        /* -----------------------------------------------
+           CONTENITORE DELLA GRIGLIA
+        ------------------------------------------------ */
+
+        .cruciverba-scroll {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 10px 4px 18px 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+
+        /* -----------------------------------------------
+           GRIGLIA
+        ------------------------------------------------ */
+
+        .cruciverba-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(10, 40px);
+
+            grid-template-rows:
+                repeat(12, 40px);
+
+            gap: 2px;
+
+            width: max-content;
+
+            margin: 0 auto;
+        }
+
+
+        /* -----------------------------------------------
+           CASELLE
+        ------------------------------------------------ */
+
+        .cruciverba-cella {
+
+            width: 40px;
+            height: 40px;
+
+            position: relative;
+
+            box-sizing: border-box;
+
+            border-radius: 2px;
+        }
+
+
+        /* Casella nera */
+
+        .cruciverba-nera {
+
+            background-color: #222;
+
+            border: 1px solid #222;
+        }
+
+
+        /* Casella bianca */
+
+        .cruciverba-bianca {
+
+            background-color: white;
+
+            border: 1px solid #555;
+        }
+
+
+        /* -----------------------------------------------
+           NUMERO
+        ------------------------------------------------ */
+
+        .cruciverba-numero {
+
+            position: absolute;
+
+            top: 2px;
+            left: 3px;
+
+            font-size: 9px;
+
+            font-weight: bold;
+
+            color: #333;
+
+            line-height: 1;
+
+            pointer-events: none;
+
+            z-index: 1;
+        }
+
+
+        /* -----------------------------------------------
+           MOBILE
+        ------------------------------------------------ */
+
+        @media (max-width: 600px) {
+
+            .cruciverba-scroll {
+
+                justify-content: flex-start;
+
+                padding-left: 2px;
+                padding-right: 2px;
+            }
+
+            .cruciverba-grid {
+
+                margin-left: 0;
+
+                grid-template-columns:
+                    repeat(10, 36px);
+
+                grid-template-rows:
+                    repeat(12, 36px);
+
+                gap: 2px;
+            }
+
+            .cruciverba-cella {
+
+                width: 36px;
+                height: 36px;
+            }
+
+            .cruciverba-numero {
+
+                font-size: 8px;
+
+                top: 2px;
+                left: 2px;
+            }
+        }
+
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+    # =====================================================
+    # TITOLO GRIGLIA
+    # =====================================================
 
     st.subheader("🧩 Completa il cruciverba")
 
-    st.write("Inserisci una lettera per ogni casella:")
+    st.caption(
+        "💡 Sul telefono puoi scorrere la griglia lateralmente "
+        "se necessario."
+    )
 
-    # Dimensioni griglia
-    righe = range(0, 12)
-    colonne = range(0, 10)
+
+    # =====================================================
+    # GRIGLIA
+    # =====================================================
 
     risposte = {}
 
-    for r in righe:
 
-        cols = st.columns(len(colonne))
+    # Apro il contenitore scrollabile
+    st.markdown(
+        '<div class="cruciverba-scroll">',
+        unsafe_allow_html=True
+    )
 
-        for c in colonne:
+
+    # Apro la griglia
+    st.markdown(
+        '<div class="cruciverba-grid">',
+        unsafe_allow_html=True
+    )
+
+
+    for r in range(12):
+
+        # -------------------------------------------------
+        # Una riga
+        # -------------------------------------------------
+
+        for c in range(10):
 
             posizione = (r, c)
 
-            if posizione in celle:
 
-                numero = celle[posizione]["numero"]
+            # =================================================
+            # CASELLA NERA
+            # =================================================
 
-                if numero:
-                    label = f"{numero}"
-                else:
-                    label = "·"
+            if posizione not in celle:
 
-                with cols[c]:
+                st.markdown(
+                    """
+                    <div class="cruciverba-cella cruciverba-nera">
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-                    risposte[posizione] = st.text_input(
-                        label,
-                        max_chars=1,
-                        key=f"giorno03_{r}_{c}",
-                        label_visibility="visible"
-                    )
+                continue
 
-            else:
 
-                with cols[c]:
-                    st.write("⬛")
+            # =================================================
+            # CASELLA BIANCA
+            # =================================================
 
+            numero = celle[posizione]["numero"]
+
+
+            # Numero della casella
+            if numero:
+
+                st.markdown(
+                    f"""
+                    <div
+                        class="cruciverba-numero"
+                        style="
+                            position: relative;
+                            height: 0;
+                            top: 3px;
+                            left: 3px;
+                            z-index: 5;
+                            pointer-events: none;
+                        "
+                    >
+                        {numero}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+
+            # -------------------------------------------------
+            # INPUT
+            #
+            # Usiamo una colonna Streamlit per ogni casella.
+            # La larghezza viene ridotta tramite CSS.
+            # -------------------------------------------------
+
+            risposta = st.text_input(
+                label=(
+                    f"Casella {numero}"
+                    if numero
+                    else f"Casella {r}-{c}"
+                ),
+                max_chars=1,
+                key=f"giorno03_{r}_{c}",
+                label_visibility="collapsed"
+            )
+
+            risposte[posizione] = risposta
+
+
+    # Chiudo la griglia
+    st.markdown(
+        "</div></div>",
+        unsafe_allow_html=True
+    )
+
+
+    # =====================================================
+    # CONTROLLO
+    # =====================================================
 
     st.write("")
 
-
-    # -------------------------
-    # CONTROLLO
-    # -------------------------
 
     if st.button(
         "🔎 Controlla cruciverba",
@@ -207,29 +440,55 @@ def mostra_gioco():
 
         corretto = True
 
+
+        # -------------------------------------------------
+        # Controllo tutte le caselle
+        # -------------------------------------------------
+
         for posizione, dati in celle.items():
 
-            risposta = risposte.get(posizione, "").strip().upper()
+            risposta = (
+                risposte
+                .get(posizione, "")
+                .strip()
+                .upper()
+            )
+
 
             if risposta != dati["lettera"]:
+
                 corretto = False
+
                 break
 
+
+        # =================================================
+        # CORRETTO
+        # =================================================
 
         if corretto:
 
             punti_assegnati = aggiungi_punti(3, 5)
 
+
             st.success(
                 "🎉 PERFETTO! Hai completato il cruciverba! ❤️"
             )
 
+
             st.balloons()
 
+
             if punti_assegnati:
+
                 st.write(
                     "🏆 **Hai conquistato 5 punti!**"
                 )
+
+
+        # =================================================
+        # ERRATO
+        # =================================================
 
         else:
 
@@ -239,5 +498,6 @@ def mostra_gioco():
 
             st.info(
                 "💡 Controlla bene gli incroci... "
-                "alcune risposte dovrebbero aiutarti a trovare le altre! 😉"
+                "alcune risposte dovrebbero aiutarti "
+                "a trovare le altre! 😉"
             )
