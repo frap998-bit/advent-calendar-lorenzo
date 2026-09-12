@@ -41,7 +41,7 @@ def mostra_gioco():
         {
             "numero": 1,
             "domanda": "Come è detto anche il Prof. Omar?",
-            "lettere": 8,
+            "lettere": 9,
             "soluzione": "SCHETTINI"
         },
         {
