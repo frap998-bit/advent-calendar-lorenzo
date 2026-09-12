@@ -73,6 +73,10 @@ def mostra_gioco():
     ]
 
 
+    # -------------------------
+    # RISPOSTE
+    # -------------------------
+
     risposte = []
 
 
@@ -84,7 +88,9 @@ def mostra_gioco():
 
         st.write("")
 
-        st.subheader(f"{i}. {domanda['domanda']}")
+        st.subheader(
+            f"{i}. {domanda['domanda']}"
+        )
 
         st.image(
             domanda["foto"],
@@ -124,7 +130,7 @@ def mostra_gioco():
         # ASSEGNAZIONE PUNTI
         # -------------------------
 
-        punti_assegnati = aggiungi_punti(
+        aggiungi_punti(
             6,
             risposte_corrette
         )
@@ -167,3 +173,24 @@ def mostra_gioco():
         st.write(
             f"🏆 **Hai conquistato {risposte_corrette} punti!**"
         )
+
+
+        # -------------------------
+        # RISPOSTE CORRETTE
+        # -------------------------
+
+        if risposte_corrette < 3:
+
+            st.write("")
+
+            st.subheader(
+                "📍 Le risposte corrette erano:"
+            )
+
+            for i, domanda in enumerate(domande, start=1):
+
+                if risposte[i - 1] != domanda["corretta"]:
+
+                    st.write(
+                        f"**{i}.** {domanda['corretta']} ✅"
+                    )
