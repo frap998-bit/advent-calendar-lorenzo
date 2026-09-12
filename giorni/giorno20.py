@@ -59,8 +59,8 @@ def mostra_gioco():
         {
             "numero": 4,
             "domanda": "Il nostro motto? (Sono due parole)",
-            "lettere": 8,
-            "soluzione": "PIANOPIANO"
+            "lettere": 12,
+            "soluzione": "PIANO PIANO"
         }
     ]
 
