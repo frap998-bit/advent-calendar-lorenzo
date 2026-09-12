@@ -14,7 +14,9 @@ def mostra_gioco():
 
     if giorno_completato(9):
         st.success("✅ Giorno 9 completato!")
-        st.write("🏆 Hai già conquistato i 4 punti di questa sfida.")
+        st.write(
+            "🏆 Hai già completato questa sfida."
+        )
         return
 
 
@@ -75,7 +77,7 @@ def mostra_gioco():
 
 
     # -------------------------
-    # GIOCO FINITO
+    # GIOCO GIÀ FINITO
     # -------------------------
 
     if st.session_state.giorno09_finito:
@@ -167,7 +169,7 @@ def mostra_gioco():
 
 
     # -------------------------
-    # CONTROLLO
+    # CONTROLLO RISPOSTA
     # -------------------------
 
     if st.button(
@@ -176,6 +178,11 @@ def mostra_gioco():
     ):
 
         risposta = risposta.strip().lower()
+
+
+        # -------------------------
+        # RISPOSTA VUOTA
+        # -------------------------
 
         if not risposta:
 
@@ -223,6 +230,10 @@ def mostra_gioco():
         # -------------------------
 
         if tentativi >= 3:
+
+            # Segna il giorno come completato
+            # anche se ha conquistato 0 punti
+            aggiungi_punti(9, 0)
 
             st.session_state.giorno09_finito = True
 
