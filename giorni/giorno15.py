@@ -29,7 +29,7 @@ def mostra_gioco():
     )
 
     st.write(
-        "🌱 **Ora dirti una cosa carina e stimolante verso te stesso "
+        "🌱 **Ora devi dirti una cosa carina e stimolante verso te stesso "
         "per iniziare la giornata.**"
     )
 
