@@ -1,3 +1,4 @@
+```python
 import streamlit as st
 from datetime import date
 import importlib
@@ -5,7 +6,8 @@ import importlib
 from utils.punteggio import (
     inizializza_punteggio,
     get_punteggio,
-    giorno_completato
+    giorno_completato,
+    reset_punteggio
 )
 
 
@@ -93,6 +95,7 @@ if st.session_state.giorno_aperto is not None:
         key="torna_calendario",
         use_container_width=False
     ):
+
         st.session_state.giorno_aperto = None
         st.rerun()
 
@@ -267,3 +270,26 @@ else:
     st.write(
         f"**{punteggio} / 100 punti**"
     )
+
+
+    # -------------------------
+    # RESET
+    # -------------------------
+
+    st.divider()
+
+    if st.button(
+        "🔄 Reset calendario",
+        use_container_width=False
+    ):
+
+        if reset_punteggio():
+
+            st.success(
+                "✅ Calendario resettato!"
+            )
+
+            st.session_state.giorno_aperto = None
+
+            st.rerun()
+```
