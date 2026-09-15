@@ -278,7 +278,7 @@ def mostra_gioco():
             st.divider()
 
             st.subheader(
-                "💡 Ecco il vero ordine di Francesca"
+                "💡 Ecco il mio vero ordine"
             )
 
 
