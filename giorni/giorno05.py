@@ -23,11 +23,8 @@ def mostra_gioco():
     # TITOLO
     # -------------------------
 
-    st.header("❤️ Giorno 5 — Quanto mi conosci?")
+    st.header("❤️ Giorno 5 — Ti ricordi le scemate che inventi?")
 
-    st.write(
-        "Questa forse è una delle domande più importanti... 👀"
-    )
 
     st.write(
         "### ❤️ Cosa mi hai detto per farmi capire che volevi fare l'amore con me?"
