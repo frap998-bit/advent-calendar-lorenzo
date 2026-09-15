@@ -1,4 +1,3 @@
-```python
 import streamlit as st
 
 from utils.punteggio import (
@@ -199,4 +198,3 @@ def mostra_gioco():
                         f"Hai risposto: **{risposte[i]}**  \n"
                         f"👉 La risposta giusta era: **{domanda['risposta']}**"
                     )
-```
