@@ -1,4 +1,3 @@
-```python
 import streamlit as st
 from datetime import date
 import importlib
@@ -292,4 +291,3 @@ else:
             st.session_state.giorno_aperto = None
 
             st.rerun()
-```
