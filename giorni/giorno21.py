@@ -197,7 +197,7 @@ def mostra_gioco():
         # RISPOSTA CORRETTA
         # -------------------------
 
-        if risposta == "cucciolone":
+        if risposta == "topi":
 
             aggiungi_punti(9, 4)
 
@@ -246,7 +246,7 @@ def mostra_gioco():
             )
 
             st.success(
-                "🍪 **CUCCIOLONE**"
+                "🍪 **topi**"
             )
 
             st.write(
