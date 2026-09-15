@@ -147,7 +147,7 @@ def mostra_gioco():
         elif risposte_corrette == 2:
 
             st.warning(
-                "😂 Solo due? Devi conoscermi un po' meglio!"
+                "😂 Solo due? La pensiamo un po' diversamente ahaha"
             )
 
         elif risposte_corrette == 1:
@@ -159,7 +159,7 @@ def mostra_gioco():
         else:
 
             st.error(
-                "😂 Zero su cinque... Dobbiamo conoscerci meglio!"
+                "Zero su cinque...!"
             )
 
 
