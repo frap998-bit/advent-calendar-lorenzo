@@ -1,4 +1,4 @@
-```python
+
 import streamlit as st
 
 from utils.punteggio import (
@@ -310,4 +310,4 @@ def mostra_gioco():
             f"Hai ancora **{3 - tentativo_corrente} "
             f"tentativo/i**. Puoi modificare l'ordine e riprovare!"
         )
-```
+
