@@ -1,5 +1,5 @@
-
 import streamlit as st
+import random
 
 from utils.punteggio import (
     aggiungi_punti,
@@ -20,7 +20,7 @@ def mostra_gioco():
 
 
     # =====================================================
-    # INIZIALIZZAZIONE
+    # ORDINE CORRETTO
     # =====================================================
 
     ordine_corretto = [
@@ -33,27 +33,23 @@ def mostra_gioco():
     ]
 
 
-    # Inizializza l'ordine scelto dall'utente
+    # =====================================================
+    # INIZIALIZZAZIONE ORDINE
+    # =====================================================
+
     if "giorno04_ordine" not in st.session_state:
 
-        st.session_state.giorno04_ordine = [
-            "🏐 Beach volley",
-            "📺 Guardare serie TV",
-            "🎾 Tennis",
-            "🧩 Puzzle",
-            "🎹 Suonare",
-            "📖 Leggere"
-        ]
-
-        # Mescoliamo l'ordine iniziale
-        import random
+        st.session_state.giorno04_ordine = ordine_corretto.copy()
 
         random.shuffle(
             st.session_state.giorno04_ordine
         )
 
 
-    # Numero di tentativi effettuati
+    # =====================================================
+    # INIZIALIZZAZIONE TENTATIVI
+    # =====================================================
+
     if "giorno04_tentativi" not in st.session_state:
         st.session_state.giorno04_tentativi = 0
 
@@ -77,8 +73,8 @@ def mostra_gioco():
     )
 
     st.write(
-        "Metti in ordine queste attività dalla **mia preferita "
-        "alla meno preferita**."
+        "Metti in ordine queste attività dalla "
+        "**mia preferita alla meno preferita**."
     )
 
     st.info(
@@ -99,13 +95,13 @@ def mostra_gioco():
 
 
     # =====================================================
-    # VISUALIZZAZIONE ELEMENTI
+    # ELENCO ATTIVITÀ
     # =====================================================
 
     for i in range(len(ordine)):
 
-        col1, col2, col3 = st.columns(
-            [1, 5, 1]
+        col_numero, col_attivita, col_su, col_giu = st.columns(
+            [0.7, 4.5, 0.8, 0.8]
         )
 
 
@@ -113,7 +109,7 @@ def mostra_gioco():
         # NUMERO
         # -------------------------------------------------
 
-        with col1:
+        with col_numero:
 
             st.write(
                 f"**{i + 1}.**"
@@ -124,7 +120,7 @@ def mostra_gioco():
         # ATTIVITÀ
         # -------------------------------------------------
 
-        with col2:
+        with col_attivita:
 
             st.write(
                 ordine[i]
@@ -132,43 +128,37 @@ def mostra_gioco():
 
 
         # -------------------------------------------------
-        # PULSANTE SU
+        # FRECCIA SU
         # -------------------------------------------------
 
-        with col3:
-
-            if i > 0:
-
-                if st.button(
-                    "⬆️",
-                    key=f"giorno04_up_{i}"
-                ):
-
-                    ordine[i - 1], ordine[i] = (
-                        ordine[i],
-                        ordine[i - 1]
-                    )
-
-                    st.session_state.giorno04_ordine = ordine
-
-                    st.rerun()
-
-
-    # =====================================================
-    # PULSANTI GIÙ
-    # =====================================================
-
-    st.write("")
-
-
-    for i in range(len(ordine)):
-
-        if i < len(ordine) - 1:
+        with col_su:
 
             if st.button(
-                f"⬇️ Sposta '{ordine[i]}' giù",
+                "⬆️",
+                key=f"giorno04_up_{i}",
+                disabled=(i == 0)
+            ):
+
+                ordine[i - 1], ordine[i] = (
+                    ordine[i],
+                    ordine[i - 1]
+                )
+
+                st.session_state.giorno04_ordine = ordine
+
+                st.rerun()
+
+
+        # -------------------------------------------------
+        # FRECCIA GIÙ
+        # -------------------------------------------------
+
+        with col_giu:
+
+            if st.button(
+                "⬇️",
                 key=f"giorno04_down_{i}",
-                use_container_width=True
+                disabled=(i == len(ordine) - 1)
             ):
 
                 ordine[i], ordine[i + 1] = (
@@ -182,7 +172,7 @@ def mostra_gioco():
 
 
     # =====================================================
-    # CONTROLLO
+    # CONTROLLO ORDINE
     # =====================================================
 
     st.write("")
@@ -192,7 +182,10 @@ def mostra_gioco():
         use_container_width=True
     ):
 
-        # Aumenta tentativi
+        # -------------------------------------------------
+        # AUMENTA NUMERO TENTATIVI
+        # -------------------------------------------------
+
         st.session_state.giorno04_tentativi += 1
 
         tentativo_corrente = (
@@ -204,20 +197,17 @@ def mostra_gioco():
         # CALCOLO POSIZIONI CORRETTE
         # -------------------------------------------------
 
-        posizioni_corrette = 0
-
-        for i in range(len(ordine)):
-
-            if ordine[i] == ordine_corretto[i]:
-
-                posizioni_corrette += 1
+        posizioni_corrette = sum(
+            ordine[i] == ordine_corretto[i]
+            for i in range(len(ordine))
+        )
 
 
         st.divider()
 
 
         # =================================================
-        # TUTTO CORRETTO
+        # CASO 1 — TUTTO CORRETTO
         # =================================================
 
         if posizioni_corrette == len(ordine):
@@ -227,13 +217,11 @@ def mostra_gioco():
                 6
             )
 
-
             st.success(
                 "🎉 PERFETTO! Hai indovinato tutto! ❤️"
             )
 
             st.balloons()
-
 
             if punti_assegnati:
 
@@ -245,7 +233,7 @@ def mostra_gioco():
 
 
         # =================================================
-        # TERZO TENTATIVO
+        # CASO 2 — TERZO TENTATIVO
         # =================================================
 
         if tentativo_corrente >= 3:
@@ -256,11 +244,20 @@ def mostra_gioco():
             )
 
 
-            st.warning(
-                f"😏 Tentativi terminati! "
-                f"Hai messo **{posizioni_corrette} attività "
-                f"su 6 nella posizione corretta**."
-            )
+            if posizioni_corrette == 0:
+
+                st.warning(
+                    "😏 Tentativi terminati! "
+                    "Questa volta non hai azzeccato nessuna posizione."
+                )
+
+            else:
+
+                st.warning(
+                    f"😏 Tentativi terminati! "
+                    f"Hai messo **{posizioni_corrette} attività "
+                    f"su 6 nella posizione corretta**."
+                )
 
 
             if punti_assegnati:
@@ -281,7 +278,6 @@ def mostra_gioco():
                 "💡 Ecco il mio vero ordine"
             )
 
-
             for i, attivita in enumerate(
                 ordine_corretto,
                 start=1
@@ -291,12 +287,11 @@ def mostra_gioco():
                     f"**{i}. {attivita}**"
                 )
 
-
             return
 
 
         # =================================================
-        # PRIMO / SECONDO TENTATIVO
+        # CASO 3 — PRIMO / SECONDO TENTATIVO
         # =================================================
 
         st.warning(
@@ -305,9 +300,22 @@ def mostra_gioco():
         )
 
 
-        st.info(
-            f"💡 Non è ancora finita! "
-            f"Hai ancora **{3 - tentativo_corrente} "
-            f"tentativo/i**. Puoi modificare l'ordine e riprovare!"
-        )
+        tentativi_rimasti = 3 - tentativo_corrente
 
+
+        if tentativi_rimasti == 1:
+
+            messaggio = (
+                "⚠️ Ti rimane **1 solo tentativo**! "
+                "Puoi ancora modificare l'ordine e riprovare."
+            )
+
+        else:
+
+            messaggio = (
+                f"💡 Hai ancora **{tentativi_rimasti} tentativi**. "
+                "Puoi modificare l'ordine e riprovare!"
+            )
+
+
+        st.info(messaggio)
