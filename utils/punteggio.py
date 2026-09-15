@@ -1,3 +1,4 @@
+
 import streamlit as st
 from supabase import create_client
 
@@ -126,3 +127,42 @@ def giorno_completato(giorno):
     inizializza_punteggio()
 
     return giorno in st.session_state.giorni_completati
+
+
+# -------------------------
+# RESET COMPLETO
+# -------------------------
+
+def reset_punteggio():
+
+    supabase = get_supabase()
+
+    try:
+
+        risposta = (
+            supabase
+            .table("punteggio")
+            .update({
+                "completato": False,
+                "punti": 0
+            })
+            .neq("giorno", 0)
+            .execute()
+        )
+
+        # Reset della sessione Streamlit
+        st.session_state.punteggio = 0
+        st.session_state.giorni_completati = set()
+
+        return True
+
+    except Exception as e:
+
+        st.error(
+            "❌ Errore durante il reset del punteggio:"
+        )
+
+        st.code(str(e))
+
+        return False
+
