@@ -1,3 +1,4 @@
+```python
 import streamlit as st
 
 from utils.punteggio import (
@@ -112,7 +113,7 @@ def mostra_gioco():
         # ASSEGNAZIONE PUNTI
         # -------------------------
 
-        punti_assegnati = aggiungi_punti(
+        aggiungi_punti(
             1,
             risposte_corrette
         )
@@ -170,3 +171,32 @@ def mostra_gioco():
         st.write(
             f"🏆 **Hai conquistato {risposte_corrette} punti!**"
         )
+
+
+        # -------------------------
+        # RISPOSTE CORRETTE
+        # -------------------------
+
+        if risposte_corrette < 5:
+
+            st.divider()
+
+            st.subheader("💡 Ecco le risposte corrette")
+
+            for i, domanda in enumerate(domande):
+
+                if risposte[i] == domanda["risposta"]:
+
+                    st.success(
+                        f"✅ **{i + 1}. {domanda['domanda']}**  \n"
+                        f"Hai risposto: **{risposte[i]}** — Corretto! 🎉"
+                    )
+
+                else:
+
+                    st.error(
+                        f"❌ **{i + 1}. {domanda['domanda']}**  \n"
+                        f"Hai risposto: **{risposte[i]}**  \n"
+                        f"👉 La risposta giusta era: **{domanda['risposta']}**"
+                    )
+```
