@@ -1,4 +1,4 @@
-```python
+
 import streamlit as st
 
 from utils.punteggio import (
@@ -327,4 +327,3 @@ def mostra_gioco():
                     f"❌ {risultato['numero']}. "
                     f"Questa non è corretta... 🤔"
                 )
-```
