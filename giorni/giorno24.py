@@ -12,49 +12,53 @@ from utils.punteggio import (
 # =====================================================
 
 GIORNO = 24
-COMBINAZIONE = "22102024"
 
-# Posizioni delle cifre da rivelare
-# (indice 0-based)
-POSIZIONI_RIVELATE = {
-    1: [2],             # 1 cifra
-    2: [0, 4],          # 2 cifre
-    3: [0, 2, 7],       # 3 cifre
-    4: [0, 2, 5, 7]     # 4 cifre
-}
+COMBINAZIONE = "35083995"
 
 INDIZI = [
-    "La somma dei numeri della combinazione è **13**.",
-    "Nella combinazione ci sono **tre 2**.",
-    "Nella combinazione ci sono **due 0**.",
-    "La prima e la seconda cifra sono **uguali**.",
-    "La combinazione è composta da **8 cifre**.",
-    "Le ultime due cifre sono **24**.",
-    "La combinazione contiene una **data importante per noi**. ❤️",
-    "È una data che mi ricorda un momento che non dimenticherò. ❤️"
+    "La somma dei numeri della combinazione è **42**",
+    "La combinazione è un numero dispari",
+    "La combinazione nasce dalla somma di **due date**",
+    "Le due date sono molto significative per me e per te",
+    "La prima data è **12/01/1998**",
+    "La seconda data è **23/07/1997**",
+    "Devi fare: **12011998 + 23071997**"
 ]
+
+# Posizioni delle cifre da rivelare
+# Gli indici partono da 0
+POSIZIONI_RIVELATE = {
+    1: [2],
+    2: [0, 4],
+    3: [0, 2, 7],
+    4: [0, 2, 5, 7]
+}
 
 
 # =====================================================
-# NUMERO DI CIFRE RIVELATE
+# NUMERO DI CIFRE RIVELATE IN BASE AL PUNTEGGIO
 # =====================================================
 
 def numero_cifre_rivelate(punteggio):
 
     if punteggio < 70:
         return 0
+
     elif punteggio < 80:
         return 1
+
     elif punteggio < 90:
         return 2
+
     elif punteggio < 100:
         return 3
+
     else:
         return 4
 
 
 # =====================================================
-# MOSTRA COMBINAZIONE CON CIFRE RIVELATE
+# MOSTRA LA COMBINAZIONE CON LE CIFRE RIVELATE
 # =====================================================
 
 def mostra_combinazione_rivelata(numero):
@@ -87,7 +91,9 @@ def mostra_gioco():
 
         st.success("🔓 Cassaforte già aperta!")
         st.write("🎄 Hai già completato la sfida del Giorno 24.")
+
         st.write("")
+
         st.markdown(
             """
             <h2 style="text-align:center;">
@@ -99,20 +105,23 @@ def mostra_gioco():
 
         return
 
+
     # -------------------------------------------------
-    # INIZIALIZZAZIONE SESSIONE
+    # INIZIALIZZAZIONE TENTATIVI
     # -------------------------------------------------
 
     if "giorno24_tentativi" not in st.session_state:
         st.session_state.giorno24_tentativi = 0
 
+
     # -------------------------------------------------
-    # PUNTEGGIO TOTALE
+    # RECUPERA PUNTEGGIO
     # -------------------------------------------------
 
     punteggio = get_punteggio()
 
     cifre_rivelate = numero_cifre_rivelate(punteggio)
+
 
     # -------------------------------------------------
     # TITOLO
@@ -129,6 +138,7 @@ def mostra_gioco():
         "**la combinazione segreta di 8 cifre**."
     )
 
+
     # -------------------------------------------------
     # PUNTEGGIO
     # -------------------------------------------------
@@ -136,6 +146,7 @@ def mostra_gioco():
     st.info(
         f"🏆 Il tuo punteggio totale è **{punteggio} punti**."
     )
+
 
     # -------------------------------------------------
     # CIFRE RIVELATE
@@ -153,7 +164,10 @@ def mostra_gioco():
 
         st.markdown(
             """
-            <h1 style="text-align:center; letter-spacing:12px;">
+            <h1 style="
+                text-align:center;
+                letter-spacing:12px;
+            ">
             • • • • • • • •
             </h1>
             """,
@@ -174,20 +188,26 @@ def mostra_gioco():
 
         st.markdown(
             f"""
-            <h1 style="text-align:center; letter-spacing:10px;">
+            <h1 style="
+                text-align:center;
+                letter-spacing:10px;
+            ">
             {combinazione_visibile}
             </h1>
             """,
             unsafe_allow_html=True
         )
 
+
     # -------------------------------------------------
-    # FASCE PUNTEGGIO
+    # REGOLE PUNTEGGIO
     # -------------------------------------------------
 
     with st.expander("💡 Come funzionano gli aiuti?"):
 
-        st.write("Il tuo punteggio determina quante cifre puoi vedere:")
+        st.write(
+            "Il tuo punteggio determina quante cifre puoi vedere:"
+        )
 
         st.write("• **Meno di 70 punti** → nessuna cifra")
         st.write("• **70–79 punti** → 1 cifra")
@@ -195,10 +215,12 @@ def mostra_gioco():
         st.write("• **90–99 punti** → 3 cifre")
         st.write("• **100+ punti** → 4 cifre")
 
+
     st.divider()
 
+
     # -------------------------------------------------
-    # INDIZI SBLOCCATI
+    # INDIZI
     # -------------------------------------------------
 
     tentativi = st.session_state.giorno24_tentativi
@@ -207,10 +229,17 @@ def mostra_gioco():
 
         st.subheader("💡 Indizi sbloccati")
 
-        for i in range(min(tentativi, len(INDIZI))):
+        # Mostra TUTTI gli indizi sbloccati.
+        # Quelli precedenti non spariscono.
+
+        for i in range(
+            min(tentativi, len(INDIZI))
+        ):
+
             st.write(
                 f"**Indizio {i + 1}:** {INDIZI[i]}"
             )
+
 
     # -------------------------------------------------
     # INSERIMENTO CODICE
@@ -225,8 +254,9 @@ def mostra_gioco():
         key="giorno24_codice"
     )
 
+
     # -------------------------------------------------
-    # CONTROLLO
+    # PULSANTE
     # -------------------------------------------------
 
     if st.button(
@@ -234,7 +264,10 @@ def mostra_gioco():
         use_container_width=True
     ):
 
-        # Controllo formato
+        # -------------------------------------------------
+        # CONTROLLO FORMATO
+        # -------------------------------------------------
+
         if len(codice) != 8 or not codice.isdigit():
 
             st.warning(
@@ -244,15 +277,20 @@ def mostra_gioco():
 
             return
 
+
         # -------------------------------------------------
         # CODICE CORRETTO
         # -------------------------------------------------
 
         if codice == COMBINAZIONE:
 
-            # Il Giorno 24 assegna 0 punti:
-            # serve solo a registrarlo come completato.
-            completato = aggiungi_punti(GIORNO, 0)
+            # Il Giorno 24 non assegna punti.
+            # Serve solo per registrare il completamento.
+
+            completato = aggiungi_punti(
+                GIORNO,
+                0
+            )
 
             if completato:
 
@@ -272,7 +310,7 @@ def mostra_gioco():
                 st.markdown(
                     """
                     <h2 style="text-align:center;">
-                    22/10/2024
+                    35083995
                     </h2>
                     """,
                     unsafe_allow_html=True
@@ -282,8 +320,23 @@ def mostra_gioco():
 
                 st.markdown(
                     """
-                    <p style="text-align:center; font-size:20px;">
-                    Una data che per noi significa tanto. ❤️
+                    <p style="
+                        text-align:center;
+                        font-size:20px;
+                    ">
+                    12011998 + 23071997
+                    </p>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                st.markdown(
+                    """
+                    <p style="
+                        text-align:center;
+                        font-size:20px;
+                    ">
+                    Due date. Due persone. ❤️
                     </p>
                     """,
                     unsafe_allow_html=True
@@ -293,7 +346,10 @@ def mostra_gioco():
 
                 st.markdown(
                     """
-                    <p style="text-align:center; font-size:20px;">
+                    <p style="
+                        text-align:center;
+                        font-size:20px;
+                    ">
                     Domani è Natale. 🎄
                     </p>
                     """,
@@ -322,6 +378,7 @@ def mostra_gioco():
                     unsafe_allow_html=True
                 )
 
+
         # -------------------------------------------------
         # CODICE SBAGLIATO
         # -------------------------------------------------
@@ -334,16 +391,14 @@ def mostra_gioco():
                 "❌ La cassaforte non si è aperta..."
             )
 
-            nuovo_indizio = min(
+            numero_indizio = min(
                 st.session_state.giorno24_tentativi,
                 len(INDIZI)
             )
 
-            if nuovo_indizio <= len(INDIZI):
-
-                st.info(
-                    f"💡 Hai sbloccato un nuovo indizio: "
-                    f"**Indizio {nuovo_indizio}**"
-                )
+            st.info(
+                f"💡 Hai sbloccato un nuovo indizio: "
+                f"**Indizio {numero_indizio}**"
+            )
 
             st.rerun()
