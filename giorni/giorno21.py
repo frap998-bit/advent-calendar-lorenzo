@@ -132,7 +132,7 @@ def mostra_gioco():
             )
 
             st.info(
-                "🍦 **Nuovo indizio sbloccato: Gelato**"
+                "🍦 **Nuovo indizio sbloccato: Omar e Sofia**"
             )
 
         if st.button(
