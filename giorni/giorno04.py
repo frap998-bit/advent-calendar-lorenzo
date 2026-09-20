@@ -26,8 +26,6 @@ def mostra_gioco():
     ordine_corretto = [
         "🏐 Beach volley",
         "📺 Guardare serie TV",
-        "🎾 Tennis",
-        "🧩 Puzzle",
         "🎹 Suonare",
         "📖 Leggere"
     ]
