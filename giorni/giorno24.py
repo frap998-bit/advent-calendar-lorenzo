@@ -123,34 +123,32 @@ def mostra_gioco():
     cifre_rivelate = numero_cifre_rivelate(punteggio)
 
 
-    # -------------------------------------------------
+    # --------------------------------------------------------
     # TITOLO
-    # -------------------------------------------------
+    # --------------------------------------------------------
 
-    st.header("🔐 Giorno 24 — La cassaforte")
+    st.header("🔐 Giorno 24 — La cassaforte finale")
 
     st.write(
-        "Siamo arrivati all'ultima sfida. ❤️"
+        "Sei arrivato all'ultimo giorno. ❤️"
     )
 
     st.write(
-        "Per aprire la cassaforte devi trovare "
-        "**la combinazione segreta di 8 cifre**."
+        "Durante questi 23 giorni hai accumulato punti..."
     )
 
-
-    # -------------------------------------------------
-    # PUNTEGGIO
-    # -------------------------------------------------
+    st.write(
+        "Ma forse non erano soltanto punti. 👀"
+    )
 
     st.info(
-        f"🏆 Il tuo punteggio totale è **{punteggio} punti**."
+        f"🏆 Hai totalizzato **{punteggio} punti**."
     )
 
 
-    # -------------------------------------------------
-    # CIFRE RIVELATE
-    # -------------------------------------------------
+    # --------------------------------------------------------
+    # SPIEGAZIONE DEL VANTAGGIO
+    # --------------------------------------------------------
 
     if cifre_rivelate == 0:
 
