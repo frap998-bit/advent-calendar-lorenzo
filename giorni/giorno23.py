@@ -113,29 +113,35 @@ def mostra_gioco():
     # -------------------------
     # FRASE NASCOSTA
     # -------------------------
-
+    
     frase_visualizzata = ""
-
+    
     for carattere in frase:
-
+    
         if carattere == " ":
             frase_visualizzata += "&nbsp;&nbsp;&nbsp;"
-
+    
         elif carattere in lettere:
-            frase_visualizzata += f"{carattere} "
-
+            frase_visualizzata += carattere + " "
+    
         else:
             frase_visualizzata += "_ "
-
-
+    
+    
     st.divider()
-
+    
     st.subheader("🔤 La frase")
-
+    
     st.markdown(
-        f"<h1 style='text-align: center; letter-spacing: 8px;'>"
-        f"{frase_visualizzata}"
-        f"</h1>",
+        f"""
+        <h1 style="
+            text-align: center;
+            letter-spacing: 8px;
+            font-weight: bold;
+        ">
+            {frase_visualizzata}
+        </h1>
+        """,
         unsafe_allow_html=True
     )
 
