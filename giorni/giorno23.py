@@ -54,7 +54,7 @@ def mostra_gioco():
     )
 
     st.write(
-        "Hai a disposizione **7 errori**. "
+        "Hai a disposizione **4 errori**. "
         "Riuscirai a scoprirla? 👀"
     )
 
@@ -92,7 +92,7 @@ def mostra_gioco():
         else:
 
             st.error(
-                "💀 Hai fatto 7 errori!"
+                "💀 Hai fatto 4 errori!"
             )
 
             st.write(
@@ -151,7 +151,7 @@ def mostra_gioco():
     # -------------------------
 
     st.write(
-        f"❌ Errori: **{errori} / 7**"
+        f"❌ Errori: **{errori} / 4**"
     )
 
     if lettere:
@@ -278,10 +278,10 @@ def mostra_gioco():
 
 
             # -------------------------
-            # 7 ERRORI → FINE
+            # 4 ERRORI → FINE
             # -------------------------
 
-            if errori >= 7:
+            if errori >= 4:
 
                 aggiungi_punti(23, 0)
 
@@ -294,7 +294,7 @@ def mostra_gioco():
 
                 st.warning(
                     f"❌ Lettera sbagliata! "
-                    f"Hai ancora **{7 - errori} errori**."
+                    f"Hai ancora **{4 - errori} errori**."
                 )
 
                 st.rerun()
