@@ -2,352 +2,348 @@ import streamlit as st
 
 from utils.punteggio import (
     aggiungi_punti,
-    giorno_completato
+    giorno_completato,
+    get_punteggio
 )
 
-# ============================================================
+
+# =====================================================
 # CONFIGURAZIONE
-# ============================================================
+# =====================================================
 
 GIORNO = 24
 COMBINAZIONE = "22102024"
 
+# Posizioni delle cifre da rivelare
+# (indice 0-based)
+POSIZIONI_RIVELATE = {
+    1: [2],             # 1 cifra
+    2: [0, 4],          # 2 cifre
+    3: [0, 2, 7],       # 3 cifre
+    4: [0, 2, 5, 7]     # 4 cifre
+}
+
 INDIZI = [
-    "💡 La somma dei numeri della combinazione è **13**.",
-    "💡 La combinazione contiene **tre 2**.",
-    "💡 La combinazione contiene **due 0**.",
-    "💡 La prima cifra è uguale alla seconda.",
-    "💡 La combinazione rappresenta una **data molto importante per noi**. ❤️",
+    "La somma dei numeri della combinazione è **13**.",
+    "Nella combinazione ci sono **tre 2**.",
+    "Nella combinazione ci sono **due 0**.",
+    "La prima e la seconda cifra sono **uguali**.",
+    "La combinazione è composta da **8 cifre**.",
+    "Le ultime due cifre sono **24**.",
+    "La combinazione contiene una **data importante per noi**. ❤️",
+    "È una data che mi ricorda un momento che non dimenticherò. ❤️"
 ]
 
 
-# ============================================================
-# PUNTEGGIO TOTALE
-# ============================================================
-
-def get_punteggio_totale():
-    """
-    Inserisci qui la lettura del punteggio totale
-    dal tuo sistema Supabase.
-
-    Deve restituire un intero.
-    """
-
-    # TODO:
-    # collega questa parte alla funzione che usi già
-    # per visualizzare il punteggio totale nell'app.
-
-    return 0
-
-
-# ============================================================
-# CIFRE RIVELATE IN BASE AL PUNTEGGIO
-# ============================================================
+# =====================================================
+# NUMERO DI CIFRE RIVELATE
+# =====================================================
 
 def numero_cifre_rivelate(punteggio):
 
     if punteggio < 70:
         return 0
-
     elif punteggio < 80:
         return 1
-
     elif punteggio < 90:
         return 2
-
     elif punteggio < 100:
         return 3
-
     else:
         return 4
 
 
-# ============================================================
-# MOSTRA CODICE
-# ============================================================
+# =====================================================
+# MOSTRA COMBINAZIONE CON CIFRE RIVELATE
+# =====================================================
 
-def mostra_codice(combinazione, cifre_rivelate):
+def mostra_combinazione_rivelata(numero):
 
-    risultato = ""
+    posizioni = POSIZIONI_RIVELATE.get(numero, [])
 
-    for i, cifra in enumerate(combinazione):
+    caratteri = []
 
-        if i < cifre_rivelate:
-            risultato += f"<span style='color:#b22222; font-weight:bold;'>{cifra}</span>"
+    for i, cifra in enumerate(COMBINAZIONE):
 
+        if i in posizioni:
+            caratteri.append(cifra)
         else:
-            risultato += "<span style='color:#888;'>_</span>"
+            caratteri.append("•")
 
-        if i < len(combinazione) - 1:
-            risultato += "&nbsp;&nbsp;"
-
-    st.markdown(
-        f"""
-        <div style="
-            text-align: center;
-            font-size: 38px;
-            letter-spacing: 6px;
-            padding: 20px;
-            border: 2px solid #888;
-            border-radius: 12px;
-            margin: 20px 0;
-            background-color: #f7f7f7;
-        ">
-            {risultato}
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    return " ".join(caratteri)
 
 
-# ============================================================
+# =====================================================
 # GIOCO
-# ============================================================
+# =====================================================
 
 def mostra_gioco():
 
-    # --------------------------------------------------------
-    # CONTROLLO GIORNO COMPLETATO
-    # --------------------------------------------------------
+    # -------------------------------------------------
+    # CONTROLLO GIORNO GIÀ COMPLETATO
+    # -------------------------------------------------
 
     if giorno_completato(GIORNO):
 
-        st.success("🎄 Giorno 24 completato!")
-        st.write("🔓 Hai già aperto la cassaforte.")
+        st.success("🔓 Cassaforte già aperta!")
+        st.write("🎄 Hai già completato la sfida del Giorno 24.")
+        st.write("")
+        st.markdown(
+            """
+            <h2 style="text-align:center;">
+            ❤️ Il mio posto preferito è accanto a te.
+            </h2>
+            """,
+            unsafe_allow_html=True
+        )
+
         return
 
-
-    # --------------------------------------------------------
-    # INIZIALIZZAZIONE
-    # --------------------------------------------------------
+    # -------------------------------------------------
+    # INIZIALIZZAZIONE SESSIONE
+    # -------------------------------------------------
 
     if "giorno24_tentativi" not in st.session_state:
         st.session_state.giorno24_tentativi = 0
 
-    if "giorno24_sbloccato" not in st.session_state:
-        st.session_state.giorno24_sbloccato = False
+    # -------------------------------------------------
+    # PUNTEGGIO TOTALE
+    # -------------------------------------------------
 
-
-    # --------------------------------------------------------
-    # PUNTEGGIO
-    # --------------------------------------------------------
-
-    punteggio = get_punteggio_totale()
+    punteggio = get_punteggio()
 
     cifre_rivelate = numero_cifre_rivelate(punteggio)
 
-
-    # --------------------------------------------------------
+    # -------------------------------------------------
     # TITOLO
-    # --------------------------------------------------------
+    # -------------------------------------------------
 
-    st.header("🔐 Giorno 24 — La cassaforte finale")
+    st.header("🔐 Giorno 24 — La cassaforte")
 
     st.write(
-        "Sei arrivato all'ultimo giorno. ❤️"
+        "Siamo arrivati all'ultima sfida. ❤️"
     )
 
     st.write(
-        "Durante questi 23 giorni hai accumulato punti..."
+        "Per aprire la cassaforte devi trovare "
+        "**la combinazione segreta di 8 cifre**."
     )
 
-    st.write(
-        "Ma forse non erano soltanto punti. 👀"
-    )
+    # -------------------------------------------------
+    # PUNTEGGIO
+    # -------------------------------------------------
 
     st.info(
-        f"🏆 Hai totalizzato **{punteggio} punti**."
+        f"🏆 Il tuo punteggio totale è **{punteggio} punti**."
     )
 
-
-    # --------------------------------------------------------
-    # SPIEGAZIONE DEL VANTAGGIO
-    # --------------------------------------------------------
+    # -------------------------------------------------
+    # CIFRE RIVELATE
+    # -------------------------------------------------
 
     if cifre_rivelate == 0:
 
-        st.warning(
+        st.write(
             "😈 Hai meno di 70 punti..."
-            "\n\n"
-            "Per ora la cassaforte non ti rivela nessuna cifra."
+        )
+
+        st.write(
+            "Questa volta non ti regalo nemmeno una cifra. 😂"
+        )
+
+        st.markdown(
+            """
+            <h1 style="text-align:center; letter-spacing:12px;">
+            • • • • • • • •
+            </h1>
+            """,
+            unsafe_allow_html=True
         )
 
     else:
 
-        st.success(
-            f"🎁 Grazie ai tuoi {punteggio} punti, "
-            f"hai sbloccato **{cifre_rivelate} "
+        st.write(
+            f"🎁 Grazie al tuo punteggio hai sbloccato "
+            f"**{cifre_rivelate} "
             f"{'cifra' if cifre_rivelate == 1 else 'cifre'}**!"
         )
 
+        combinazione_visibile = mostra_combinazione_rivelata(
+            cifre_rivelate
+        )
 
-    # --------------------------------------------------------
-    # CODICE
-    # --------------------------------------------------------
+        st.markdown(
+            f"""
+            <h1 style="text-align:center; letter-spacing:10px;">
+            {combinazione_visibile}
+            </h1>
+            """,
+            unsafe_allow_html=True
+        )
 
-    st.subheader("🔢 Inserisci il codice")
+    # -------------------------------------------------
+    # FASCE PUNTEGGIO
+    # -------------------------------------------------
 
-    mostra_codice(
-        COMBINAZIONE,
-        cifre_rivelate
-    )
+    with st.expander("💡 Come funzionano gli aiuti?"):
 
+        st.write("Il tuo punteggio determina quante cifre puoi vedere:")
 
-    # --------------------------------------------------------
-    # INPUT
-    # --------------------------------------------------------
+        st.write("• **Meno di 70 punti** → nessuna cifra")
+        st.write("• **70–79 punti** → 1 cifra")
+        st.write("• **80–89 punti** → 2 cifre")
+        st.write("• **90–99 punti** → 3 cifre")
+        st.write("• **100+ punti** → 4 cifre")
 
-    codice_inserito = st.text_input(
-        "Codice della cassaforte",
+    st.divider()
+
+    # -------------------------------------------------
+    # INDIZI SBLOCCATI
+    # -------------------------------------------------
+
+    tentativi = st.session_state.giorno24_tentativi
+
+    if tentativi > 0:
+
+        st.subheader("💡 Indizi sbloccati")
+
+        for i in range(min(tentativi, len(INDIZI))):
+            st.write(
+                f"**Indizio {i + 1}:** {INDIZI[i]}"
+            )
+
+    # -------------------------------------------------
+    # INSERIMENTO CODICE
+    # -------------------------------------------------
+
+    st.subheader("🔢 Inserisci la combinazione")
+
+    codice = st.text_input(
+        "Inserisci le 8 cifre della cassaforte:",
         max_chars=8,
-        placeholder="Inserisci 8 cifre...",
+        placeholder="••••••••",
         key="giorno24_codice"
     )
 
-    codice_inserito = codice_inserito.strip()
-
-
-    # --------------------------------------------------------
-    # PULSANTE
-    # --------------------------------------------------------
+    # -------------------------------------------------
+    # CONTROLLO
+    # -------------------------------------------------
 
     if st.button(
         "🔓 PROVA AD APRIRE LA CASSAFORTE",
         use_container_width=True
     ):
 
-        # --------------------------------------------
-        # CONTROLLO INPUT
-        # --------------------------------------------
-
-        if not codice_inserito:
+        # Controllo formato
+        if len(codice) != 8 or not codice.isdigit():
 
             st.warning(
-                "Inserisci il codice prima di provare ad aprire la cassaforte. 🔐"
+                "⚠️ La combinazione deve essere composta "
+                "da esattamente 8 cifre."
             )
 
             return
 
-
-        if not codice_inserito.isdigit():
-
-            st.error(
-                "❌ Il codice deve contenere solo numeri."
-            )
-
-            return
-
-
-        if len(codice_inserito) != 8:
-
-            st.error(
-                "❌ Il codice deve essere composto da 8 cifre."
-            )
-
-            return
-
-
-        # --------------------------------------------
+        # -------------------------------------------------
         # CODICE CORRETTO
-        # --------------------------------------------
+        # -------------------------------------------------
 
-        if codice_inserito == COMBINAZIONE:
+        if codice == COMBINAZIONE:
 
-            st.session_state.giorno24_sbloccato = True
+            # Il Giorno 24 assegna 0 punti:
+            # serve solo a registrarlo come completato.
+            completato = aggiungi_punti(GIORNO, 0)
 
-            aggiungi_punti(
-                GIORNO,
-                0
-            )
+            if completato:
 
-            st.balloons()
+                st.balloons()
 
-            st.divider()
+                st.divider()
 
-            st.success("🔓 CASSAFORTE SBLOCCATA!")
+                st.markdown(
+                    """
+                    <h1 style="text-align:center;">
+                    🔓 CASSAFORTE SBLOCCATA
+                    </h1>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-            st.write("")
+                st.markdown(
+                    """
+                    <h2 style="text-align:center;">
+                    22/10/2024
+                    </h2>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-            st.markdown(
-                """
-                <div style="
-                    text-align: center;
-                    padding: 25px;
-                ">
+                st.write("")
 
-                    <div style="
-                        font-size: 22px;
-                        margin-bottom: 20px;
-                    ">
-                        ❤️ 22/10/2024 ❤️
-                    </div>
+                st.markdown(
+                    """
+                    <p style="text-align:center; font-size:20px;">
+                    Una data che per noi significa tanto. ❤️
+                    </p>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-                    <div style="
-                        font-size: 18px;
-                        margin-bottom: 25px;
-                    ">
-                        Una data che per noi significa tanto.
-                    </div>
+                st.write("")
 
-                    <div style="
-                        font-size: 18px;
-                        margin-bottom: 25px;
-                    ">
-                        Domani è Natale. 🎄
-                    </div>
+                st.markdown(
+                    """
+                    <p style="text-align:center; font-size:20px;">
+                    Domani è Natale. 🎄
+                    </p>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-                    <div style="
-                        font-size: 28px;
-                        font-weight: bold;
-                        line-height: 1.5;
-                    ">
-                        Il mio posto preferito
-                        <br>
-                        è accanto a te. ❤️
-                    </div>
+                st.markdown(
+                    """
+                    <h2 style="text-align:center;">
+                    E tra tutti i posti in cui potrei essere,
+                    <br>
+                    il mio posto preferito è accanto a te. ❤️
+                    </h2>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-                    <div style="
-                        font-size: 18px;
-                        margin-top: 30px;
-                    ">
-                        Buon Natale, amore mio. 🎄❤️
-                    </div>
+                st.write("")
 
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+                st.markdown(
+                    """
+                    <h2 style="text-align:center;">
+                    Buon Natale, amore mio. 🎄❤️
+                    </h2>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-            return
-
-
-        # --------------------------------------------
-        # CODICE ERRATO
-        # --------------------------------------------
-
-        st.session_state.giorno24_tentativi += 1
-
-        tentativi = st.session_state.giorno24_tentativi
-
-        st.error(
-            "❌ Codice errato!"
-        )
-
-        # --------------------------------------------
-        # SBLOCCO INDIZIO
-        # --------------------------------------------
-
-        indice_indizio = tentativi - 1
-
-        if indice_indizio < len(INDIZI):
-
-            st.info(
-                f"🔎 **Nuovo indizio sbloccato!**\n\n"
-                f"{INDIZI[indice_indizio]}"
-            )
+        # -------------------------------------------------
+        # CODICE SBAGLIATO
+        # -------------------------------------------------
 
         else:
 
-            st.info(
-                "🔎 Hai già sbloccato tutti gli indizi."
+            st.session_state.giorno24_tentativi += 1
+
+            st.error(
+                "❌ La cassaforte non si è aperta..."
             )
+
+            nuovo_indizio = min(
+                st.session_state.giorno24_tentativi,
+                len(INDIZI)
+            )
+
+            if nuovo_indizio <= len(INDIZI):
+
+                st.info(
+                    f"💡 Hai sbloccato un nuovo indizio: "
+                    f"**Indizio {nuovo_indizio}**"
+                )
+
+            st.rerun()
