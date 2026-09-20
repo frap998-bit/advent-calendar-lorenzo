@@ -230,7 +230,7 @@ def mostra_gioco():
 
             st.write(
                 f"❌ In **{posizioni_sbagliate} posizioni** "
-                f"ti conoscevo male!"
+                f"ho cannato il pronostico uffa!"
             )
 
             st.write(
@@ -258,7 +258,3 @@ def mostra_gioco():
                 f"**{i}. {attivita}**"
             )
 
-        st.caption(
-            "Ogni posizione diversa significa che "
-            "ti conoscevo un po' meno bene 😂❤️"
-        )
