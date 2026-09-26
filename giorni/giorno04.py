@@ -103,6 +103,7 @@ def mostra_gioco():
         )
 
 
+
         # -------------------------------------------------
         # NUMERO
         # -------------------------------------------------
@@ -293,7 +294,7 @@ def mostra_gioco():
         # =================================================
 
         st.warning(
-            f"🤔 Hai **{posizioni_corrette} su 6** "
+            f"🤔 Hai **{posizioni_corrette} su 4** "
             f"attività nella posizione corretta!"
         )
 
