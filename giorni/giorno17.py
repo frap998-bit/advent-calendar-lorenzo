@@ -40,7 +40,7 @@ def mostra_gioco():
     # =====================================================
 
     st.header(
-        "💩 Giorno 17 — DOVE, COME, QUANDO E PERCHÉ?"
+        "Giorno 17 — DOVE, COME, QUANDO E PERCHÉ?"
     )
 
     st.write(
