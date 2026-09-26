@@ -28,6 +28,9 @@ def mostra_gioco():
     if "giorno17_finito" not in st.session_state:
         st.session_state.giorno17_finito = False
 
+    if "giorno17_risposta_corretta" not in st.session_state:
+        st.session_state.giorno17_risposta_corretta = False
+
 
     indizio = st.session_state.giorno17_indizio
 
@@ -36,7 +39,9 @@ def mostra_gioco():
     # TITOLO
     # =====================================================
 
-    st.header("💩 Giorno 17 — Indovina la parola!")
+    st.header(
+        "💩 Giorno 17 — DOVE, COME, QUANDO E PERCHÉ?"
+    )
 
     st.write(
         "Ti darò **4 indizi** per aiutarti a indovinare "
@@ -65,23 +70,50 @@ def mostra_gioco():
 
 
     # =====================================================
-    # INDIZIO CORRENTE
+    # SE HA INDOVINATO
+    # MOSTRA TUTTI GLI INDIZI
     # =====================================================
 
-    titolo, testo, punti = indizi[indizio]
+    if st.session_state.giorno17_risposta_corretta:
 
-    st.subheader(titolo)
+        for titolo, testo, punti in indizi:
 
-    st.info(testo)
+            st.subheader(titolo)
 
-    st.caption(
-        f"🏆 Se indovini ora: **{punti} punti**"
-    )
+            st.info(testo)
+
+
+        st.success(
+            "🎉 Esatto! La parola era **CACCA**! 💩"
+        )
+
+        st.balloons()
+
+        return
+
+
+    # =====================================================
+    # MOSTRA GLI INDIZI SBLOCCATI
+    # =====================================================
+
+    for i in range(indizio + 1):
+
+        titolo, testo, punti = indizi[i]
+
+        st.subheader(titolo)
+
+        st.info(testo)
+
+        st.caption(
+            f"🏆 Se indovini ora: **{punti} punti**"
+        )
 
 
     # =====================================================
     # RISPOSTA
     # =====================================================
+
+    st.write("")
 
     risposta = st.text_input(
         "💩 Qual è la parola?",
@@ -107,25 +139,17 @@ def mostra_gioco():
 
         if risposta_pulita == "cacca":
 
+            punti = indizi[indizio][2]
+
             punti_assegnati = aggiungi_punti(
                 17,
                 punti
             )
 
-            st.success(
-                "🎉 Esatto! La parola era **CACCA**! 💩"
-            )
-
-            st.balloons()
-
-            if punti_assegnati:
-                st.write(
-                    f"🏆 Hai conquistato **{punti} punti!**"
-                )
-
+            st.session_state.giorno17_risposta_corretta = True
             st.session_state.giorno17_finito = True
 
-            return
+            st.rerun()
 
 
         # -------------------------------------------------
@@ -135,6 +159,15 @@ def mostra_gioco():
         else:
 
             if indizio == 3:
+
+                # Mostra comunque tutti gli indizi
+
+                for titolo, testo, punti in indizi:
+
+                    st.subheader(titolo)
+
+                    st.info(testo)
+
 
                 st.error(
                     "❌ Peccato! Hai utilizzato tutti gli indizi."
