@@ -41,7 +41,7 @@ def mostra_gioco():
     # =====================================================
 
     st.header(
-        "Giorno 7 — DOVE, COME, QUANDO E PERCHÉ?"
+        "🍕 Giorno 7 — DOVE, COME, QUANDO E PERCHÉ?"
     )
 
     st.write(
@@ -80,9 +80,7 @@ def mostra_gioco():
         for titolo, testo, punti in indizi:
 
             st.subheader(titolo)
-
             st.info(testo)
-
 
         st.success(
             "🎉 Esatto! La parola era **PIZZA**! 🍕"
@@ -94,7 +92,7 @@ def mostra_gioco():
 
 
     # =====================================================
-    # MOSTRA TUTTI GLI INDIZI SBLOCCATI
+    # MOSTRA GLI INDIZI SBLOCCATI
     # =====================================================
 
     for i in range(indizio + 1):
@@ -102,7 +100,6 @@ def mostra_gioco():
         titolo, testo, punti = indizi[i]
 
         st.subheader(titolo)
-
         st.info(testo)
 
         st.caption(
@@ -140,9 +137,11 @@ def mostra_gioco():
 
         if risposta_pulita == "pizza":
 
-            punti_assegnati = aggiungi_punti(
+            punti = indizi[indizio][2]
+
+            aggiungi_punti(
                 7,
-                indizi[indizio][2]
+                punti
             )
 
             st.session_state.giorno07_risposta_corretta = True
@@ -160,14 +159,17 @@ def mostra_gioco():
             # Se è arrivato all'ultimo indizio
             if indizio == 3:
 
-                # Mostra comunque tutti gli indizi
+                # Salva comunque il completamento con 0 punti
+                aggiungi_punti(
+                    7,
+                    0
+                )
 
+                # Mostra tutti gli indizi
                 for titolo, testo, punti in indizi:
 
                     st.subheader(titolo)
-
                     st.info(testo)
-
 
                 st.error(
                     "❌ Peccato! Hai utilizzato tutti gli indizi."
@@ -184,6 +186,11 @@ def mostra_gioco():
                 st.session_state.giorno07_finito = True
 
                 return
+
+
+            # -------------------------------------------------
+            # RISPOSTA ERRATA MA CI SONO ALTRI INDIZI
+            # -------------------------------------------------
 
             else:
 
