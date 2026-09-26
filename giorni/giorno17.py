@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 from utils.punteggio import (
@@ -40,7 +41,7 @@ def mostra_gioco():
     # =====================================================
 
     st.header(
-        "Giorno 17 — DOVE, COME, QUANDO E PERCHÉ?"
+        "💩 Giorno 17 — DOVE, COME, QUANDO E PERCHÉ?"
     )
 
     st.write(
@@ -81,7 +82,6 @@ def mostra_gioco():
             st.subheader(titolo)
 
             st.info(testo)
-
 
         st.success(
             "🎉 Esatto! La parola era **CACCA**! 💩"
@@ -141,7 +141,7 @@ def mostra_gioco():
 
             punti = indizi[indizio][2]
 
-            punti_assegnati = aggiungi_punti(
+            aggiungi_punti(
                 17,
                 punti
             )
@@ -158,10 +158,16 @@ def mostra_gioco():
 
         else:
 
+            # Se è arrivato all'ultimo indizio
             if indizio == 3:
 
-                # Mostra comunque tutti gli indizi
+                # Salva comunque il completamento con 0 punti
+                aggiungi_punti(
+                    17,
+                    0
+                )
 
+                # Mostra tutti gli indizi
                 for titolo, testo, punti in indizi:
 
                     st.subheader(titolo)
@@ -184,6 +190,11 @@ def mostra_gioco():
                 st.session_state.giorno17_finito = True
 
                 return
+
+
+            # -------------------------------------------------
+            # RISPOSTA ERRATA MA CI SONO ALTRI INDIZI
+            # -------------------------------------------------
 
             else:
 
