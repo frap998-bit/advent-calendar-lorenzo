@@ -1,4 +1,3 @@
-
 import streamlit as st
 
 from utils.punteggio import (
@@ -14,8 +13,19 @@ def mostra_gioco():
     # =====================================================
 
     if giorno_completato(17):
+
         st.success("✅ Giorno 17 completato!")
-        st.write("🏆 Hai già conquistato i punti di questa sfida.")
+
+        if "giorno17_punti_ottenuti" in st.session_state:
+            st.write(
+                f"🏆 Hai conquistato "
+                f"**{st.session_state.giorno17_punti_ottenuti} punti!**"
+            )
+        else:
+            st.write(
+                "🏆 Hai già conquistato i punti di questa sfida."
+            )
+
         return
 
 
@@ -31,6 +41,9 @@ def mostra_gioco():
 
     if "giorno17_risposta_corretta" not in st.session_state:
         st.session_state.giorno17_risposta_corretta = False
+
+    if "giorno17_punti_ottenuti" not in st.session_state:
+        st.session_state.giorno17_punti_ottenuti = 0
 
 
     indizio = st.session_state.giorno17_indizio
@@ -72,7 +85,7 @@ def mostra_gioco():
 
     # =====================================================
     # SE HA INDOVINATO
-    # MOSTRA TUTTI GLI INDIZI
+    # MOSTRA TUTTI GLI INDIZI + PUNTI
     # =====================================================
 
     if st.session_state.giorno17_risposta_corretta:
@@ -80,11 +93,15 @@ def mostra_gioco():
         for titolo, testo, punti in indizi:
 
             st.subheader(titolo)
-
             st.info(testo)
 
         st.success(
             "🎉 Esatto! La parola era **CACCA**! 💩"
+        )
+
+        st.success(
+            f"🏆 Hai conquistato "
+            f"**{st.session_state.giorno17_punti_ottenuti} punti!**"
         )
 
         st.balloons()
@@ -141,15 +158,20 @@ def mostra_gioco():
 
             punti = indizi[indizio][2]
 
-            aggiungi_punti(
+            completato = aggiungi_punti(
                 17,
                 punti
             )
 
-            st.session_state.giorno17_risposta_corretta = True
-            st.session_state.giorno17_finito = True
+            if completato:
 
-            st.rerun()
+                st.session_state.giorno17_punti_ottenuti = punti
+
+                st.session_state.giorno17_risposta_corretta = True
+
+                st.session_state.giorno17_finito = True
+
+                st.rerun()
 
 
         # -------------------------------------------------
@@ -161,11 +183,14 @@ def mostra_gioco():
             # Se è arrivato all'ultimo indizio
             if indizio == 3:
 
-                # Salva comunque il completamento con 0 punti
                 aggiungi_punti(
                     17,
                     0
                 )
+
+                st.session_state.giorno17_punti_ottenuti = 0
+
+                st.session_state.giorno17_finito = True
 
                 # Mostra tutti gli indizi
                 for titolo, testo, punti in indizi:
@@ -173,7 +198,6 @@ def mostra_gioco():
                     st.subheader(titolo)
 
                     st.info(testo)
-
 
                 st.error(
                     "❌ Peccato! Hai utilizzato tutti gli indizi."
@@ -184,10 +208,8 @@ def mostra_gioco():
                 )
 
                 st.write(
-                    "Questa volta niente punti 😜"
+                    "🏆 **Hai conquistato 0 punti.**"
                 )
-
-                st.session_state.giorno17_finito = True
 
                 return
 
