@@ -30,8 +30,8 @@ def mostra_gioco():
         "🍳 Cucinare",
         "🥾 Gite in montagna",
         "🏐 Beach volley",
-        "📺 Serie TV",
-        "🏃 Corsa"
+        "🏃 Corsa",
+        "📺 Serie TV"
     ]
 
 
