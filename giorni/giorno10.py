@@ -1,4 +1,3 @@
-
 import streamlit as st
 
 from utils.punteggio import (
@@ -39,6 +38,7 @@ def mostra_gioco():
 
 
     parola = "SPOSAMI"
+
     errori = st.session_state.giorno10_errori
     lettere = st.session_state.giorno10_lettere
 
@@ -113,25 +113,21 @@ def mostra_gioco():
     # -------------------------
     # PAROLA NASCOSTA
     # -------------------------
-    
-    frase_visualizzata = ""
-    
-    for carattere in frase:
-    
-        if carattere == " ":
-            frase_visualizzata += "&nbsp;&nbsp;&nbsp;"
-    
-        elif carattere in lettere:
-            frase_visualizzata += carattere + " "
-    
+
+    parola_visualizzata = ""
+
+    for carattere in parola:
+
+        if carattere in lettere:
+            parola_visualizzata += carattere + " "
         else:
-            frase_visualizzata += "_ "
-    
-    
+            parola_visualizzata += "_ "
+
+
     st.divider()
-    
-    st.subheader("🔤 La frase")
-    
+
+    st.subheader("🔤 La parola")
+
     st.markdown(
         f"""
         <h1 style="
@@ -139,7 +135,7 @@ def mostra_gioco():
             letter-spacing: 8px;
             font-weight: bold;
         ">
-            {frase_visualizzata}
+            {parola_visualizzata}
         </h1>
         """,
         unsafe_allow_html=True
@@ -155,6 +151,7 @@ def mostra_gioco():
     )
 
     if lettere:
+
         st.write(
             "🔠 Lettere già provate: "
             + ", ".join(lettere)
@@ -167,24 +164,29 @@ def mostra_gioco():
 
     if all(lettera in lettere for lettera in parola):
 
-        aggiungi_punti(10, 4)
-
-        st.session_state.giorno10_finito = True
-        st.session_state.giorno10_vinto = True
-
-        st.success(
-            "🎉 BRAVISSIMO! Hai indovinato la parola!"
+        completato = aggiungi_punti(
+            10,
+            4
         )
 
-        st.write(
-            "💍 **SPOSAMI**"
-        )
+        if completato:
 
-        st.write(
-            "🏆 **Hai conquistato 4 punti!**"
-        )
+            st.session_state.giorno10_finito = True
+            st.session_state.giorno10_vinto = True
 
-        st.balloons()
+            st.success(
+                "🎉 BRAVISSIMO! Hai indovinato la parola!"
+            )
+
+            st.write(
+                "💍 **SPOSAMI**"
+            )
+
+            st.write(
+                "🏆 **Hai conquistato 4 punti!**"
+            )
+
+            st.balloons()
 
         return
 
@@ -277,7 +279,10 @@ def mostra_gioco():
 
             if errori >= 6:
 
-                aggiungi_punti(10, 0)
+                aggiungi_punti(
+                    10,
+                    0
+                )
 
                 st.session_state.giorno10_finito = True
                 st.session_state.giorno10_vinto = False
