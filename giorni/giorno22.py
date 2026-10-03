@@ -42,7 +42,7 @@ def mostra_gioco():
 
     domande = [
         {
-            "foto": "immagini/Marzo 2025.png",
+            "foto": "immagini/Marzo 2025.jpg",
             "domanda": "📅 In che mese e anno è stata scattata?",
             "opzioni": [
                 "Marzo 2025",
@@ -53,7 +53,7 @@ def mostra_gioco():
             "corretta": "Marzo 2025"
         },
         {
-            "foto": "immagini/Aprile 2025.png",
+            "foto": "immagini/Aprile 2025.jpg",
             "domanda": "📅 In che mese e anno è stata scattata?",
             "opzioni": [
                 "Marzo 2025",
@@ -64,7 +64,7 @@ def mostra_gioco():
             "corretta": "Aprile 2025"
         },
         {
-            "foto": "immagini/Agosto 2026.png",
+            "foto": "immagini/Agosto 2026.jpg",
             "domanda": "📅 In che mese e anno è stata scattata?",
             "opzioni": [
                 "Agosto 2025",
@@ -75,7 +75,7 @@ def mostra_gioco():
             "corretta": "Agosto 2026"
         },
         {
-            "foto": "immagini/Novembre 2024.png",
+            "foto": "immagini/Novembre 2024.jpg",
             "domanda": "📅 In che mese e anno è stata scattata?",
             "opzioni": [
                 "Ottobre 2024",
