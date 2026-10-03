@@ -1,4 +1,4 @@
-import streamlit as st
+'avimport streamlit as st
 from datetime import date
 import importlib
 
@@ -15,7 +15,7 @@ from utils.punteggio import (
 # -------------------------
 
 st.set_page_config(
-    page_title="Il Calendario di Lorenzo 🎄",
+    page_title="Il Calendario dell'avvento tecnologico 🎄",
     page_icon="🎄",
     layout="centered"
 )
@@ -146,14 +146,21 @@ else:
     # TITOLO
     # -------------------------
 
-    st.title("🎄 Il Calendario di Lorenzo 🎄")
+    st.title("🎄 Il Calendario dell'avvento tecnologico 🎄")
 
     st.subheader("Dicembre 2026")
 
-    st.write(
-        "Ogni giorno si aprirà una nuova casella. "
-        "Riuscirai ad arrivare a 100 punti? ❤️"
-    )
+st.write(
+    "Ciao Lori! ❤️ "
+    "Quest'anno mi è venuta un'idea un po' diversa... basta il solito calendario dell'avvento, quest'anno ti faccio impazzire con un calendario tecnologico su Python! :)"
+    "Ogni giorno si aprirà una nuova casella, "
+    "che conterrà un minigioco pensato appositamente per te. "
+    "Giocando potrai raccogliere dei punti, "
+    "che ti serviranno per arrivare al minigioco finale del 24. 🔐 "
+    "Non voglio anticiparti altro... "
+    "Divertiti! ❤️ "
+    "PS: se vuoi consultare il tuo punteggio, scendi in fondo alla pagina 😉"
+)
 
     st.divider()
 
