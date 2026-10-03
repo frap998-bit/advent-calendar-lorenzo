@@ -45,10 +45,10 @@ def mostra_gioco():
             "foto": "immagini/Marzo 2025.jpg",
             "domanda": "📅 In che mese e anno è stata scattata?",
             "opzioni": [
+                "Luglio 2025",
                 "Marzo 2025",
-                "Aprile 2025",
                 "Marzo 2026",
-                "Febbraio 2025"
+                "Dicembre 2024"
             ],
             "corretta": "Marzo 2025"
         },
@@ -56,10 +56,10 @@ def mostra_gioco():
             "foto": "immagini/Aprile 2025.jpg",
             "domanda": "📅 In che mese e anno è stata scattata?",
             "opzioni": [
-                "Marzo 2025",
+                "Agosto 2025",
                 "Aprile 2025",
-                "Maggio 2025",
-                "Aprile 2026"
+                "Dicembre 2024",
+                "Maggio 2026"
             ],
             "corretta": "Aprile 2025"
         },
@@ -68,7 +68,7 @@ def mostra_gioco():
             "domanda": "📅 In che mese e anno è stata scattata?",
             "opzioni": [
                 "Agosto 2025",
-                "Luglio 2026",
+                "Dicembre 2024",
                 "Agosto 2026",
                 "Settembre 2026"
             ],
@@ -78,10 +78,10 @@ def mostra_gioco():
             "foto": "immagini/Novembre 2024.jpg",
             "domanda": "📅 In che mese e anno è stata scattata?",
             "opzioni": [
-                "Ottobre 2024",
+                "Luglio 2024",
                 "Novembre 2024",
-                "Dicembre 2024",
-                "Novembre 2025"
+                "Dicembre 2025",
+                "Agosto 2025"
             ],
             "corretta": "Novembre 2024"
         }
