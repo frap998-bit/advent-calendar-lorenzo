@@ -152,12 +152,12 @@ else:
 
     st.write(
         "Ciao Lori! ❤️ "
-        "Quest'anno mi è venuta un'idea un po' diversa... basta il solito calendario dell'avvento, "
-        "quest'anno ti faccio impazzire con un calendario tecnologico su Python! 😈 "
+        "Quest'anno mi è venuta un'idea un po' diversa...  "
+        "Ossia di farti impazzire con un calendario tecnologico su Python! 😈 "
         "Ogni giorno si aprirà una nuova casella, "
         "che conterrà un minigioco pensato appositamente per te. "
         "Giocando potrai raccogliere dei punti, "
-        "che ti serviranno per arrivare al minigioco finale del 24. 🔐 "
+        "che ti serviranno per avere dei vantaggi nel minigioco finale del 24. 🔐 "
         "Non voglio anticiparti altro... "
         "Divertiti! ❤️ "
         "PS: se vuoi consultare il tuo punteggio, scendi in fondo alla pagina 😉"
