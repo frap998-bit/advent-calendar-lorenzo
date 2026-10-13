@@ -46,7 +46,7 @@ def mostra_gioco():
     # TITOLO
     # =====================================================
 
-    st.header("💩 Giorno 17 — DOVE, COME, QUANDO E PERCHÉ?")
+    st.header("Giorno 17 — DOVE, COME, QUANDO E PERCHÉ?")
 
     # =====================================================
     # CONTROLLO GIORNO GIÀ COMPLETATO
@@ -69,7 +69,7 @@ def mostra_gioco():
 
         st.divider()
 
-        st.subheader("💩 La parola misteriosa era...")
+        st.subheader("La parola misteriosa era...")
 
         st.markdown(
             """
