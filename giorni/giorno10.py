@@ -7,40 +7,40 @@ from utils.punteggio import (
 
 
 def mostra_gioco():
-
-
-# -------------------------
-# CONTROLLO GIORNO GIÀ COMPLETATO
-# -------------------------
-
-if giorno_completato(10):
-    st.success("✅ Giorno 10 completato!")
-    st.write("🏆 Hai già completato questa sfida.")
-
-    st.header("💍 Giorno 10 — L'impiccato")
-
-    st.write("La parola misteriosa era...")
-
-    st.markdown(
-        """
-        <h1 style="
-            text-align: center;
-            color: #e91e63;
-            letter-spacing: 8px;
-            font-weight: bold;
-        ">
-            SPOSAMI ❤️
-        </h1>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.write(
-        "💕 Spero che tu abbia colto il messaggio nascosto!"
-    )
-
-    return
-
+    
+    
+    # -------------------------
+    # CONTROLLO GIORNO GIÀ COMPLETATO
+    # -------------------------
+    
+    if giorno_completato(10):
+        st.success("✅ Giorno 10 completato!")
+        st.write("🏆 Hai già completato questa sfida.")
+    
+        st.header("💍 Giorno 10 — L'impiccato")
+    
+        st.write("La parola misteriosa era...")
+    
+        st.markdown(
+            """
+            <h1 style="
+                text-align: center;
+                color: #e91e63;
+                letter-spacing: 8px;
+                font-weight: bold;
+            ">
+                SPOSAMI ❤️
+            </h1>
+            """,
+            unsafe_allow_html=True
+        )
+    
+        st.write(
+            "💕 Spero che tu abbia colto il messaggio nascosto!"
+        )
+    
+        return
+    
 
 
     # -------------------------
