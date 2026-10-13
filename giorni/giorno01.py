@@ -9,12 +9,65 @@ from utils.punteggio import (
 def mostra_gioco():
 
     # -------------------------
-    # CONTROLLO GIORNO GIÀ COMPLETATO
+    # DOMANDE
+    # -------------------------
+
+    domande = [
+        {
+            "domanda": "Chi dei due è più dolce?",
+            "risposta": "Lorenzo"
+        },
+        {
+            "domanda": "Chi dei due è più ritardatario?",
+            "risposta": "Francesca"
+        },
+        {
+            "domanda": "Chi dei due è più competitivo?",
+            "risposta": "Francesca"
+        },
+        {
+            "domanda": "Chi dei due è più disordinato?",
+            "risposta": "Lorenzo"
+        },
+        {
+            "domanda": "Chi dei due è più geloso?",
+            "risposta": "Lorenzo"
+        }
+    ]
+
+    # -------------------------
+    # CONTROLLO GIORNO COMPLETATO
     # -------------------------
 
     if giorno_completato(1):
+
         st.success("✅ Giorno 1 completato!")
         st.write("🏆 Hai già conquistato i punti di questa sfida.")
+
+        st.header("❤️ Giorno 1 — Chi dei due?")
+
+        st.write(
+            "Ecco le risposte che avevo scelto io... "
+            "vediamo se sei d'accordo! 😏"
+        )
+
+        st.divider()
+
+        for i, domanda in enumerate(domande, start=1):
+
+            st.markdown(
+                f"**{i}. {domanda['domanda']}**"
+            )
+
+            st.success(
+                f"❤️ La risposta corretta era: **{domanda['risposta']}**"
+            )
+
+        st.caption(
+            "Per eventuali reclami o polemiche, "
+            "rivolgersi sempre non a me. 😂"
+        )
+
         return
 
 
