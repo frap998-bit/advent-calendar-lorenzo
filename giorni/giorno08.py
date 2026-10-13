@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 from utils.punteggio import (
@@ -7,23 +8,10 @@ from utils.punteggio import (
 
 
 def mostra_gioco():
-    if giorno_completato(8):
-        st.success("✅ Giorno 8 completato!")
-        st.write("🏆 Hai già conquistato i punti di questa sfida.")
-        return
 
-    st.header("🚦 Giorno 8 — Il semaforo delle coppie")
-
-    st.write(
-        "Oggi devi cercare di capire **come reagirei io** "
-        "in alcune situazioni. ❤️"
-    )
-
-    st.info(
-        "🎯 Hai un solo tentativo. "
-        "Ogni risposta corretta vale 1 punto, "
-        "per un massimo di 4 punti!"
-    )
+    # =====================================================
+    # DOMANDE E RISPOSTE CORRETTE
+    # =====================================================
 
     domande = [
         {
@@ -77,11 +65,77 @@ def mostra_gioco():
         }
     ]
 
+
+    # =====================================================
+    # CONTROLLO GIORNO GIÀ COMPLETATO
+    # =====================================================
+
+    if giorno_completato(8):
+
+        st.success("✅ Giorno 8 completato!")
+        st.write("🏆 Hai già conquistato i punti di questa sfida.")
+
+        st.header("🚦 Giorno 8 — Il semaforo delle coppie")
+
+        st.write(
+            "Oggi dovevi cercare di capire come avrei reagito "
+            "io in alcune situazioni. ❤️"
+        )
+
+        st.divider()
+
+        st.subheader("💡 Ecco le mie risposte!")
+
+        for i, domanda in enumerate(domande, start=1):
+
+            st.markdown(
+                f"**{i}. {domanda['situazione']}**"
+            )
+
+            st.success(
+                f"💡 **La mia risposta:** {domanda['corretta']}"
+            )
+
+            st.write("")
+
+        st.caption(
+            "Ora sai come funziona il semaforo di Francesca! 😂❤️"
+        )
+
+        return
+
+
+    # =====================================================
+    # TITOLO
+    # =====================================================
+
+    st.header("🚦 Giorno 8 — Il semaforo delle coppie")
+
+    st.write(
+        "Oggi devi cercare di capire **come reagirei io** "
+        "in alcune situazioni. ❤️"
+    )
+
+    st.info(
+        "🎯 Hai un solo tentativo. "
+        "Ogni risposta corretta vale 1 punto, "
+        "per un massimo di 4 punti!"
+    )
+
+
+    # =====================================================
+    # RISPOSTE
+    # =====================================================
+
     risposte = []
 
     for i, domanda in enumerate(domande, start=1):
+
         st.write("")
-        st.subheader(f"{i}. {domanda['situazione']}")
+
+        st.subheader(
+            f"{i}. {domanda['situazione']}"
+        )
 
         risposta = st.radio(
             "Cosa pensi che sceglierei io?",
@@ -91,68 +145,108 @@ def mostra_gioco():
 
         risposte.append(risposta)
 
+
     st.write("")
+
+
+    # =====================================================
+    # CONTROLLO RISPOSTE
+    # =====================================================
 
     if st.button(
         "🚦 Scopri quanto mi conosci",
         use_container_width=True
     ):
+
         punti = 0
 
         for i, domanda in enumerate(domande):
+
             if risposte[i] == domanda["corretta"]:
                 punti += 1
 
+
+        # =================================================
+        # ASSEGNAZIONE PUNTI
+        # =================================================
+
         aggiungi_punti(8, punti)
+
+
+        # =================================================
+        # RISULTATO
+        # =================================================
 
         st.divider()
 
         if punti == 4:
+
             st.success(
                 "❤️ PERFETTO! Mi conosci proprio bene!"
             )
+
             st.balloons()
 
         elif punti == 3:
+
             st.success(
                 "🥰 Quasi perfetto! Mi conosci molto bene!"
             )
 
         elif punti == 2:
+
             st.warning(
                 "😏 Metà giuste... non male, ma puoi fare di meglio!"
             )
 
         elif punti == 1:
+
             st.warning(
                 "😂 Una sola! Forse devi conoscermi un pochino meglio..."
             )
 
         else:
+
             st.error(
                 "😂 Lorenzo, ma chi hai conosciuto in questi anni?!"
             )
+
 
         st.write(
             f"🏆 **Hai conquistato {punti} punti!**"
         )
 
+
+        # =================================================
+        # RIEPILOGO RISPOSTE SBAGLIATE
+        # =================================================
+
         errori = []
 
         for i, domanda in enumerate(domande):
+
             if risposte[i] != domanda["corretta"]:
                 errori.append(i)
 
+
         if errori:
+
             st.write("")
+
             st.subheader("❤️ Ecco cosa avrei scelto io:")
 
             for i in errori:
-                st.write(
-                    f"**{i + 1}.** {domande[i]['corretta']}"
+
+                st.markdown(
+                    f"**{i + 1}. {domande[i]['situazione']}**"
+                )
+
+                st.success(
+                    f"💡 La mia risposta: **{domande[i]['corretta']}**"
                 )
 
         else:
+
             st.success(
                 "🎉 Hai indovinato tutte le mie risposte!"
             )
