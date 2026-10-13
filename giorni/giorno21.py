@@ -9,9 +9,9 @@ from utils.punteggio import (
 
 def mostra_gioco():
 
-    # -------------------------
+    # =====================================================
     # INIZIALIZZAZIONE
-    # -------------------------
+    # =====================================================
 
     if "giorno21_tentativi" not in st.session_state:
         st.session_state.giorno21_tentativi = 0
@@ -25,13 +25,55 @@ def mostra_gioco():
     if "giorno21_vinto" not in st.session_state:
         st.session_state.giorno21_vinto = False
 
-    # -------------------------
-    # CONTROLLO GIORNO GIÀ COMPLETATO
-    # -------------------------
+    # =====================================================
+    # TITOLO
+    # =====================================================
+
+    st.header("🔐 Giorno 21 — La parola misteriosa")
+
+    # =====================================================
+    # RISULTATO DELLA PARTITA APPENA TERMINATA
+    # Deve precedere giorno_completato()
+    # =====================================================
+
+    if st.session_state.giorno21_finito:
+
+        st.divider()
+
+        if st.session_state.giorno21_vinto:
+
+            st.balloons()
+            st.success("🎉 INDOVINATO!")
+
+            st.write("🏆 **Hai conquistato 4 punti!**")
+
+        else:
+
+            st.error("😂 Hai esaurito i 3 tentativi!")
+
+            st.write("🏆 **Hai conquistato 0 punti.**")
+
+        st.write("💡 La parola misteriosa era:")
+        st.success("🍪 **TOPI**")
+
+        st.divider()
+        st.subheader("💡 Rivediamo tutti gli indizi")
+
+        st.write("☀️ **1. Animale**")
+        st.write("😂 **2. Plurale**")
+        st.write("🎨 **3. Coda**")
+        st.write("🍦 **4. Omar e Sofia**")
+
+        return
+
+    # =====================================================
+    # CONTROLLO COMPLETAMENTO PRECEDENTE
+    # =====================================================
 
     if giorno_completato(21):
 
         st.success("✅ Giorno 21 completato!")
+
         st.header("🔐 La parola misteriosa")
 
         st.write(
@@ -52,20 +94,13 @@ def mostra_gioco():
 
         st.success("🍪 **TOPI**")
 
-        if st.session_state.giorno21_vinto:
-            st.write("🎉 Hai indovinato!")
-            st.write("🏆 **Hai conquistato 4 punti!**")
-        else:
-            st.write("😂 Questa volta la parola ti è sfuggita!")
-            st.write("🏆 Hai già registrato il completamento della sfida.")
+        st.write("🏆 Hai già registrato il completamento della sfida.")
 
         return
 
-    # -------------------------
-    # TITOLO
-    # -------------------------
-
-    st.header("🔐 Giorno 21 — La parola misteriosa")
+    # =====================================================
+    # INTRODUZIONE
+    # =====================================================
 
     st.write(
         "C'è una parola che è stata nominata alcune volte "
@@ -81,9 +116,9 @@ def mostra_gioco():
 
     tentativi = st.session_state.giorno21_tentativi
 
-    # -------------------------
+    # =====================================================
     # INDIZI
-    # -------------------------
+    # =====================================================
 
     st.subheader("💡 Gli indizi")
 
@@ -96,29 +131,9 @@ def mostra_gioco():
     else:
         st.write("❓ **4. -**")
 
-    # -------------------------
-    # GIOCO GIÀ FINITO
-    # -------------------------
-
-    if st.session_state.giorno21_finito:
-
-        st.divider()
-
-        if st.session_state.giorno21_vinto:
-            st.success("🎉 INDOVINATO!")
-            st.write("🏆 **Hai conquistato 4 punti!**")
-        else:
-            st.error("😂 Hai esaurito i 3 tentativi!")
-            st.write("🏆 **Hai conquistato 0 punti.**")
-
-        st.write("💡 La parola misteriosa era:")
-        st.success("🍪 **TOPI**")
-
-        return
-
-    # -------------------------
+    # =====================================================
     # DOPO UN ERRORE
-    # -------------------------
+    # =====================================================
 
     if st.session_state.giorno21_errore:
 
@@ -142,17 +157,17 @@ def mostra_gioco():
 
         return
 
-    # -------------------------
+    # =====================================================
     # NUMERO TENTATIVO
-    # -------------------------
+    # =====================================================
 
     st.divider()
 
     st.subheader(f"🎯 Tentativo {tentativi + 1} di 3")
 
-    # -------------------------
+    # =====================================================
     # INSERIMENTO RISPOSTA
-    # -------------------------
+    # =====================================================
 
     risposta = st.text_input(
         "🤔 Qual è la parola misteriosa?",
@@ -160,9 +175,9 @@ def mostra_gioco():
         key=f"giorno21_tentativo_{tentativi}"
     )
 
-    # -------------------------
+    # =====================================================
     # CONTROLLO RISPOSTA
-    # -------------------------
+    # =====================================================
 
     if st.button(
         "🔎 Prova!",
@@ -171,44 +186,52 @@ def mostra_gioco():
 
         risposta = risposta.strip().lower()
 
-        # -------------------------
-        # RISPOSTA VUOTA
-        # -------------------------
-
         if not risposta:
             st.warning("Scrivi prima una risposta! 😏")
             return
 
-        # -------------------------
+        # -------------------------------------------------
         # RISPOSTA CORRETTA
-        # -------------------------
+        # -------------------------------------------------
 
         if risposta == "topi":
 
-            aggiungi_punti(21, 4)
+            salvato = aggiungi_punti(21, 4)
+
+            if not salvato:
+                st.warning(
+                    "Non è stato possibile registrare il risultato. "
+                    "Verifica lo stato del Giorno 21 su Supabase."
+                )
+                return
 
             st.session_state.giorno21_finito = True
             st.session_state.giorno21_vinto = True
             st.session_state.giorno21_errore = False
 
-            st.balloons()
             st.rerun()
 
-        # -------------------------
+        # -------------------------------------------------
         # RISPOSTA SBAGLIATA
-        # -------------------------
+        # -------------------------------------------------
 
         st.session_state.giorno21_tentativi += 1
         tentativi = st.session_state.giorno21_tentativi
 
-        # -------------------------
+        # -------------------------------------------------
         # TERZO ERRORE → FINE GIOCO
-        # -------------------------
+        # -------------------------------------------------
 
         if tentativi >= 3:
 
-            # Registra il completamento con 0 punti.
-            aggiungi_punti(21, 0)
+            salvato = aggiungi_punti(21, 0)
+
+            if not salvato:
+                st.warning(
+                    "Non è stato possibile registrare la conclusione "
+                    "della sfida. Verifica Supabase."
+                )
+                return
 
             st.session_state.giorno21_finito = True
             st.session_state.giorno21_vinto = False
@@ -216,9 +239,9 @@ def mostra_gioco():
 
             st.rerun()
 
-        # -------------------------
+        # -------------------------------------------------
         # PRIMO / SECONDO ERRORE
-        # -------------------------
+        # -------------------------------------------------
 
         st.session_state.giorno21_errore = True
         st.rerun()
