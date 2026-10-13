@@ -72,11 +72,11 @@ def mostra_gioco():
         st.write("")
 
         if st.session_state.giorno23_vinto:
-            st.success("🎉 Avevi indovinato! Bravissimo!")
+            st.success("🎉 Hai indovinato! Bravissimo!")
             st.write("🏆 Hai conquistato 4 punti!")
         elif st.session_state.giorno23_finito:
             st.info(
-                "💌 Anche se non avevi indovinato, "
+                "💌 Anche se non hai indovinato, "
                 "la frase resta sempre la stessa: TI AMO TANTO."
             )
             st.write("🏆 Sfida conclusa.")
