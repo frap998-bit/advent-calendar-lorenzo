@@ -9,15 +9,6 @@ from utils.punteggio import (
 
 def mostra_gioco():
 
-    # =====================================================
-    # CONTROLLO GIORNO GIÀ COMPLETATO
-    # =====================================================
-
-    if giorno_completato(4):
-        st.success("✅ Giorno 4 completato!")
-        st.write("🏆 Hai già conquistato i punti di questa sfida.")
-        return
-
 
     # =====================================================
     # ORDINE CORRETTO
@@ -29,6 +20,34 @@ def mostra_gioco():
         "🎹 Suonare",
         "📖 Leggere"
     ]
+
+
+    # =====================================================
+    # CONTROLLO GIORNO GIÀ COMPLETATO
+    # =====================================================
+
+    if giorno_completato(4):
+
+        st.success("✅ Giorno 4 completato!")
+        st.write("🏆 Hai già conquistato i punti di questa sfida.")
+
+        st.header("❤️ Giorno 4 — Quanto conosci Francesca?")
+
+        st.write(
+            "Ecco la mia classifica personale, "
+            "dalla preferita alla meno preferita! ❤️"
+        )
+
+        st.divider()
+
+        st.subheader("💡 Il mio vero ordine")
+
+        for i, attivita in enumerate(ordine_corretto, start=1):
+            st.write(f"**{i}. {attivita}**")
+
+
+        return
+
 
 
     # =====================================================
