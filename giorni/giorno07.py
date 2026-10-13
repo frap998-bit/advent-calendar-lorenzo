@@ -9,6 +9,22 @@ from utils.punteggio import (
 def mostra_gioco():
 
     # =====================================================
+    # INDIZI
+    # =====================================================
+
+    indizi = [
+        ("📍 DOVE", "A casa Pittoni", 4),
+        ("🧩 COME", "Attendendo con ansia", 3),
+        ("📅 QUANDO", "Una domenica sera", 2),
+        (
+            "❤️ PERCHÉ",
+            "Perché quella di Marco è la mia preferita…",
+            1
+        )
+    ]
+
+
+    # =====================================================
     # CONTROLLO GIORNO GIÀ COMPLETATO
     # =====================================================
 
@@ -25,6 +41,26 @@ def mostra_gioco():
             st.write(
                 "🏆 Hai già conquistato i punti di questa sfida."
             )
+
+        st.header("🍕 Giorno 7 — DOVE, COME, QUANDO E PERCHÉ?")
+
+        st.write(
+            "Ecco tutti gli indizi che ti hanno portato "
+            "alla parola misteriosa! ❤️"
+        )
+
+        st.divider()
+
+        for titolo, testo, punti in indizi:
+
+            st.subheader(titolo)
+            st.info(testo)
+
+        st.success("🎉 La parola misteriosa era **PIZZA**! 🍕")
+
+        st.caption(
+            "A volte le cose più belle iniziano con una pizza. ❤️"
+        )
 
         return
 
@@ -67,20 +103,6 @@ def mostra_gioco():
     )
 
 
-    # =====================================================
-    # INDIZI
-    # =====================================================
-
-    indizi = [
-        ("📍 DOVE", "A casa Pittoni", 4),
-        ("🧩 COME", "Attendendo con ansia", 3),
-        ("📅 QUANDO", "Una domenica sera", 2),
-        (
-            "❤️ PERCHÉ",
-            "Perché quella di Marco è la mia preferita…",
-            1
-        )
-    ]
 
 
     # =====================================================
