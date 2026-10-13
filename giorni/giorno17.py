@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 from utils.punteggio import (
@@ -9,25 +10,19 @@ from utils.punteggio import (
 def mostra_gioco():
 
     # =====================================================
-    # CONTROLLO GIORNO GIÀ COMPLETATO
+    # INDIZI
     # =====================================================
 
-    if giorno_completato(17):
-
-        st.success("✅ Giorno 17 completato!")
-
-        if "giorno17_punti_ottenuti" in st.session_state:
-            st.write(
-                f"🏆 Hai conquistato "
-                f"**{st.session_state.giorno17_punti_ottenuti} punti!**"
-            )
-        else:
-            st.write(
-                "🏆 Hai già conquistato i punti di questa sfida."
-            )
-
-        return
-
+    indizi = [
+        ("📍 DOVE", "In mezzo all’erba", 4),
+        ("🧩 COME", "Con tanto sforzo", 3),
+        ("📅 QUANDO", "Durante un giretto", 2),
+        (
+            "❤️ PERCHÉ",
+            "Perché quando raccogli quella di Olmo con il sacchetto, io corro via finché non la butti…",
+            1
+        )
+    ]
 
     # =====================================================
     # INIZIALIZZAZIONE
@@ -45,17 +40,89 @@ def mostra_gioco():
     if "giorno17_punti_ottenuti" not in st.session_state:
         st.session_state.giorno17_punti_ottenuti = 0
 
-
     indizio = st.session_state.giorno17_indizio
-
 
     # =====================================================
     # TITOLO
     # =====================================================
 
-    st.header(
-        "💩 Giorno 17 — DOVE, COME, QUANDO E PERCHÉ?"
-    )
+    st.header("💩 Giorno 17 — DOVE, COME, QUANDO E PERCHÉ?")
+
+    # =====================================================
+    # CONTROLLO GIORNO GIÀ COMPLETATO
+    # =====================================================
+
+    if giorno_completato(17):
+
+        st.success("✅ Giorno 17 completato!")
+
+        st.write(
+            f"🏆 Hai conquistato "
+            f"**{st.session_state.giorno17_punti_ottenuti} punti!**"
+        )
+
+        st.write("Ecco tutti gli indizi della parola misteriosa 👀")
+
+        for titolo, testo, punti in indizi:
+            st.subheader(titolo)
+            st.info(testo)
+
+        st.divider()
+
+        st.subheader("💩 La parola misteriosa era...")
+
+        st.markdown(
+            """
+            <h1 style="
+                text-align: center;
+                color: #e91e63;
+                letter-spacing: 4px;
+                font-weight: bold;
+            ">
+                CACCA 💩
+            </h1>
+            """,
+            unsafe_allow_html=True
+        )
+
+        st.write("❤️ Spero che adesso sia tutto più chiaro!")
+
+        return
+
+    # =====================================================
+    # GIOCO GIÀ FINITO NELLA SESSIONE
+    # =====================================================
+
+    if st.session_state.giorno17_finito:
+
+        st.divider()
+
+        for titolo, testo, punti in indizi:
+            st.subheader(titolo)
+            st.info(testo)
+
+        if st.session_state.giorno17_risposta_corretta:
+
+            st.success("🎉 Esatto! La parola era **CACCA**! 💩")
+
+            st.success(
+                f"🏆 Hai conquistato "
+                f"**{st.session_state.giorno17_punti_ottenuti} punti!**"
+            )
+
+        else:
+
+            st.error("❌ Hai utilizzato tutti gli indizi!")
+
+            st.warning("💩 **La parola era: CACCA!**")
+
+            st.write("🏆 **Hai conquistato 0 punti.**")
+
+        return
+
+    # =====================================================
+    # INTRODUZIONE
+    # =====================================================
 
     st.write(
         "Ti darò **4 indizi** per aiutarti a indovinare "
@@ -66,49 +133,6 @@ def mostra_gioco():
         "Prima la indovini, più punti guadagni! 🏆"
     )
 
-
-    # =====================================================
-    # INDIZI
-    # =====================================================
-
-    indizi = [
-        ("📍 DOVE", "In mezzo all’erba", 4),
-        ("🧩 COME", "Con tanto sforzo", 3),
-        ("📅 QUANDO", "Durante un giretto", 2),
-        (
-            "❤️ PERCHÉ",
-            "Perché quando raccogli quella di Olmo con il sacchetto, io corro via finché non la butti…",
-            1
-        )
-    ]
-
-
-    # =====================================================
-    # SE HA INDOVINATO
-    # MOSTRA TUTTI GLI INDIZI + PUNTI
-    # =====================================================
-
-    if st.session_state.giorno17_risposta_corretta:
-
-        for titolo, testo, punti in indizi:
-
-            st.subheader(titolo)
-            st.info(testo)
-
-        st.success(
-            "🎉 Esatto! La parola era **CACCA**! 💩"
-        )
-
-        st.success(
-            f"🏆 Hai conquistato "
-            f"**{st.session_state.giorno17_punti_ottenuti} punti!**"
-        )
-
-        st.balloons()
-
-        return
-
-
     # =====================================================
     # MOSTRA GLI INDIZI SBLOCCATI
     # =====================================================
@@ -118,13 +142,11 @@ def mostra_gioco():
         titolo, testo, punti = indizi[i]
 
         st.subheader(titolo)
-
         st.info(testo)
 
         st.caption(
             f"🏆 Se indovini ora: **{punti} punti**"
         )
-
 
     # =====================================================
     # RISPOSTA
@@ -137,7 +159,6 @@ def mostra_gioco():
         key="giorno17_risposta"
     )
 
-
     # =====================================================
     # CONTROLLO RISPOSTA
     # =====================================================
@@ -149,6 +170,10 @@ def mostra_gioco():
 
         risposta_pulita = risposta.strip().lower()
 
+        if not risposta_pulita:
+
+            st.warning("Scrivi prima una risposta! 😏")
+            return
 
         # -------------------------------------------------
         # RISPOSTA CORRETTA
@@ -158,21 +183,13 @@ def mostra_gioco():
 
             punti = indizi[indizio][2]
 
-            completato = aggiungi_punti(
-                17,
-                punti
-            )
+            aggiungi_punti(17, punti)
 
-            if completato:
+            st.session_state.giorno17_punti_ottenuti = punti
+            st.session_state.giorno17_risposta_corretta = True
+            st.session_state.giorno17_finito = True
 
-                st.session_state.giorno17_punti_ottenuti = punti
-
-                st.session_state.giorno17_risposta_corretta = True
-
-                st.session_state.giorno17_finito = True
-
-                st.rerun()
-
+            st.rerun()
 
         # -------------------------------------------------
         # RISPOSTA ERRATA
@@ -180,51 +197,22 @@ def mostra_gioco():
 
         else:
 
-            # Se è arrivato all'ultimo indizio
             if indizio == 3:
 
-                aggiungi_punti(
-                    17,
-                    0
-                )
+                aggiungi_punti(17, 0)
 
                 st.session_state.giorno17_punti_ottenuti = 0
-
                 st.session_state.giorno17_finito = True
+                st.session_state.giorno17_risposta_corretta = False
 
-                # Mostra tutti gli indizi
-                for titolo, testo, punti in indizi:
-
-                    st.subheader(titolo)
-
-                    st.info(testo)
-
-                st.error(
-                    "❌ Peccato! Hai utilizzato tutti gli indizi."
-                )
-
-                st.warning(
-                    "💩 **La parola era: CACCA!**"
-                )
-
-                st.write(
-                    "🏆 **Hai conquistato 0 punti.**"
-                )
-
-                return
-
-
-            # -------------------------------------------------
-            # RISPOSTA ERRATA MA CI SONO ALTRI INDIZI
-            # -------------------------------------------------
+                st.rerun()
 
             else:
 
                 st.error(
-                    "❌ Non è questa! "
-                    "Puoi riprovare oppure vedere il prossimo indizio."
+                    "❌ Non è questa! Puoi riprovare "
+                    "oppure vedere il prossimo indizio."
                 )
-
 
     # =====================================================
     # PROSSIMO INDIZIO
@@ -240,9 +228,7 @@ def mostra_gioco():
         ):
 
             st.session_state.giorno17_indizio += 1
-
             st.rerun()
-
 
     # =====================================================
     # ULTIMO INDIZIO
