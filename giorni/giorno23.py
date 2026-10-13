@@ -31,6 +31,9 @@ def mostra_gioco():
     if "giorno23_vinto" not in st.session_state:
         st.session_state.giorno23_vinto = False
 
+    if "giorno23_punti_salvati" not in st.session_state:
+        st.session_state.giorno23_punti_salvati = False
+
     # =====================================================
     # TITOLO
     # =====================================================
@@ -38,55 +41,8 @@ def mostra_gioco():
     st.header("❤️ Giorno 23 — L'impiccato")
 
     # =====================================================
-    # GIORNO GIÀ COMPLETATO
-    # =====================================================
-
-    if giorno_completato(23):
-
-        st.success("✅ Giorno 23 completato!")
-
-        st.write(
-            "La frase misteriosa era..."
-        )
-
-        st.markdown(
-            """
-            <div style="
-                text-align: center;
-                padding: 25px 10px;
-                border-radius: 15px;
-                background-color: rgba(255, 105, 180, 0.12);
-            ">
-                <div style="font-size: 42px;">❤️</div>
-                <div style="
-                    font-size: 32px;
-                    font-weight: bold;
-                    letter-spacing: 4px;
-                ">TI AMO TANTO</div>
-                <div style="font-size: 42px;">❤️</div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        st.write("")
-
-        if st.session_state.giorno23_vinto:
-            st.success("🎉 HAI INDOVINATO!")
-            st.write("🏆 Hai conquistato 4 punti!")
-        elif st.session_state.giorno23_finito:
-            st.info(
-                "💌 Anche se non hai indovinato, "
-                "la frase resta sempre la stessa: TI AMO TANTO."
-            )
-            st.write("🏆 Sfida conclusa.")
-        else:
-            st.write("🏆 Hai già completato questa sfida.")
-
-        return
-
-    # =====================================================
-    # GIOCO GIÀ FINITO NELLA SESSIONE
+    # RISULTATO DELLA PARTITA APPENA TERMINATA
+    # Deve precedere giorno_completato()
     # =====================================================
 
     if st.session_state.giorno23_finito:
@@ -95,6 +51,7 @@ def mostra_gioco():
 
         if st.session_state.giorno23_vinto:
 
+            st.balloons()
             st.success("🎉 HAI INDOVINATO!")
 
             st.write("❤️ La frase era:")
@@ -130,21 +87,51 @@ def mostra_gioco():
         return
 
     # =====================================================
+    # CONTROLLO COMPLETAMENTO PRECEDENTE
+    # =====================================================
+
+    if giorno_completato(23):
+
+        st.success("✅ Giorno 23 completato!")
+
+        st.write("La frase misteriosa era...")
+
+        st.markdown(
+            """
+            <div style="
+                text-align: center;
+                padding: 25px 10px;
+                border-radius: 15px;
+                background-color: rgba(255, 105, 180, 0.12);
+            ">
+                <div style="font-size: 42px;">❤️</div>
+                <div style="
+                    font-size: 32px;
+                    font-weight: bold;
+                    letter-spacing: 4px;
+                ">TI AMO TANTO</div>
+                <div style="font-size: 42px;">❤️</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        st.write("🏆 Hai già completato questa sfida.")
+
+        return
+
+    # =====================================================
     # ISTRUZIONI
     # =====================================================
 
-    st.write(
-        "C'è una frase misteriosa da indovinare..."
-    )
+    st.write("C'è una frase misteriosa da indovinare...")
 
     st.write(
         "Hai a disposizione **4 errori**. "
         "Riuscirai a scoprirla? 👀"
     )
 
-    st.info(
-        "🎯 Se indovini la frase conquisti **4 punti!**"
-    )
+    st.info("🎯 Se indovini la frase conquisti **4 punti!**")
 
     # =====================================================
     # FRASE NASCOSTA
@@ -209,7 +196,18 @@ def mostra_gioco():
         for lettera in lettere_da_indovinare
     ):
 
-        aggiungi_punti(23, 4)
+        if not st.session_state.giorno23_punti_salvati:
+
+            salvato = aggiungi_punti(23, 4)
+
+            if not salvato:
+                st.warning(
+                    "Non è stato possibile registrare i punti. "
+                    "Controlla lo stato del Giorno 23 su Supabase."
+                )
+                return
+
+            st.session_state.giorno23_punti_salvati = True
 
         st.session_state.giorno23_finito = True
         st.session_state.giorno23_vinto = True
@@ -232,40 +230,21 @@ def mostra_gioco():
     # PULSANTE
     # =====================================================
 
-    if st.button(
-        "🔎 Prova!",
-        use_container_width=True
-    ):
+    if st.button("🔎 Prova!", use_container_width=True):
 
         lettera = lettera.strip().upper()
-
-        # -------------------------------------------------
-        # INPUT VUOTO
-        # -------------------------------------------------
 
         if not lettera:
             st.warning("Scrivi una lettera! 😏")
             return
 
-        # -------------------------------------------------
-        # INPUT NON VALIDO
-        # -------------------------------------------------
-
         if not lettera.isalpha():
             st.warning("Inserisci una lettera valida! 😏")
             return
 
-        # -------------------------------------------------
-        # LETTERA GIÀ PROVATA
-        # -------------------------------------------------
-
         if lettera in lettere:
             st.warning("Questa lettera l'hai già provata! 👀")
             return
-
-        # -------------------------------------------------
-        # AGGIUNGI LETTERA
-        # -------------------------------------------------
 
         st.session_state.giorno23_lettere.append(lettera)
 
@@ -279,15 +258,19 @@ def mostra_gioco():
 
             if st.session_state.giorno23_errori >= 4:
 
-                aggiungi_punti(23, 0)
+                salvato = aggiungi_punti(23, 0)
+
+                if not salvato:
+                    st.warning(
+                        "Non è stato possibile registrare "
+                        "la conclusione della sfida su Supabase."
+                    )
+                    return
 
                 st.session_state.giorno23_finito = True
                 st.session_state.giorno23_vinto = False
 
-            st.rerun()
-
-        # -------------------------------------------------
-        # LETTERA CORRETTA
-        # -------------------------------------------------
-
+        # Il rerun mostra il risultato prima del controllo
+        # di completamento persistente.
         st.rerun()
+
