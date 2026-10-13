@@ -40,8 +40,6 @@ def mostra_gioco():
     if "giorno17_punti_ottenuti" not in st.session_state:
         st.session_state.giorno17_punti_ottenuti = 0
 
-    indizio = st.session_state.giorno17_indizio
-
     # =====================================================
     # TITOLO
     # =====================================================
@@ -49,7 +47,59 @@ def mostra_gioco():
     st.header("Giorno 17 — DOVE, COME, QUANDO E PERCHÉ?")
 
     # =====================================================
-    # CONTROLLO GIORNO GIÀ COMPLETATO
+    # RISULTATO DELLA PARTITA APPENA TERMINATA
+    # Deve precedere giorno_completato()
+    # =====================================================
+
+    if st.session_state.giorno17_finito:
+
+        st.divider()
+
+        for titolo, testo, punti in indizi:
+            st.subheader(titolo)
+            st.info(testo)
+
+        st.divider()
+
+        if st.session_state.giorno17_risposta_corretta:
+
+            st.success("🎉 Esatto! La parola era **CACCA**! 💩")
+
+            st.success(
+                f"🏆 Hai conquistato "
+                f"**{st.session_state.giorno17_punti_ottenuti} punti!**"
+            )
+
+            st.balloons()
+
+        else:
+
+            st.error("❌ Hai utilizzato tutti gli indizi!")
+
+            st.warning("💩 **La parola era: CACCA!**")
+
+            st.write("🏆 **Hai conquistato 0 punti.**")
+
+        st.markdown(
+            """
+            <h1 style="
+                text-align: center;
+                color: #e91e63;
+                letter-spacing: 4px;
+                font-weight: bold;
+            ">
+                CACCA 💩
+            </h1>
+            """,
+            unsafe_allow_html=True
+        )
+
+        st.write("❤️ Spero che adesso sia tutto più chiaro!")
+
+        return
+
+    # =====================================================
+    # CONTROLLO COMPLETAMENTO PRECEDENTE
     # =====================================================
 
     if giorno_completato(17):
@@ -57,8 +107,7 @@ def mostra_gioco():
         st.success("✅ Giorno 17 completato!")
 
         st.write(
-            f"🏆 Hai conquistato "
-            f"**{st.session_state.giorno17_punti_ottenuti} punti!**"
+            "🏆 Hai già conquistato i punti di questa sfida."
         )
 
         st.write("Ecco tutti gli indizi della parola misteriosa 👀")
@@ -90,37 +139,6 @@ def mostra_gioco():
         return
 
     # =====================================================
-    # GIOCO GIÀ FINITO NELLA SESSIONE
-    # =====================================================
-
-    if st.session_state.giorno17_finito:
-
-        st.divider()
-
-        for titolo, testo, punti in indizi:
-            st.subheader(titolo)
-            st.info(testo)
-
-        if st.session_state.giorno17_risposta_corretta:
-
-            st.success("🎉 Esatto! La parola era **CACCA**! 💩")
-
-            st.success(
-                f"🏆 Hai conquistato "
-                f"**{st.session_state.giorno17_punti_ottenuti} punti!**"
-            )
-
-        else:
-
-            st.error("❌ Hai utilizzato tutti gli indizi!")
-
-            st.warning("💩 **La parola era: CACCA!**")
-
-            st.write("🏆 **Hai conquistato 0 punti.**")
-
-        return
-
-    # =====================================================
     # INTRODUZIONE
     # =====================================================
 
@@ -132,6 +150,8 @@ def mostra_gioco():
     st.write(
         "Prima la indovini, più punti guadagni! 🏆"
     )
+
+    indizio = st.session_state.giorno17_indizio
 
     # =====================================================
     # MOSTRA GLI INDIZI SBLOCCATI
@@ -152,8 +172,6 @@ def mostra_gioco():
     # RISPOSTA
     # =====================================================
 
-    st.write("")
-
     risposta = st.text_input(
         "Qual è la parola?",
         key="giorno17_risposta"
@@ -171,7 +189,6 @@ def mostra_gioco():
         risposta_pulita = risposta.strip().lower()
 
         if not risposta_pulita:
-
             st.warning("Scrivi prima una risposta! 😏")
             return
 
@@ -183,13 +200,20 @@ def mostra_gioco():
 
             punti = indizi[indizio][2]
 
-            aggiungi_punti(17, punti)
+            completato = aggiungi_punti(17, punti)
 
-            st.session_state.giorno17_punti_ottenuti = punti
-            st.session_state.giorno17_risposta_corretta = True
-            st.session_state.giorno17_finito = True
+            if completato:
+                st.session_state.giorno17_punti_ottenuti = punti
+                st.session_state.giorno17_risposta_corretta = True
+                st.session_state.giorno17_finito = True
 
-            st.rerun()
+                st.rerun()
+
+            else:
+                st.warning(
+                    "Non è stato possibile registrare il risultato. "
+                    "Verifica se il giorno è già completato su Supabase."
+                )
 
         # -------------------------------------------------
         # RISPOSTA ERRATA
@@ -199,13 +223,20 @@ def mostra_gioco():
 
             if indizio == 3:
 
-                aggiungi_punti(17, 0)
+                completato = aggiungi_punti(17, 0)
 
-                st.session_state.giorno17_punti_ottenuti = 0
-                st.session_state.giorno17_finito = True
-                st.session_state.giorno17_risposta_corretta = False
+                if completato:
+                    st.session_state.giorno17_punti_ottenuti = 0
+                    st.session_state.giorno17_finito = True
+                    st.session_state.giorno17_risposta_corretta = False
 
-                st.rerun()
+                    st.rerun()
+
+                else:
+                    st.warning(
+                        "Non è stato possibile registrare "
+                        "la conclusione della sfida."
+                    )
 
             else:
 
