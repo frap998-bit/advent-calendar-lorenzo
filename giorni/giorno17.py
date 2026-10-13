@@ -63,7 +63,7 @@ def mostra_gioco():
     )
 
     st.write(
-        "Più presto la indovini, più punti guadagni! 🏆"
+        "Prima la indovini, più punti guadagni! 🏆"
     )
 
 
@@ -133,7 +133,7 @@ def mostra_gioco():
     st.write("")
 
     risposta = st.text_input(
-        "💩 Qual è la parola?",
+        "Qual è la parola?",
         key="giorno17_risposta"
     )
 
