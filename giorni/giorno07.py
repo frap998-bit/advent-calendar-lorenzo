@@ -42,7 +42,7 @@ def mostra_gioco():
                 "🏆 Hai già conquistato i punti di questa sfida."
             )
 
-        st.header("🍕 Giorno 7 — DOVE, COME, QUANDO E PERCHÉ?")
+        st.header("Giorno 7 — DOVE, COME, QUANDO E PERCHÉ?")
 
         st.write(
             "Ecco tutti gli indizi che ti hanno portato "
@@ -90,7 +90,7 @@ def mostra_gioco():
     # =====================================================
 
     st.header(
-        "🍕 Giorno 7 — DOVE, COME, QUANDO E PERCHÉ?"
+        "Giorno 7 — DOVE, COME, QUANDO E PERCHÉ?"
     )
 
     st.write(
