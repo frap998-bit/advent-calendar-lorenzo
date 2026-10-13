@@ -11,18 +11,6 @@ from utils.punteggio import (
 def mostra_gioco():
 
     # =====================================================
-    # CONTROLLO GIORNO GIÀ COMPLETATO
-    # =====================================================
-
-    if giorno_completato(16):
-        st.success("✅ Giorno 16 completato!")
-        st.write(
-            "🏆 Hai già conquistato i punti di questa sfida."
-        )
-        return
-
-
-    # =====================================================
     # ORDINE CHE FRANCESCA PENSA SIA IL SUO
     # =====================================================
 
@@ -34,6 +22,33 @@ def mostra_gioco():
         "📺 Serie TV"
     ]
 
+    # =====================================================
+    # CONTROLLO GIORNO GIÀ COMPLETATO
+    # =====================================================
+
+    if giorno_completato(16):
+
+        st.success("✅ Giorno 16 completato!")
+        st.write("🏆 Hai già conquistato i punti di questa sfida.")
+
+        st.header("❤️ Giorno 16 — Quanto ti conosco io Francesca?")
+
+        st.write(
+            "Ecco il mio pronostico originale! 👀❤️"
+        )
+
+        st.divider()
+        st.subheader("💡 Il mio pronostico")
+
+        for i, attivita in enumerate(ordine_corretto, start=1):
+            st.write(f"**{i}. {attivita}**")
+
+        st.write("")
+        st.info(
+            "💕 Ora sai come avevo immaginato la tua classifica!"
+        )
+
+        return
 
     # =====================================================
     # INIZIALIZZAZIONE ORDINE
@@ -41,17 +56,13 @@ def mostra_gioco():
 
     if "giorno16_ordine" not in st.session_state:
 
-        st.session_state.giorno16_ordine = (
-            ordine_corretto.copy()
-        )
+        st.session_state.giorno16_ordine = ordine_corretto.copy()
 
         random.shuffle(
             st.session_state.giorno16_ordine
         )
 
-
     ordine = st.session_state.giorno16_ordine
-
 
     # =====================================================
     # TITOLO
@@ -72,9 +83,8 @@ def mostra_gioco():
     st.info(
         "🎯 Per ogni posizione in cui il tuo ordine "
         "**NON coincide con il mio pronostico**, "
-        "conquisti **1 punto**, perchè vuol dire che sono stata scarsa io :("
+        "conquisti **1 punto**, perché vuol dire che sono stata scarsa io :("
     )
-
 
     # =====================================================
     # ORDINE ATTUALE
@@ -86,7 +96,6 @@ def mostra_gioco():
         "Usa ⬆️ e ⬇️ per spostare le attività."
     )
 
-
     # =====================================================
     # ELENCO ATTIVITÀ
     # =====================================================
@@ -97,20 +106,11 @@ def mostra_gioco():
             [0.7, 4.5, 0.8, 0.8]
         )
 
-
         with col_numero:
-
-            st.write(
-                f"**{i + 1}.**"
-            )
-
+            st.write(f"**{i + 1}.**")
 
         with col_attivita:
-
-            st.write(
-                ordine[i]
-            )
-
+            st.write(ordine[i])
 
         with col_su:
 
@@ -126,9 +126,7 @@ def mostra_gioco():
                 )
 
                 st.session_state.giorno16_ordine = ordine
-
                 st.rerun()
-
 
         with col_giu:
 
@@ -144,9 +142,7 @@ def mostra_gioco():
                 )
 
                 st.session_state.giorno16_ordine = ordine
-
                 st.rerun()
-
 
     # =====================================================
     # CONTROLLO ORDINE
@@ -168,23 +164,15 @@ def mostra_gioco():
             for i in range(len(ordine))
         )
 
-        posizioni_sbagliate = (
-            len(ordine) - posizioni_corrette
-        )
-
+        posizioni_sbagliate = len(ordine) - posizioni_corrette
 
         # -------------------------------------------------
         # PUNTI
         # -------------------------------------------------
 
-        punti_assegnati = aggiungi_punti(
-            16,
-            posizioni_sbagliate
-        )
-
+        aggiungi_punti(16, posizioni_sbagliate)
 
         st.divider()
-
 
         # =================================================
         # RISULTATO
@@ -193,17 +181,14 @@ def mostra_gioco():
         if posizioni_sbagliate == 0:
 
             st.success(
-                "Mi dispiace le ho azzeccahe tutte!"
+                "Mi dispiace, le ho azzeccate tutte!"
             )
 
             st.write(
                 "A quanto pare ti conosco proprio bene. ❤️"
             )
 
-            st.write(
-                "🏆 **Hai conquistato 0 punti!**"
-            )
-
+            st.write("🏆 **Hai conquistato 0 punti!**")
 
         elif posizioni_sbagliate == 5:
 
@@ -216,10 +201,7 @@ def mostra_gioco():
                 "di quanto pensassi! 😏"
             )
 
-            st.write(
-                "🏆 **Hai conquistato 5 punti!**"
-            )
-
+            st.write("🏆 **Hai conquistato 5 punti!**")
 
         else:
 
@@ -230,7 +212,7 @@ def mostra_gioco():
 
             st.write(
                 f"❌ In **{posizioni_sbagliate} posizioni** "
-                f"ho cannato il pronostico uffa!"
+                f"ho cannato il pronostico, uffa!"
             )
 
             st.write(
@@ -238,23 +220,12 @@ def mostra_gioco():
                 f"{posizioni_sbagliate} punti!**"
             )
 
-
         # =================================================
         # SOLUZIONE
         # =================================================
 
         st.divider()
+        st.subheader("💡 Il mio pronostico")
 
-        st.subheader(
-            "💡 Il mio pronostico"
-        )
-
-        for i, attivita in enumerate(
-            ordine_corretto,
-            start=1
-        ):
-
-            st.write(
-                f"**{i}. {attivita}**"
-            )
-
+        for i, attivita in enumerate(ordine_corretto, start=1):
+            st.write(f"**{i}. {attivita}**")
