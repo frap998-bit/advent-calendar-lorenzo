@@ -53,7 +53,7 @@ def mostra_gioco():
         st.success("🍪 **TOPI**")
 
         if st.session_state.giorno21_vinto:
-            st.write("🎉 Avevi indovinato!")
+            st.write("🎉 Hai indovinato!")
             st.write("🏆 **Hai conquistato 4 punti!**")
         else:
             st.write("😂 Questa volta la parola ti è sfuggita!")
