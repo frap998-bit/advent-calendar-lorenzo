@@ -13,38 +13,44 @@ def mostra_gioco():
     # CONTROLLO GIORNO GIÀ COMPLETATO
     # =====================================================
 
-    if giorno_completato(20):
-        st.success("✅ Giorno 20 completato!")
+    if giorno_completato(3):
+        st.success("✅ Giorno 3 completato!")
         st.write("🏆 Hai già conquistato i punti di questa sfida.")
         return
 
+
     # =====================================================
-    # INIZIALIZZAZIONE SESSIONE
+    # INIZIALIZZAZIONE TENTATIVI
     # =====================================================
 
     if "giorno20_tentativi" not in st.session_state:
         st.session_state.giorno20_tentativi = 0
 
-    if "giorno20_miglior_risultato" not in st.session_state:
-        st.session_state.giorno20_miglior_risultato = 0
 
-    if "giorno20_terminato" not in st.session_state:
-        st.session_state.giorno20_terminato = False
+    tentativi = st.session_state.giorno20_tentativi
 
-    if "giorno20_ultimo_risultato" not in st.session_state:
-        st.session_state.giorno20_ultimo_risultato = None
+    tentativi_rimasti = 3 - tentativi
+
 
     # =====================================================
     # TITOLO
     # =====================================================
 
-    st.header("❤️ Giorno 20 — Quizzetto!")
+    st.header("❤️ Giorno 3 — Quanto ti ricordi?")
 
     st.write(
-        "Vediamo quante ne riesci ad azzeccare... 👀"
+        "Vediamo quanto ti ricordi delle nostre piccole avventure... 👀"
     )
 
-    tentativi_massimi = 3
+    st.write(
+        "Rispondi alle domande e prova a indovinare tutte le parole!"
+    )
+
+    st.info(
+        f"🎯 Hai a disposizione **3 tentativi**. "
+        f"Te ne rimangono **{tentativi_rimasti}**."
+    )
+
 
     # =====================================================
     # DOMANDE
@@ -65,7 +71,7 @@ def mostra_gioco():
         },
         {
             "numero": 3,
-            "domanda": "Cosa ti ha fatto acquisire il potere di Maranza quest'estate?",
+            "domanda": "Cosa ti ha fatto acquisire il potere di Maranza?",
             "lettere": 7,
             "soluzione": "CANOTTA"
         },
@@ -74,129 +80,121 @@ def mostra_gioco():
             "domanda": "Il nostro motto? (Sono due parole)",
             "lettere": 10,
             "soluzione": "PIANO PIANO"
+        },
+        {
+            "numero": 5,
+            "domanda": "L'asino che non è un asino.",
+            "lettere": 4,
+            "soluzione": "OLMO"
         }
     ]
 
+
     # =====================================================
-    # INPUT E TENTATIVI
+    # INPUT RISPOSTE
     # =====================================================
 
-    if not st.session_state.giorno20_terminato:
+    risposte = {}
 
-        tentativi_usati = st.session_state.giorno20_tentativi
-        tentativi_rimanenti = tentativi_massimi - tentativi_usati
 
-        st.progress(
-            tentativi_usati / tentativi_massimi,
-            text=f"Tentativi utilizzati: {tentativi_usati}/{tentativi_massimi}"
+    for domanda in domande:
+
+        numero = domanda["numero"]
+        testo = domanda["domanda"]
+        numero_lettere = domanda["lettere"]
+
+
+        # -------------------------------------------------
+        # DOMANDA
+        # -------------------------------------------------
+
+        st.markdown(
+            f"### {numero}. {testo}"
         )
 
         st.caption(
-            f"💡 Hai ancora {tentativi_rimanenti} "
-            f"{'tentativo' if tentativi_rimanenti == 1 else 'tentativi'}."
+            f"🔤 {numero_lettere} lettere"
         )
 
-        risposte = {}
+
+        # -------------------------------------------------
+        # INPUT
+        # -------------------------------------------------
+
+        risposte[numero] = st.text_input(
+            f"Risposta {numero}",
+            max_chars=numero_lettere,
+            key=f"giorno20_risposta_{numero}",
+            placeholder="Scrivi qui la risposta..."
+        )
+
+        st.write("")
+
+
+    # =====================================================
+    # CONTROLLO
+    # =====================================================
+
+    if st.button(
+        "🔎 Controlla risposte",
+        use_container_width=True
+    ):
+
+        # Aumenta il numero di tentativi
+        st.session_state.giorno20_tentativi += 1
+
+        tentativo_corrente = st.session_state.giorno20_tentativi
+
+
+        # -------------------------------------------------
+        # CALCOLO RISPOSTE CORRETTE
+        # -------------------------------------------------
+
+        risposte_corrette = 0
+
+        risultati = []
+
 
         for domanda in domande:
 
             numero = domanda["numero"]
 
-            st.markdown(
-                f"### {numero}. {domanda['domanda']}"
+            soluzione = domanda["soluzione"]
+
+            risposta = (
+                risposte[numero]
+                .strip()
+                .upper()
             )
 
-            st.caption(
-                f"🔤 {domanda['lettere']} lettere"
-            )
 
-            caratteri_massimi = (
-                11 if numero == 4
-                else domanda["lettere"]
-            )
+            corretta = risposta == soluzione
 
-            risposte[numero] = st.text_input(
-                f"Risposta {numero}",
-                max_chars=caratteri_massimi,
-                key=f"giorno20_risposta_{numero}",
-                placeholder="Scrivi qui la risposta..."
-            )
 
-            st.write("")
+            if corretta:
+                risposte_corrette += 1
+
+
+            risultati.append({
+                "numero": numero,
+                "domanda": domanda["domanda"],
+                "risposta": risposta,
+                "soluzione": soluzione,
+                "corretta": corretta
+            })
 
         # =================================================
-        # CONTROLLO RISPOSTE
+        # TUTTO CORRETTO
         # =================================================
 
-        if st.button(
-            "🔎 Controlla risposte",
-            use_container_width=True
-        ):
+        if risposte_corrette == len(domande):
 
-            risposte_corrette = 0
-
-            for domanda in domande:
-
-                numero = domanda["numero"]
-
-                soluzione = (
-                    domanda["soluzione"]
-                    .strip()
-                    .upper()
-                    .replace(" ", "")
-                )
-
-                risposta = (
-                    risposte[numero]
-                    .strip()
-                    .upper()
-                    .replace(" ", "")
-                )
-
-                if risposta == soluzione:
-                    risposte_corrette += 1
-
-            # Aggiorna tentativi e miglior risultato
-            st.session_state.giorno20_tentativi += 1
-
-            st.session_state.giorno20_ultimo_risultato = (
+            punti_assegnati = aggiungi_punti(
+                3,
                 risposte_corrette
             )
 
-            st.session_state.giorno20_miglior_risultato = max(
-                st.session_state.giorno20_miglior_risultato,
-                risposte_corrette
-            )
-
-            # La sfida termina se indovina tutto
-            # oppure se esaurisce i 3 tentativi
-            if (
-                risposte_corrette == len(domande)
-                or st.session_state.giorno20_tentativi
-                >= tentativi_massimi
-            ):
-
-                st.session_state.giorno20_terminato = True
-
-                # Massimo 4 punti, in base al miglior tentativo
-                punti_finali = min(
-                    st.session_state.giorno20_miglior_risultato,
-                    len(domande)
-                )
-
-                aggiungi_punti(20, punti_finali)
-
-            st.rerun()
-
-    # =====================================================
-    # FEEDBACK DOPO OGNI TENTATIVO
-    # =====================================================
-
-    if st.session_state.giorno20_ultimo_risultato is not None:
-
-        corrette = st.session_state.giorno20_ultimo_risultato
-
-        if corrette == len(domande):
+            st.divider()
 
             st.success(
                 "🎉 PERFETTO! Hai indovinato tutte le risposte! ❤️"
@@ -204,56 +202,123 @@ def mostra_gioco():
 
             st.balloons()
 
-        elif not st.session_state.giorno20_terminato:
+            if punti_assegnati:
+                st.write(
+                    f"🏆 **Hai conquistato {risposte_corrette} punti!**"
+                )
+
+            return
+
+
+        # =================================================
+        # TERZO TENTATIVO
+        # =================================================
+
+        if tentativo_corrente >= 3:
+
+            # 1 punto per ogni risposta corretta
+            punti_assegnati = aggiungi_punti(
+                3,
+                risposte_corrette
+            )
+
+            st.divider()
 
             st.warning(
-                f"Hai indovinato {corrette} risposte su "
-                f"{len(domande)}. 😉"
+                f"😏 Tentativi terminati! "
+                f"Hai indovinato **{risposte_corrette} su "
+                f"{len(domande)}**."
             )
 
-            st.info(
-                "💡 Ritenta! Puoi ancora migliorare il tuo punteggio."
+
+            # -------------------------------------------------
+            # PUNTEGGIO
+            # -------------------------------------------------
+
+            if punti_assegnati:
+
+                st.write(
+                    f"🏆 **Hai conquistato {risposte_corrette} punti!**"
+                )
+
+
+            # -------------------------------------------------
+            # RISPOSTE CORRETTE
+            # -------------------------------------------------
+
+            st.divider()
+
+            st.subheader(
+                "💡 Ecco le risposte corrette"
             )
 
-    # =====================================================
-    # RISULTATO FINALE
-    # =====================================================
 
-    if st.session_state.giorno20_terminato:
+            for risultato in risultati:
 
-        punti_finali = st.session_state.giorno20_miglior_risultato
+                if risultato["corretta"]:
+
+                    st.success(
+                        f"✅ **{risultato['numero']}. "
+                        f"{risultato['domanda']}**\n\n"
+                        f"La tua risposta: "
+                        f"**{risultato['risposta']}**"
+                    )
+
+                else:
+
+                    risposta_data = risultato["risposta"]
+
+                    if risposta_data == "":
+                        risposta_data = "Nessuna risposta"
+
+                    st.error(
+                        f"❌ **{risultato['numero']}. "
+                        f"{risultato['domanda']}**\n\n"
+                        f"La tua risposta: **{risposta_data}**  \n"
+                        f"👉 La risposta corretta era: "
+                        f"**{risultato['soluzione']}**"
+                    )
+
+
+            return
+
+
+        # =================================================
+        # PRIMO / SECONDO TENTATIVO
+        # =================================================
 
         st.divider()
 
-        st.subheader("🏆 Sfida terminata!")
-
-        st.success(
-            f"Hai conquistato {punti_finali} "
-            f"{'punto' if punti_finali == 1 else 'punti'} su 4! ❤️"
+        st.warning(
+            f"😏 Hai indovinato **{risposte_corrette} su "
+            f"{len(domande)}**!"
         )
 
-        st.write(
-            f"Il tuo miglior risultato è stato "
-            f"**{punti_finali} risposte corrette su 4**."
+        st.info(
+            f"💡 Non è ancora finita! "
+            f"Hai ancora **{3 - tentativo_corrente} "
+            f"tentativo/i**. Riprova!"
         )
 
-        # =================================================
-        # SOLUZIONI CORRETTE
-        # =================================================
 
-        st.markdown("### 💌 Ecco tutte le risposte corrette!")
+        # -------------------------------------------------
+        # MOSTRA SOLO LE RISPOSTE SBAGLIATE
+        # -------------------------------------------------
 
-        for domanda in domande:
+        st.write("### 🔎 Piccolo aiuto...")
 
-            st.markdown(
-                f"**{domanda['numero']}. {domanda['domanda']}**"
-            )
+        for risultato in risultati:
 
-            st.write(f"✅ {domanda['soluzione']}")
+            if risultato["corretta"]:
 
-        st.write("")
+                st.success(
+                    f"✅ {risultato['numero']}. "
+                    f"Questa era corretta!"
+                )
 
-        st.caption(
-            "L'importante è averci provato... "
-            "anche se certe cose dovresti saperle! 😂❤️"
-        )
+            else:
+
+                st.warning(
+                    f"❌ {risultato['numero']}. "
+                    f"Questa non è corretta... 🤔"
+                )
