@@ -10,12 +10,40 @@ from utils.punteggio import (
 def mostra_gioco():
 
     # -------------------------
+    # RISPOSTA CORRETTA
+    # -------------------------
+
+    risposta_corretta = (
+        "A. «Legambiente ha organizzato la serata nazionale "
+        "della spazzata contro l'inquinamento urbano»"
+    )
+
+
+    # -------------------------
     # CONTROLLO GIORNO GIÀ COMPLETATO
     # -------------------------
 
     if giorno_completato(5):
+
         st.success("✅ Giorno 5 completato!")
         st.write("🏆 Hai già conquistato i 5 punti di questa sfida.")
+
+        st.header("❤️ Giorno 5 — Ti ricordi le scemate che inventi?")
+
+        st.write(
+            "### ❤️ Cosa mi hai detto per farmi capire che volevi fare l'amore con me?"
+        )
+
+        st.divider()
+
+        st.subheader("💡 La risposta corretta era:")
+
+        st.success(risposta_corretta)
+
+        st.caption(
+            "Ci sono certe scemate che entrano nella storia della coppia! 😂❤️"
+        )
+
         return
 
 
@@ -24,7 +52,6 @@ def mostra_gioco():
     # -------------------------
 
     st.header("❤️ Giorno 5 — Ti ricordi le scemate che inventi?")
-
 
     st.write(
         "### ❤️ Cosa mi hai detto per farmi capire che volevi fare l'amore con me?"
@@ -38,7 +65,7 @@ def mostra_gioco():
     risposta = st.radio(
         "Scegli una risposta:",
         [
-            "A. «Legambiente ha organizzato la serata nazionale della spazzata contro l'inquinamento urbano»",
+            risposta_corretta,
 
             "B. «La LIPU ha organizzato la serata nazionale della raccolta contro l'inquinamento urbano»",
 
@@ -86,7 +113,5 @@ def mostra_gioco():
             )
 
             st.info(
-                "💡 La risposta corretta era: "
-                "**A. «Legambiente ha organizzato la serata nazionale "
-                "della spazzata contro l'inquinamento urbano»**"
+                f"💡 La risposta corretta era: **{risposta_corretta}**"
             )
