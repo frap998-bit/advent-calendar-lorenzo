@@ -59,14 +59,23 @@ def mostra_gioco():
     if "giorno20_punti_ottenuti" not in st.session_state:
         st.session_state.giorno20_punti_ottenuti = 0
 
+    if "giorno20_appena_completato" not in st.session_state:
+        st.session_state.giorno20_appena_completato = False
+
     # =====================================================
-    # GIORNO GIÀ COMPLETATO
+    # CONTROLLO GIORNO GIÀ COMPLETATO
+    # Mostra questa schermata solo nelle visite successive
     # =====================================================
 
-    if giorno_completato(20):
+    if (
+        giorno_completato(20)
+        and not st.session_state.giorno20_appena_completato
+    ):
 
         st.success("✅ Giorno 20 completato!")
-        st.header("❤️ Quanto ti ricordi?")
+
+        st.header("❤️ Giorno 20 — Quanto ti ricordi?")
+
         st.write(
             "Hai già affrontato questa sfida! "
             "Ecco un ripasso delle nostre piccole avventure. 🥰"
@@ -80,7 +89,7 @@ def mostra_gioco():
                 f"**{domanda['numero']}. {domanda['domanda']}**"
             )
             st.success(f"👉 {domanda['soluzione']}")
-        
+
         st.divider()
         st.write("🏆 Hai già conquistato i punti di questa sfida!")
 
@@ -109,50 +118,71 @@ def mostra_gioco():
     )
 
     # =====================================================
-    # MOSTRA RISULTATI FINALI SE LA SFIDA È TERMINATA
+    # MOSTRA RISULTATO FINALE
     # =====================================================
 
     if st.session_state.giorno20_risultati is not None:
 
         risultati = st.session_state.giorno20_risultati
+
         risposte_corrette = sum(
-            1 for risultato in risultati if risultato["corretta"]
+            1
+            for risultato in risultati
+            if risultato["corretta"]
         )
 
         st.divider()
 
         if risposte_corrette == len(domande):
+
             st.success(
-                "🎉 PERFETTO! Hai indovinato tutte le risposte! ❤️"
+                "🎉 BRAVISSIMO! Hai indovinato tutte le risposte! ❤️"
             )
+
             st.balloons()
+
         else:
+
             st.warning(
                 f"😏 Tentativi terminati! Hai indovinato "
                 f"**{risposte_corrette} su {len(domande)}**."
             )
 
         st.write(
-            f"🏆 **Hai conquistato {st.session_state.giorno20_punti_ottenuti} punti!**"
+            f"🏆 **Hai conquistato "
+            f"{st.session_state.giorno20_punti_ottenuti} punti!**"
         )
 
         st.divider()
-        st.subheader("💡 Ecco le risposte corrette")
+        st.subheader("💡 Ecco le risposte")
 
         for risultato in risultati:
 
             if risultato["corretta"]:
+
                 st.success(
-                    f"✅ **{risultato['numero']}. {risultato['domanda']}**\n\n"
+                    f"✅ **{risultato['numero']}. "
+                    f"{risultato['domanda']}**\n\n"
                     f"La tua risposta: **{risultato['risposta']}**"
                 )
+
             else:
-                risposta_data = risultato["risposta"] or "Nessuna risposta"
+
+                risposta_data = (
+                    risultato["risposta"]
+                    if risultato["risposta"]
+                    else "Nessuna risposta"
+                )
 
                 st.error(
-                    f"❌ **{risultato['numero']}. {risultato['domanda']}**\n\n"
-                    f"La tua risposta: **{risposta_data}**  \n"
-                    f"👉 La risposta corretta era: **{risultato['soluzione']}**"
+                    f"❌ **{risultato['numero']}. "
+                    f"{risultato['domanda']}**\n\n"
+                    f"La tua risposta: **{risposta_data}**"
+                )
+
+                st.info(
+                    f"👉 La risposta corretta era: "
+                    f"**{risultato['soluzione']}**"
                 )
 
         return
@@ -171,7 +201,9 @@ def mostra_gioco():
             f"### {numero}. {domanda['domanda']}"
         )
 
-        st.caption(f"🔤 {domanda['lettere']} lettere")
+        st.caption(
+            f"🔤 {domanda['lettere']} lettere"
+        )
 
         risposte[numero] = st.text_input(
             f"Risposta {numero}",
@@ -192,10 +224,15 @@ def mostra_gioco():
     ):
 
         st.session_state.giorno20_tentativi += 1
+
         tentativo_corrente = st.session_state.giorno20_tentativi
 
         risposte_corrette = 0
         risultati = []
+
+        # -------------------------------------------------
+        # CALCOLO RISULTATI
+        # -------------------------------------------------
 
         for domanda in domande:
 
@@ -203,6 +240,7 @@ def mostra_gioco():
             soluzione = domanda["soluzione"]
 
             risposta = risposte[numero].strip().upper()
+
             corretta = risposta == soluzione
 
             if corretta:
@@ -217,7 +255,7 @@ def mostra_gioco():
             })
 
         # -------------------------------------------------
-        # TUTTE LE RISPOSTE CORRETTE O TERZO TENTATIVO
+        # VITTORIA O TERZO TENTATIVO
         # -------------------------------------------------
 
         if (
@@ -236,10 +274,14 @@ def mostra_gioco():
 
             st.session_state.giorno20_risultati = risultati
 
+            # Evita di mostrare subito la schermata
+            # del giorno già completato dopo il rerun.
+            st.session_state.giorno20_appena_completato = True
+
             st.rerun()
 
         # -------------------------------------------------
-        # PRIMO / SECONDO TENTATIVO: MOSTRA GLI ERRORI
+        # PRIMO O SECONDO TENTATIVO
         # -------------------------------------------------
 
         st.divider()
@@ -259,10 +301,14 @@ def mostra_gioco():
         for risultato in risultati:
 
             if risultato["corretta"]:
+
                 st.success(
-                    f"✅ {risultato['numero']}. Questa era corretta!"
+                    f"✅ {risultato['numero']}. "
+                    "Questa era corretta!"
                 )
+
             else:
+
                 st.warning(
                     f"❌ {risultato['numero']}. "
                     "Questa non è corretta... 🤔"
