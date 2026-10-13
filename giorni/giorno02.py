@@ -8,14 +8,37 @@ from utils.punteggio import (
 
 def mostra_gioco():
 
+
     # -------------------------
     # CONTROLLO GIORNO GIÀ COMPLETATO
     # -------------------------
 
     if giorno_completato(2):
+
         st.success("✅ Giorno 2 completato!")
         st.write("🏆 Hai già conquistato i punti di questa sfida.")
+
+        st.header("📚 Giorno 2 — Quanto mi conosci?")
+
+        st.write(
+            "Ecco le risposte corrette... "
+            "vediamo quanto mi conosci davvero! 👀❤️"
+        )
+
+        st.divider()
+
+        for i, domanda in enumerate(domande, start=1):
+
+            st.markdown(
+                f"**{i}. {domanda['domanda']}**"
+            )
+
+            st.success(
+                f"❤️ Risposta corretta: **{domanda['corretta']}**"
+            )
+
         return
+
 
 
     # -------------------------
