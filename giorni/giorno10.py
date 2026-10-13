@@ -62,7 +62,6 @@ def mostra_gioco():
         "🎯 Se indovini la parola conquisti **4 punti**!"
     )
 
-
     # -------------------------
     # GIOCO GIÀ FINITO
     # -------------------------
@@ -73,39 +72,49 @@ def mostra_gioco():
 
         if st.session_state.giorno10_vinto:
 
-            st.success(
-                "🎉 HAI INDOVINATO!"
+            st.success("🎉 HAI INDOVINATO!")
+
+            st.write("💍 Hai scoperto la parola misteriosa:")
+
+            st.markdown(
+                """
+                <h1 style="
+                    text-align: center;
+                    color: #e91e63;
+                    letter-spacing: 8px;
+                ">
+                    SPOSAMI ❤️
+                </h1>
+                """,
+                unsafe_allow_html=True
             )
 
-            st.write(
-                "💍 La parola era:"
-            )
-
-            st.success(
-                "❤️ **SPOSAMI** ❤️"
-            )
-
-            st.write(
-                "🏆 **Hai conquistato 4 punti!**"
-            )
+            st.write("🏆 **Hai conquistato 4 punti!**")
 
         else:
 
-            st.error(
-                "💀 Hai fatto 6 errori!"
+            st.error("💀 Hai esaurito i 6 errori!")
+
+            st.write("La parola misteriosa era:")
+
+            st.markdown(
+                """
+                <h1 style="
+                    text-align: center;
+                    color: #e91e63;
+                    letter-spacing: 8px;
+                ">
+                    SPOSAMI 💍
+                </h1>
+                """,
+                unsafe_allow_html=True
             )
 
             st.write(
-                "La parola era:"
+                "❤️ Niente paura, il messaggio resta lo stesso!"
             )
 
-            st.success(
-                "💍 **SPOSAMI**"
-            )
-
-            st.write(
-                "🏆 **Hai conquistato 0 punti.**"
-            )
+            st.write("🏆 **Hai conquistato 0 punti.**")
 
         return
 
