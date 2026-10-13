@@ -19,8 +19,6 @@ def get_supabase():
 
 def inizializza_punteggio(forza_aggiornamento=False):
 
-    # Se i dati sono già in sessione e non è richiesto
-    # un aggiornamento, non interroga nuovamente Supabase.
     if (
         "punteggio" in st.session_state
         and "giorni_completati" in st.session_state
@@ -34,19 +32,25 @@ def inizializza_punteggio(forza_aggiornamento=False):
         supabase
         .table("punteggio")
         .select("giorno, punti, completato")
-        .eq("completato", True)
         .execute()
     )
 
     dati = risposta.data or []
 
+    # Considera soltanto i giorni completati
+    dati_completati = [
+        riga for riga in dati
+        if riga.get("completato") is True
+    ]
+
     st.session_state.punteggio = sum(
         int(riga.get("punti") or 0)
-        for riga in dati
+        for riga in dati_completati
     )
 
     st.session_state.giorni_completati = {
-        riga["giorno"] for riga in dati
+        int(riga["giorno"])
+        for riga in dati_completati
     }
 
 
@@ -56,14 +60,15 @@ def inizializza_punteggio(forza_aggiornamento=False):
 
 def aggiungi_punti(giorno, punti):
 
-    inizializza_punteggio(forza_aggiornamento=True)
-
-    if giorno in st.session_state.giorni_completati:
-        return False
-
-    supabase = get_supabase()
-
     try:
+        # Controlla lo stato reale prima di assegnare i punti.
+        inizializza_punteggio(forza_aggiornamento=True)
+
+        if giorno in st.session_state.giorni_completati:
+            return False
+
+        supabase = get_supabase()
+
         risposta = (
             supabase
             .table("punteggio")
@@ -77,18 +82,17 @@ def aggiungi_punti(giorno, punti):
         )
 
         if not risposta.data:
-            # Aggiorna lo stato locale per evitare
-            # che rimanga diverso da quello del database.
+            # Potrebbe essere già stato completato
+            # oppure la riga potrebbe non esistere.
             inizializza_punteggio(forza_aggiornamento=True)
 
             st.warning(
                 f"Il Giorno {giorno} non è stato aggiornato. "
-                "Verifica che esista in Supabase e che "
-                "completato sia FALSE."
+                "Controlla la relativa riga in Supabase."
             )
             return False
 
-        # Ricarica il totale reale dal database.
+        # Aggiorna il punteggio locale dopo il salvataggio.
         inizializza_punteggio(forza_aggiornamento=True)
 
         return True
@@ -114,8 +118,9 @@ def get_punteggio():
 
 def giorno_completato(giorno):
 
-    # Rilegge sempre lo stato aggiornato da Supabase.
-    inizializza_punteggio(forza_aggiornamento=True)
+    # Usa i dati già caricati in sessione:
+    # nessuna richiesta a Supabase per ogni casella.
+    inizializza_punteggio()
 
     return giorno in st.session_state.giorni_completati
 
@@ -126,15 +131,14 @@ def giorno_completato(giorno):
 
 def reset_punteggio():
 
-    supabase = get_supabase()
-
     try:
+        supabase = get_supabase()
+
         supabase.table("punteggio").update({
             "completato": False,
             "punti": 0
         }).neq("giorno", 0).execute()
 
-        # Svuota lo stato locale.
         st.session_state.punteggio = 0
         st.session_state.giorni_completati = set()
 
