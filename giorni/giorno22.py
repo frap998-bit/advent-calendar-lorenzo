@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 from utils.punteggio import (
@@ -8,37 +9,9 @@ from utils.punteggio import (
 
 def mostra_gioco():
 
-    # -------------------------
-    # CONTROLLO GIORNO GIÀ COMPLETATO
-    # -------------------------
-
-    if giorno_completato(22):
-        st.success("✅ Giorno 22 completato!")
-        st.write("🏆 Hai già conquistato i punti di questa sfida.")
-        return
-
-
-    # -------------------------
-    # TITOLO
-    # -------------------------
-
-    st.header("📸 Giorno 22 — Indovina il mese!")
-
-    st.write(
-        "Riconosci queste foto e prova a ricordare "
-        "quando sono state scattate. ❤️"
-    )
-
-    st.info(
-        "🎯 Hai un solo tentativo. "
-        "Ogni risposta corretta vale 1 punto, "
-        "per un massimo di 4 punti!"
-    )
-
-
-    # -------------------------
+    # =====================================================
     # DOMANDE
-    # -------------------------
+    # =====================================================
 
     domande = [
         {
@@ -87,25 +60,138 @@ def mostra_gioco():
         }
     ]
 
+    # =====================================================
+    # INIZIALIZZAZIONE SESSIONE
+    # =====================================================
 
-    # -------------------------
-    # RISPOSTE
-    # -------------------------
+    if "giorno22_risultati" not in st.session_state:
+        st.session_state.giorno22_risultati = None
+
+    if "giorno22_punti_ottenuti" not in st.session_state:
+        st.session_state.giorno22_punti_ottenuti = 0
+
+    # =====================================================
+    # TITOLO
+    # =====================================================
+
+    st.header("📸 Giorno 22 — Indovina il mese!")
+
+    # =====================================================
+    # GIORNO GIÀ COMPLETATO
+    # =====================================================
+
+    if giorno_completato(22):
+
+        st.success("✅ Giorno 22 completato!")
+
+        st.write(
+            "Hai già partecipato alla sfida! "
+            "Ecco le foto e le date corrette per rivivere "
+            "i nostri ricordi. ❤️"
+        )
+
+        st.divider()
+        st.subheader("📅 Le risposte corrette")
+
+        for i, domanda in enumerate(domande, start=1):
+
+            st.markdown(f"### {i}. {domanda['corretta']}")
+
+            st.image(
+                domanda["foto"],
+                use_container_width=True
+            )
+
+        st.divider()
+        st.write("🏆 Hai già conquistato i punti di questa sfida!")
+
+        return
+
+    # =====================================================
+    # RISULTATI GIÀ OTTENUTI NELLA SESSIONE
+    # =====================================================
+
+    if st.session_state.giorno22_risultati is not None:
+
+        risultati = st.session_state.giorno22_risultati
+        risposte_corrette = risultati["corrette"]
+        risposte_date = risultati["risposte"]
+
+        st.success("🎉 Hai completato la sfida!")
+
+        if risposte_corrette == 4:
+            st.balloons()
+            st.success("🎉 PERFETTO! Hai riconosciuto tutti i mesi!")
+
+        elif risposte_corrette == 3:
+            st.success("🥰 Brava memoria! Ne hai riconosciute 3 su 4!")
+
+        elif risposte_corrette == 2:
+            st.warning("😏 Due su quattro! Non male...")
+
+        elif risposte_corrette == 1:
+            st.warning("😂 Una sola corretta! Puoi fare meglio...")
+
+        else:
+            st.error(
+                "😂 Nessuna corretta! La memoria oggi non collabora..."
+            )
+
+        st.write(
+            f"🏆 **Hai conquistato {risposte_corrette} punti!**"
+        )
+
+        st.divider()
+        st.subheader("📸 Rivediamo le nostre foto")
+
+        for i, domanda in enumerate(domande):
+
+            st.markdown(f"### {i + 1}. {domanda['domanda']}")
+
+            st.image(
+                domanda["foto"],
+                use_container_width=True
+            )
+
+            if risposte_date[i] == domanda["corretta"]:
+                st.success(
+                    f"✅ La tua risposta: {risposte_date[i]}"
+                )
+            else:
+                st.error(
+                    f"❌ La tua risposta: {risposte_date[i]}"
+                )
+                st.info(
+                    f"💡 La risposta corretta era: **{domanda['corretta']}**"
+                )
+
+        return
+
+    # =====================================================
+    # ISTRUZIONI
+    # =====================================================
+
+    st.write(
+        "Riconosci queste foto e prova a ricordare "
+        "quando sono state scattate. ❤️"
+    )
+
+    st.info(
+        "🎯 Hai un solo tentativo. "
+        "Ogni risposta corretta vale 1 punto, "
+        "per un massimo di 4 punti!"
+    )
+
+    # =====================================================
+    # FOTO E RISPOSTE
+    # =====================================================
 
     risposte = []
-
-
-    # -------------------------
-    # FOTO E RISPOSTE
-    # -------------------------
 
     for i, domanda in enumerate(domande, start=1):
 
         st.write("")
-
-        st.subheader(
-            f"{i}. {domanda['domanda']}"
-        )
+        st.subheader(f"{i}. {domanda['domanda']}")
 
         st.image(
             domanda["foto"],
@@ -120,97 +206,39 @@ def mostra_gioco():
 
         risposte.append(risposta)
 
-
     st.write("")
 
-
-    # -------------------------
-    # CONTROLLO
-    # -------------------------
+    # =====================================================
+    # CONTROLLO RISPOSTE
+    # =====================================================
 
     if st.button(
         "🔎 Controlla le risposte",
         use_container_width=True
     ):
 
-        risposte_corrette = 0
+        risposte_corrette = sum(
+            1
+            for i, domanda in enumerate(domande)
+            if risposte[i] == domanda["corretta"]
+        )
 
-        for i, domanda in enumerate(domande):
-
-            if risposte[i] == domanda["corretta"]:
-                risposte_corrette += 1
-
-
-        # -------------------------
+        # -------------------------------------------------
         # ASSEGNAZIONE PUNTI
-        # -------------------------
+        # -------------------------------------------------
 
-        completato = aggiungi_punti(
+        aggiungi_punti(
             22,
             risposte_corrette
         )
 
+        # Salva il risultato nella sessione per mostrarlo
+        # anche dopo il rerun di Streamlit.
+        st.session_state.giorno22_punti_ottenuti = risposte_corrette
 
-        # -------------------------
-        # RISULTATO
-        # -------------------------
+        st.session_state.giorno22_risultati = {
+            "corrette": risposte_corrette,
+            "risposte": risposte.copy()
+        }
 
-        st.divider()
-
-        if risposte_corrette == 4:
-
-            st.success(
-                "🎉 PERFETTO! Hai riconosciuto tutti i mesi!"
-            )
-
-            st.balloons()
-
-        elif risposte_corrette == 3:
-
-            st.success(
-                "🥰 Brava memoria! Ne hai riconosciute 3 su 4!"
-            )
-
-        elif risposte_corrette == 2:
-
-            st.warning(
-                "😏 Due su quattro! Non male..."
-            )
-
-        elif risposte_corrette == 1:
-
-            st.warning(
-                "😂 Una sola corretta! Puoi fare meglio..."
-            )
-
-        else:
-
-            st.error(
-                "😂 Nessuna corretta! La memoria oggi non collabora..."
-            )
-
-
-        st.write(
-            f"🏆 **Hai conquistato {risposte_corrette} punti!**"
-        )
-
-
-        # -------------------------
-        # RISPOSTE CORRETTE
-        # -------------------------
-
-        if risposte_corrette < 4:
-
-            st.write("")
-
-            st.subheader(
-                "📅 Le risposte corrette erano:"
-            )
-
-            for i, domanda in enumerate(domande, start=1):
-
-                if risposte[i - 1] != domanda["corretta"]:
-
-                    st.write(
-                        f"**{i}.** {domanda['corretta']} ✅"
-                    )
+        st.rerun()
