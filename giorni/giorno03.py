@@ -9,13 +9,35 @@ from utils.punteggio import (
 
 def mostra_gioco():
 
+
     # =====================================================
     # CONTROLLO GIORNO GIÀ COMPLETATO
     # =====================================================
 
     if giorno_completato(3):
+
         st.success("✅ Giorno 3 completato!")
         st.write("🏆 Hai già conquistato i punti di questa sfida.")
+
+        st.header("❤️ Giorno 3 — Quanto ti ricordi?")
+
+        st.write(
+            "Rivediamo le nostre piccole avventure... "
+            "vediamo quante ne ricordavi! 👀❤️"
+        )
+
+        st.divider()
+
+        for domanda in domande:
+
+            st.markdown(
+                f"**{domanda['numero']}. {domanda['domanda']}**"
+            )
+
+            st.success(
+                f"💡 Risposta corretta: **{domanda['soluzione']}**"
+            )
+
         return
 
 
