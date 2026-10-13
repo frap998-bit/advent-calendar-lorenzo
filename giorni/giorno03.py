@@ -189,14 +189,16 @@ def mostra_gioco():
                 "corretta": corretta
             })
 
-
         # =================================================
         # TUTTO CORRETTO
         # =================================================
 
         if risposte_corrette == len(domande):
 
-            punti_assegnati = aggiungi_punti(3, 5)
+            punti_assegnati = aggiungi_punti(
+                3,
+                risposte_corrette
+            )
 
             st.divider()
 
@@ -207,9 +209,8 @@ def mostra_gioco():
             st.balloons()
 
             if punti_assegnati:
-
                 st.write(
-                    "🏆 **Hai conquistato 5 punti!**"
+                    f"🏆 **Hai conquistato {risposte_corrette} punti!**"
                 )
 
             return
