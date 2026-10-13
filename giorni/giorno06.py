@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 from utils.punteggio import (
@@ -7,33 +8,6 @@ from utils.punteggio import (
 
 
 def mostra_gioco():
-
-    # -------------------------
-    # CONTROLLO GIORNO GIÀ COMPLETATO
-    # -------------------------
-
-    if giorno_completato(6):
-        st.success("✅ Giorno 6 completato!")
-        st.write("🏆 Hai già conquistato i punti di questa sfida.")
-        return
-
-
-    # -------------------------
-    # TITOLO
-    # -------------------------
-
-    st.header("📸 Giorno 6 — Indovina il posto")
-
-    st.write(
-        "Vediamo quanto sei bravo a riconoscere i posti "
-        "dove siamo stati insieme! ❤️"
-    )
-
-    st.info(
-        "🎯 Ogni risposta corretta vale 1 punto. "
-        "Puoi conquistare fino a 3 punti!"
-    )
-
 
     # -------------------------
     # DOMANDE
@@ -71,6 +45,57 @@ def mostra_gioco():
             "corretta": "Sanremo"
         }
     ]
+
+
+    # -------------------------
+    # CONTROLLO GIORNO GIÀ COMPLETATO
+    # -------------------------
+
+    if giorno_completato(6):
+
+        st.success("✅ Giorno 6 completato!")
+        st.write("🏆 Hai già conquistato i punti di questa sfida.")
+
+        st.header("📸 Giorno 6 — Indovina il posto")
+
+        st.write(
+            "Ecco i posti dove siamo stati insieme! "
+            "Vediamo se te li ricordi tutti ❤️"
+        )
+
+        st.divider()
+
+        for i, domanda in enumerate(domande, start=1):
+
+            st.subheader(f"{i}. {domanda['domanda']}")
+
+            st.image(
+                domanda["foto"],
+                use_container_width=True
+            )
+
+            st.success(
+                f"📍 La risposta corretta era: **{domanda['corretta']}**"
+            )
+
+        return
+
+
+    # -------------------------
+    # TITOLO
+    # -------------------------
+
+    st.header("📸 Giorno 6 — Indovina il posto")
+
+    st.write(
+        "Vediamo quanto sei bravo a riconoscere i posti "
+        "dove siamo stati insieme! ❤️"
+    )
+
+    st.info(
+        "🎯 Ogni risposta corretta vale 1 punto. "
+        "Puoi conquistare fino a 3 punti!"
+    )
 
 
     # -------------------------
