@@ -86,12 +86,6 @@ def mostra_gioco():
             "domanda": "L'allergia mi impedisce di diventarlo.",
             "lettere": 7,
             "soluzione": "GATTARA"
-        },
-        {
-            "numero": 6,
-            "domanda": "L'asino che non è un asino.",
-            "lettere": 4,
-            "soluzione": "OLMO"
         }
     ]
 
