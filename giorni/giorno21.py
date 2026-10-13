@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 from utils.punteggio import (
@@ -7,18 +8,6 @@ from utils.punteggio import (
 
 
 def mostra_gioco():
-
-    # -------------------------
-    # CONTROLLO GIORNO GIÀ COMPLETATO
-    # -------------------------
-
-    if giorno_completato(21):
-        st.success("✅ Giorno 21 completato!")
-        st.write(
-            "🏆 Hai già completato questa sfida."
-        )
-        return
-
 
     # -------------------------
     # INIZIALIZZAZIONE
@@ -33,9 +22,44 @@ def mostra_gioco():
     if "giorno21_finito" not in st.session_state:
         st.session_state.giorno21_finito = False
 
+    if "giorno21_vinto" not in st.session_state:
+        st.session_state.giorno21_vinto = False
 
-    tentativi = st.session_state.giorno21_tentativi
+    # -------------------------
+    # CONTROLLO GIORNO GIÀ COMPLETATO
+    # -------------------------
 
+    if giorno_completato(21):
+
+        st.success("✅ Giorno 21 completato!")
+        st.header("🔐 La parola misteriosa")
+
+        st.write(
+            "Hai già affrontato questa sfida! "
+            "Ecco tutti gli indizi e la soluzione. ❤️"
+        )
+
+        st.divider()
+        st.subheader("💡 Gli indizi")
+
+        st.write("☀️ **1. Animale**")
+        st.write("😂 **2. Plurale**")
+        st.write("🎨 **3. Coda**")
+        st.write("🍦 **4. Omar e Sofia**")
+
+        st.divider()
+        st.subheader("🎯 La soluzione")
+
+        st.success("🍪 **TOPI**")
+
+        if st.session_state.giorno21_vinto:
+            st.write("🎉 Avevi indovinato!")
+            st.write("🏆 **Hai conquistato 4 punti!**")
+        else:
+            st.write("😂 Questa volta la parola ti è sfuggita!")
+            st.write("🏆 Hai già registrato il completamento della sfida.")
+
+        return
 
     # -------------------------
     # TITOLO
@@ -48,15 +72,14 @@ def mostra_gioco():
         "durante la scorsa estate."
     )
 
-    st.write(
-        "Hai **3 tentativi** per indovinarla."
-    )
+    st.write("Hai **3 tentativi** per indovinarla.")
 
     st.info(
         "🎯 Se indovini la parola conquisti **4 punti**. "
         "Dopo 2 tentativi sbagliati si sbloccherà un nuovo indizio..."
     )
 
+    tentativi = st.session_state.giorno21_tentativi
 
     # -------------------------
     # INDIZI
@@ -65,16 +88,13 @@ def mostra_gioco():
     st.subheader("💡 Gli indizi")
 
     st.write("☀️ **1. Animale**")
-
     st.write("😂 **2. Plurale**")
-
     st.write("🎨 **3. Coda**")
 
     if tentativi >= 2:
         st.write("🍦 **4. Omar e Sofia**")
     else:
         st.write("❓ **4. -**")
-
 
     # -------------------------
     # GIOCO GIÀ FINITO
@@ -84,24 +104,17 @@ def mostra_gioco():
 
         st.divider()
 
-        st.error(
-            "😂 Hai esaurito i 3 tentativi!"
-        )
+        if st.session_state.giorno21_vinto:
+            st.success("🎉 INDOVINATO!")
+            st.write("🏆 **Hai conquistato 4 punti!**")
+        else:
+            st.error("😂 Hai esaurito i 3 tentativi!")
+            st.write("🏆 **Hai conquistato 0 punti.**")
 
-        st.write(
-            "💡 La parola misteriosa era:"
-        )
-
-        st.success(
-            "🍪 **TOPI**"
-        )
-
-        st.write(
-            "🏆 **Hai conquistato 0 punti.**"
-        )
+        st.write("💡 La parola misteriosa era:")
+        st.success("🍪 **TOPI**")
 
         return
-
 
     # -------------------------
     # DOPO UN ERRORE
@@ -112,39 +125,22 @@ def mostra_gioco():
         st.divider()
 
         if tentativi == 1:
-
-            st.warning(
-                "❌ Nooo! Non è questa..."
-            )
-
-            st.write(
-                "Hai ancora **2 tentativi**."
-            )
+            st.warning("❌ Nooo! Non è questa...")
+            st.write("Hai ancora **2 tentativi**.")
 
         elif tentativi == 2:
-
-            st.warning(
-                "❌ Daiii pensa bene"
-            )
-
-            st.write(
-                "Hai ancora **1 tentativo**."
-            )
-
-            st.info(
-                "🍦 **Nuovo indizio sbloccato: Omar e Sofia**"
-            )
+            st.warning("❌ Daiii, pensa bene!")
+            st.write("Hai ancora **1 tentativo**.")
+            st.info("🍦 **Nuovo indizio sbloccato: Omar e Sofia**")
 
         if st.button(
             "➡️ Prova ancora",
             use_container_width=True
         ):
-
             st.session_state.giorno21_errore = False
             st.rerun()
 
         return
-
 
     # -------------------------
     # NUMERO TENTATIVO
@@ -152,10 +148,7 @@ def mostra_gioco():
 
     st.divider()
 
-    st.subheader(
-        f"🎯 Tentativo {tentativi + 1} di 3"
-    )
-
+    st.subheader(f"🎯 Tentativo {tentativi + 1} di 3")
 
     # -------------------------
     # INSERIMENTO RISPOSTA
@@ -166,7 +159,6 @@ def mostra_gioco():
         max_chars=30,
         key=f"giorno21_tentativo_{tentativi}"
     )
-
 
     # -------------------------
     # CONTROLLO RISPOSTA
@@ -179,19 +171,13 @@ def mostra_gioco():
 
         risposta = risposta.strip().lower()
 
-
         # -------------------------
         # RISPOSTA VUOTA
         # -------------------------
 
         if not risposta:
-
-            st.warning(
-                "Scrivi prima una risposta! 😏"
-            )
-
+            st.warning("Scrivi prima una risposta! 😏")
             return
-
 
         # -------------------------
         # RISPOSTA CORRETTA
@@ -199,31 +185,21 @@ def mostra_gioco():
 
         if risposta == "topi":
 
-            aggiungi_punti(9, 4)
+            aggiungi_punti(21, 4)
 
             st.session_state.giorno21_finito = True
-
-            st.success(
-                "🎉 INDOVINATO!"
-            )
-
-            st.write(
-                "🏆 **Hai conquistato 4 punti!**"
-            )
+            st.session_state.giorno21_vinto = True
+            st.session_state.giorno21_errore = False
 
             st.balloons()
-
-            return
-
+            st.rerun()
 
         # -------------------------
         # RISPOSTA SBAGLIATA
         # -------------------------
 
         st.session_state.giorno21_tentativi += 1
-
         tentativi = st.session_state.giorno21_tentativi
-
 
         # -------------------------
         # TERZO ERRORE → FINE GIOCO
@@ -231,35 +207,18 @@ def mostra_gioco():
 
         if tentativi >= 3:
 
-            # Segna il giorno come completato
-            # anche se ha conquistato 0 punti
-            aggiungi_punti(9, 0)
+            # Registra il completamento con 0 punti.
+            aggiungi_punti(21, 0)
 
             st.session_state.giorno21_finito = True
+            st.session_state.giorno21_vinto = False
+            st.session_state.giorno21_errore = False
 
-            st.error(
-                "😂 Niente da fare! Hai sbagliato tutti e 3 i tentativi."
-            )
-
-            st.write(
-                "💡 La parola misteriosa era:"
-            )
-
-            st.success(
-                "🍪 **topi**"
-            )
-
-            st.write(
-                "🏆 **Hai conquistato 0 punti.**"
-            )
-
-            return
-
+            st.rerun()
 
         # -------------------------
         # PRIMO / SECONDO ERRORE
         # -------------------------
 
         st.session_state.giorno21_errore = True
-
         st.rerun()
