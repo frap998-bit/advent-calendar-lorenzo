@@ -77,38 +77,8 @@ def mostra_gioco():
     st.header("📸 Giorno 22 — Indovina il mese!")
 
     # =====================================================
-    # GIORNO GIÀ COMPLETATO
-    # =====================================================
-
-    if giorno_completato(22):
-
-        st.success("✅ Giorno 22 completato!")
-
-        st.write(
-            "Hai già partecipato alla sfida! "
-            "Ecco le foto e le date corrette per rivivere "
-            "i nostri ricordi. ❤️"
-        )
-
-        st.divider()
-        st.subheader("📅 Le risposte corrette")
-
-        for i, domanda in enumerate(domande, start=1):
-
-            st.markdown(f"### {i}. {domanda['corretta']}")
-
-            st.image(
-                domanda["foto"],
-                use_container_width=True
-            )
-
-        st.divider()
-        st.write("🏆 Hai già conquistato i punti di questa sfida!")
-
-        return
-
-    # =====================================================
-    # RISULTATI GIÀ OTTENUTI NELLA SESSIONE
+    # RISULTATI DELLA PARTITA APPENA TERMINATA
+    # IMPORTANTE: prima di giorno_completato(22)
     # =====================================================
 
     if st.session_state.giorno22_risultati is not None:
@@ -162,8 +132,40 @@ def mostra_gioco():
                     f"❌ La tua risposta: {risposte_date[i]}"
                 )
                 st.info(
-                    f"💡 La risposta corretta era: **{domanda['corretta']}**"
+                    f"💡 La risposta corretta era: "
+                    f"**{domanda['corretta']}**"
                 )
+
+        return
+
+    # =====================================================
+    # CONTROLLO COMPLETAMENTO PRECEDENTE
+    # =====================================================
+
+    if giorno_completato(22):
+
+        st.success("✅ Giorno 22 completato!")
+
+        st.write(
+            "Hai già partecipato alla sfida! "
+            "Ecco le foto e le date corrette per rivivere "
+            "i nostri ricordi. ❤️"
+        )
+
+        st.divider()
+        st.subheader("📅 Le risposte corrette")
+
+        for i, domanda in enumerate(domande, start=1):
+
+            st.markdown(f"### {i}. {domanda['corretta']}")
+
+            st.image(
+                domanda["foto"],
+                use_container_width=True
+            )
+
+        st.divider()
+        st.write("🏆 Hai già conquistato i punti di questa sfida!")
 
         return
 
@@ -227,13 +229,20 @@ def mostra_gioco():
         # ASSEGNAZIONE PUNTI
         # -------------------------------------------------
 
-        aggiungi_punti(
-            22,
-            risposte_corrette
-        )
+        salvato = aggiungi_punti(22, risposte_corrette)
 
-        # Salva il risultato nella sessione per mostrarlo
-        # anche dopo il rerun di Streamlit.
+        if not salvato:
+            st.warning(
+                "Non è stato possibile registrare il risultato. "
+                "Controlla se il Giorno 22 è già completato "
+                "su Supabase."
+            )
+            return
+
+        # -------------------------------------------------
+        # SALVATAGGIO RISULTATO IN SESSIONE
+        # -------------------------------------------------
+
         st.session_state.giorno22_punti_ottenuti = risposte_corrette
 
         st.session_state.giorno22_risultati = {
