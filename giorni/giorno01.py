@@ -88,33 +88,6 @@ def mostra_gioco():
     )
 
 
-    # -------------------------
-    # DOMANDE
-    # -------------------------
-
-    domande = [
-        {
-            "domanda": "Chi dei due è più dolce?",
-            "risposta": "Lorenzo"
-        },
-        {
-            "domanda": "Chi dei due è più ritardatario?",
-            "risposta": "Francesca"
-        },
-        {
-            "domanda": "Chi dei due è più competitivo?",
-            "risposta": "Francesca"
-        },
-        {
-            "domanda": "Chi dei due è più disordinato?",
-            "risposta": "Lorenzo"
-        },
-        {
-            "domanda": "Chi dei due è più geloso?",
-            "risposta": "Lorenzo"
-        }
-    ]
-
 
     risposte = []
 
