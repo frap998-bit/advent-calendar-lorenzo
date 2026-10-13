@@ -9,21 +9,15 @@ from utils.punteggio import (
 
 def mostra_gioco():
 
-    # -------------------------
-    # CONTROLLO GIORNO GIÀ COMPLETATO
-    # -------------------------
+    # =====================================================
+    # FRASE DA INDOVINARE
+    # =====================================================
 
-    if giorno_completato(23):
-        st.success("✅ Giorno 23 completato!")
-        st.write(
-            "🏆 Hai già completato questa sfida."
-        )
-        return
+    frase = "TI AMO TANTO"
 
-
-    # -------------------------
+    # =====================================================
     # INIZIALIZZAZIONE
-    # -------------------------
+    # =====================================================
 
     if "giorno23_errori" not in st.session_state:
         st.session_state.giorno23_errori = 0
@@ -37,17 +31,107 @@ def mostra_gioco():
     if "giorno23_vinto" not in st.session_state:
         st.session_state.giorno23_vinto = False
 
-
-    frase = "TI AMO TANTO"
-    errori = st.session_state.giorno23_errori
-    lettere = st.session_state.giorno23_lettere
-
-
-    # -------------------------
+    # =====================================================
     # TITOLO
-    # -------------------------
+    # =====================================================
 
     st.header("❤️ Giorno 23 — L'impiccato")
+
+    # =====================================================
+    # GIORNO GIÀ COMPLETATO
+    # =====================================================
+
+    if giorno_completato(23):
+
+        st.success("✅ Giorno 23 completato!")
+
+        st.write(
+            "La frase misteriosa era..."
+        )
+
+        st.markdown(
+            """
+            <div style="
+                text-align: center;
+                padding: 25px 10px;
+                border-radius: 15px;
+                background-color: rgba(255, 105, 180, 0.12);
+            ">
+                <div style="font-size: 42px;">❤️</div>
+                <div style="
+                    font-size: 32px;
+                    font-weight: bold;
+                    letter-spacing: 4px;
+                ">TI AMO TANTO</div>
+                <div style="font-size: 42px;">❤️</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        st.write("")
+
+        if st.session_state.giorno23_vinto:
+            st.success("🎉 Avevi indovinato! Bravissimo!")
+            st.write("🏆 Hai conquistato 4 punti!")
+        elif st.session_state.giorno23_finito:
+            st.info(
+                "💌 Anche se non avevi indovinato, "
+                "la frase resta sempre la stessa: TI AMO TANTO."
+            )
+            st.write("🏆 Sfida conclusa.")
+        else:
+            st.write("🏆 Hai già completato questa sfida.")
+
+        return
+
+    # =====================================================
+    # GIOCO GIÀ FINITO NELLA SESSIONE
+    # =====================================================
+
+    if st.session_state.giorno23_finito:
+
+        st.divider()
+
+        if st.session_state.giorno23_vinto:
+
+            st.success("🎉 HAI INDOVINATO!")
+
+            st.write("❤️ La frase era:")
+
+            st.markdown(
+                """
+                <h1 style="text-align: center; color: #e75480;">
+                    ❤️ TI AMO TANTO ❤️
+                </h1>
+                """,
+                unsafe_allow_html=True
+            )
+
+            st.write("🏆 **Hai conquistato 4 punti!**")
+
+        else:
+
+            st.error("💀 Hai fatto 4 errori!")
+
+            st.write("La frase era:")
+
+            st.markdown(
+                """
+                <h1 style="text-align: center; color: #e75480;">
+                    ❤️ TI AMO TANTO ❤️
+                </h1>
+                """,
+                unsafe_allow_html=True
+            )
+
+            st.write("🏆 **Hai conquistato 0 punti.**")
+
+        return
+
+    # =====================================================
+    # ISTRUZIONI
+    # =====================================================
 
     st.write(
         "C'è una frase misteriosa da indovinare..."
@@ -62,76 +146,29 @@ def mostra_gioco():
         "🎯 Se indovini la frase conquisti **4 punti!**"
     )
 
-
-    # -------------------------
-    # GIOCO GIÀ FINITO
-    # -------------------------
-
-    if st.session_state.giorno23_finito:
-
-        st.divider()
-
-        if st.session_state.giorno23_vinto:
-
-            st.success(
-                "🎉 HAI INDOVINATO!"
-            )
-
-            st.write(
-                "❤️ La frase era:"
-            )
-
-            st.success(
-                "❤️ **TI AMO TANTO** ❤️"
-            )
-
-            st.write(
-                "🏆 **Hai conquistato 4 punti!**"
-            )
-
-        else:
-
-            st.error(
-                "💀 Hai fatto 4 errori!"
-            )
-
-            st.write(
-                "La frase era:"
-            )
-
-            st.success(
-                "❤️ **TI AMO TANTO**"
-            )
-
-            st.write(
-                "🏆 **Hai conquistato 0 punti.**"
-            )
-
-        return
-
-
-    # -------------------------
+    # =====================================================
     # FRASE NASCOSTA
-    # -------------------------
-    
+    # =====================================================
+
+    lettere = st.session_state.giorno23_lettere
+    errori = st.session_state.giorno23_errori
+
     frase_visualizzata = ""
-    
+
     for carattere in frase:
-    
+
         if carattere == " ":
             frase_visualizzata += "&nbsp;&nbsp;&nbsp;"
-    
+
         elif carattere in lettere:
             frase_visualizzata += carattere + " "
-    
+
         else:
             frase_visualizzata += "_ "
-    
-    
+
     st.divider()
-    
     st.subheader("🔤 La frase")
-    
+
     st.markdown(
         f"""
         <h1 style="
@@ -145,14 +182,11 @@ def mostra_gioco():
         unsafe_allow_html=True
     )
 
-
-    # -------------------------
+    # =====================================================
     # STATO DEL GIOCO
-    # -------------------------
+    # =====================================================
 
-    st.write(
-        f"❌ Errori: **{errori} / 4**"
-    )
+    st.write(f"❌ Errori: **{errori} / 4**")
 
     if lettere:
         st.write(
@@ -160,10 +194,9 @@ def mostra_gioco():
             + ", ".join(lettere)
         )
 
-
-    # -------------------------
+    # =====================================================
     # CONTROLLO VITTORIA
-    # -------------------------
+    # =====================================================
 
     lettere_da_indovinare = [
         carattere
@@ -171,33 +204,21 @@ def mostra_gioco():
         if carattere != " "
     ]
 
-    if all(lettera in lettere for lettera in lettere_da_indovinare):
+    if all(
+        lettera in lettere
+        for lettera in lettere_da_indovinare
+    ):
 
         aggiungi_punti(23, 4)
 
         st.session_state.giorno23_finito = True
         st.session_state.giorno23_vinto = True
 
-        st.success(
-            "🎉 BRAVISSIMO! Hai indovinato la frase!"
-        )
+        st.rerun()
 
-        st.write(
-            "❤️ **TI AMO TANTO** ❤️"
-        )
-
-        st.write(
-            "🏆 **Hai conquistato 4 punti!**"
-        )
-
-        st.balloons()
-
-        return
-
-
-    # -------------------------
+    # =====================================================
     # INSERIMENTO LETTERA
-    # -------------------------
+    # =====================================================
 
     st.divider()
 
@@ -207,10 +228,9 @@ def mostra_gioco():
         key=f"giorno23_input_{errori}_{len(lettere)}"
     )
 
-
-    # -------------------------
+    # =====================================================
     # PULSANTE
-    # -------------------------
+    # =====================================================
 
     if st.button(
         "🔎 Prova!",
@@ -219,95 +239,55 @@ def mostra_gioco():
 
         lettera = lettera.strip().upper()
 
-
-        # -------------------------
+        # -------------------------------------------------
         # INPUT VUOTO
-        # -------------------------
+        # -------------------------------------------------
 
         if not lettera:
-
-            st.warning(
-                "Scrivi una lettera! 😏"
-            )
-
+            st.warning("Scrivi una lettera! 😏")
             return
 
-
-        # -------------------------
-        # CONTROLLO LETTERA
-        # -------------------------
+        # -------------------------------------------------
+        # INPUT NON VALIDO
+        # -------------------------------------------------
 
         if not lettera.isalpha():
-
-            st.warning(
-                "Inserisci una lettera valida! 😏"
-            )
-
+            st.warning("Inserisci una lettera valida! 😏")
             return
 
-
-        # -------------------------
+        # -------------------------------------------------
         # LETTERA GIÀ PROVATA
-        # -------------------------
+        # -------------------------------------------------
 
         if lettera in lettere:
-
-            st.warning(
-                "Questa lettera l'hai già provata! 👀"
-            )
-
+            st.warning("Questa lettera l'hai già provata! 👀")
             return
 
-
-        # -------------------------
+        # -------------------------------------------------
         # AGGIUNGI LETTERA
-        # -------------------------
+        # -------------------------------------------------
 
         st.session_state.giorno23_lettere.append(lettera)
 
-
-        # -------------------------
+        # -------------------------------------------------
         # LETTERA SBAGLIATA
-        # -------------------------
+        # -------------------------------------------------
 
         if lettera not in frase.replace(" ", ""):
 
             st.session_state.giorno23_errori += 1
 
-            errori = st.session_state.giorno23_errori
-
-
-            # -------------------------
-            # 4 ERRORI → FINE
-            # -------------------------
-
-            if errori >= 4:
+            if st.session_state.giorno23_errori >= 4:
 
                 aggiungi_punti(23, 0)
 
                 st.session_state.giorno23_finito = True
                 st.session_state.giorno23_vinto = False
 
-                st.rerun()
-
-            else:
-
-                st.warning(
-                    f"❌ Lettera sbagliata! "
-                    f"Hai ancora **{4 - errori} errori**."
-                )
-
-                st.rerun()
-
-
-        # -------------------------
-        # LETTERA CORRETTA
-        # -------------------------
-
-        else:
-
-            st.success(
-                f"✅ La lettera **{lettera}** c'è!"
-            )
-
             st.rerun()
+
+        # -------------------------------------------------
+        # LETTERA CORRETTA
+        # -------------------------------------------------
+
+        st.rerun()
