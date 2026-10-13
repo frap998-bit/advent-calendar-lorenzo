@@ -9,6 +9,42 @@ from utils.punteggio import (
 
 def mostra_gioco():
 
+    # =====================================================
+    # DOMANDE
+    # =====================================================
+
+    domande = [
+        {
+            "numero": 1,
+            "domanda": 'Non sopporto quando mi dici che "parto in ____".',
+            "lettere": 6,
+            "soluzione": "QUARTA"
+        },
+        {
+            "numero": 2,
+            "domanda": "La cosa che mia mamma ci ha ordinato di sistemare quest’estate.",
+            "lettere": 8,
+            "soluzione": "ALTALENA"
+        },
+        {
+            "numero": 3,
+            "domanda": "Posto dove ho patito il freddo, perché tu invece stavi bene.",
+            "lettere": 7,
+            "soluzione": "LIVIGNO"
+        },
+        {
+            "numero": 4,
+            "domanda": "Il 2 che ci ha fatto conoscere.",
+            "lettere": 4,
+            "soluzione": "LUCA"
+        },
+        {
+            "numero": 5,
+            "domanda": "L'allergia mi impedisce di diventarlo.",
+            "lettere": 7,
+            "soluzione": "GATTARA"
+        }
+    ]
 
     # =====================================================
     # CONTROLLO GIORNO GIÀ COMPLETATO
@@ -74,42 +110,6 @@ def mostra_gioco():
     )
 
 
-    # =====================================================
-    # DOMANDE
-    # =====================================================
-
-    domande = [
-        {
-            "numero": 1,
-            "domanda": 'Non sopporto quando mi dici che "parto in ____".',
-            "lettere": 6,
-            "soluzione": "QUARTA"
-        },
-        {
-            "numero": 2,
-            "domanda": "La cosa che mia mamma ci ha ordinato di sistemare quest’estate.",
-            "lettere": 8,
-            "soluzione": "ALTALENA"
-        },
-        {
-            "numero": 3,
-            "domanda": "Posto dove ho patito il freddo, perché tu invece stavi bene.",
-            "lettere": 7,
-            "soluzione": "LIVIGNO"
-        },
-        {
-            "numero": 4,
-            "domanda": "Il 2 che ci ha fatto conoscere.",
-            "lettere": 4,
-            "soluzione": "LUCA"
-        },
-        {
-            "numero": 5,
-            "domanda": "L'allergia mi impedisce di diventarlo.",
-            "lettere": 7,
-            "soluzione": "GATTARA"
-        }
-    ]
 
 
     # =====================================================
