@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 from utils.punteggio import (
@@ -8,6 +9,62 @@ from utils.punteggio import (
 
 def mostra_gioco():
 
+    # -------------------------
+    # DOMANDE
+    # -------------------------
+
+    domande = [
+        {
+            "domanda": "📖 Quale libro sto leggendo in questo momento?",
+            "opzioni": [
+                "Il nome della rosa — Umberto Eco",
+                "La gatta persiana — Alessandro Varaldo",
+                "Dieci piccoli indiani — Agatha Christie",
+                "Il grande Gatsby — F. Scott Fitzgerald"
+            ],
+            "corretta": "La gatta persiana — Alessandro Varaldo"
+        },
+        {
+            "domanda": "🎹 Quale canzone mi piace particolarmente suonare al pianoforte?",
+            "opzioni": [
+                "Nuvole Bianche — Ludovico Einaudi",
+                "Aria — Giovanni Allevi",
+                "River Flows in You — Yiruma",
+                "Comptine d’un autre été — Yann Tiersen"
+            ],
+            "corretta": "Aria — Giovanni Allevi"
+        },
+        {
+            "domanda": "📏 Quanto sono alta?",
+            "opzioni": [
+                "1,59 m",
+                "1,61 m",
+                "1,62 m",
+                "1,63 m"
+            ],
+            "corretta": "1,61 m"
+        },
+        {
+            "domanda": "💇‍♀️ Di che colore sono i miei capelli?",
+            "opzioni": [
+                "Biondo miele",
+                "Biondo cenere",
+                "Castano chiaro",
+                "Biondo dorato"
+            ],
+            "corretta": "Biondo cenere"
+        },
+        {
+            "domanda": "🩸 Quanti anni avevo quando mi è arrivato il ciclo per la prima volta?",
+            "opzioni": [
+                "12 anni",
+                "13 anni",
+                "14 anni",
+                "15 anni"
+            ],
+            "corretta": "14 anni"
+        }
+    ]
 
     # -------------------------
     # CONTROLLO GIORNO GIÀ COMPLETATO
@@ -28,18 +85,12 @@ def mostra_gioco():
         st.divider()
 
         for i, domanda in enumerate(domande, start=1):
-
-            st.markdown(
-                f"**{i}. {domanda['domanda']}**"
-            )
-
+            st.markdown(f"**{i}. {domanda['domanda']}**")
             st.success(
                 f"❤️ Risposta corretta: **{domanda['corretta']}**"
             )
 
         return
-
-
 
     # -------------------------
     # TITOLO
@@ -56,69 +107,6 @@ def mostra_gioco():
         "Per ogni risposta corretta conquisti **1 punto**!"
     )
 
-
-    # -------------------------
-    # DOMANDE
-    # -------------------------
-
-    domande = [
-        {
-            "domanda": "📖 Quale libro sto leggendo in questo momento?",
-            "opzioni": [
-                "Il nome della rosa — Umberto Eco",
-                "La gatta persiana — Alessandro Varaldo",
-                "Dieci piccoli indiani — Agatha Christie",
-                "Il grande Gatsby — F. Scott Fitzgerald"
-            ],
-            "corretta": "La gatta persiana — Alessandro Varaldo"
-        },
-
-        {
-            "domanda": "🎹 Quale canzone mi piace particolarmente suonare al pianoforte?",
-            "opzioni": [
-                "Nuvole Bianche — Ludovico Einaudi",
-                "Aria — Giovanni Allevi",
-                "River Flows in You — Yiruma",
-                "Comptine d’un autre été — Yann Tiersen"
-            ],
-            "corretta": "Aria — Giovanni Allevi"
-        },
-
-        {
-            "domanda": "📏 Quanto sono alta?",
-            "opzioni": [
-                "1,59 m",
-                "1,61 m",
-                "1,62 m",
-                "1,63 m"
-            ],
-            "corretta": "1,61 m"
-        },
-
-        {
-            "domanda": "💇‍♀️ Di che colore sono i miei capelli?",
-            "opzioni": [
-                "Biondo miele",
-                "Biondo cenere",
-                "Castano chiaro",
-                "Biondo dorato"
-            ],
-            "corretta": "Biondo cenere"
-        },
-
-        {
-            "domanda": "🩸 Quanti anni avevo quando mi è arrivato il ciclo per la prima volta?",
-            "opzioni": [
-                "12 anni",
-                "13 anni",
-                "14 anni",
-                "15 anni"
-            ],
-            "corretta": "14 anni"
-        }
-    ]
-
-
     # -------------------------
     # RISPOSTE
     # -------------------------
@@ -128,10 +116,7 @@ def mostra_gioco():
     for i, domanda in enumerate(domande, start=1):
 
         st.write("")
-
-        st.subheader(
-            f"{i}. {domanda['domanda']}"
-        )
+        st.subheader(f"{i}. {domanda['domanda']}")
 
         risposta = st.radio(
             "Scegli una risposta:",
@@ -141,9 +126,7 @@ def mostra_gioco():
 
         risposte.append(risposta)
 
-
     st.write("")
-
 
     # -------------------------
     # CONTROLLO
@@ -157,10 +140,8 @@ def mostra_gioco():
         risposte_corrette = 0
 
         for i, domanda in enumerate(domande):
-
             if risposte[i] == domanda["corretta"]:
                 risposte_corrette += 1
-
 
         # -------------------------
         # ASSEGNAZIONE PUNTI
@@ -171,7 +152,6 @@ def mostra_gioco():
             risposte_corrette
         )
 
-
         # -------------------------
         # RISULTATO
         # -------------------------
@@ -179,40 +159,32 @@ def mostra_gioco():
         st.divider()
 
         if risposte_corrette == 5:
-
             st.success(
                 "🎉 PERFETTO! Mi conosci proprio benissimo!"
             )
-
             st.balloons()
 
         elif risposte_corrette >= 3:
-
             st.success(
                 f"🥰 Niente male! Hai totalizzato "
                 f"**{risposte_corrette}/5 punti!**"
             )
 
         elif risposte_corrette >= 1:
-
             st.warning(
                 f"😏 Puoi fare di meglio! Hai totalizzato "
                 f"**{risposte_corrette}/5 punti.**"
             )
 
         else:
-
             st.error(
                 "😂 0/5... Forse dobbiamo ripassare un po'!"
             )
 
-
         if punti_assegnati:
-
             st.write(
                 f"🏆 **Hai conquistato {risposte_corrette} punti!**"
             )
-
 
         # -------------------------
         # SOLUZIONI
@@ -222,7 +194,4 @@ def mostra_gioco():
         st.write("### 💡 Le risposte corrette erano:")
 
         for i, domanda in enumerate(domande, start=1):
-
-            st.write(
-                f"**{i}.** {domanda['corretta']}"
-            )
+            st.write(f"**{i}.** {domanda['corretta']}")
