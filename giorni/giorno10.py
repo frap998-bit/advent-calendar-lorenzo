@@ -36,7 +36,7 @@ def mostra_gioco():
         )
     
         st.write(
-            "💕 Spero che tu abbia colto il messaggio nascosto!"
+            "Tra cinque anni si intende ovviamente!"
         )
     
         return
