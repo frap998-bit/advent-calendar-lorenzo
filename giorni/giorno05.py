@@ -26,7 +26,7 @@ def mostra_gioco():
     if giorno_completato(5):
 
         st.success("✅ Giorno 5 completato!")
-        st.write("🏆 Hai già conquistato i 5 punti di questa sfida.")
+        st.write("🏆 Hai già conquistato i 4 punti di questa sfida.")
 
         st.header("❤️ Giorno 5 — Ti ricordi le scemate che inventi?")
 
@@ -91,7 +91,7 @@ def mostra_gioco():
 
         if risposta.startswith("A."):
 
-            punti_assegnati = aggiungi_punti(5, 5)
+            punti_assegnati = aggiungi_punti(5, 4)
 
             st.success(
                 "🎉 Esatto! Direi che questo ricordo te lo sei guadagnato! ❤️"
@@ -101,7 +101,7 @@ def mostra_gioco():
 
             if punti_assegnati:
                 st.write(
-                    "🏆 **Hai conquistato 5 punti!**"
+                    "🏆 **Hai conquistato 4 punti!**"
                 )
 
         else:
