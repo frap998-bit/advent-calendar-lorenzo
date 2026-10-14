@@ -208,13 +208,15 @@ def aggiungi_punti(giorno, punti):
 # RESET COMPLETO DEL CALENDARIO
 # =========================================================
 
+
 def reset_punteggio():
     """
-    Azzera i punti e il completamento di tutti i giorni.
+    Azzera il calendario su Supabase e aggiorna
+    lo stato locale della sessione.
     """
 
     try:
-        (
+        risposta = (
             get_supabase()
             .table("punteggio")
             .update({
@@ -225,28 +227,25 @@ def reset_punteggio():
             .execute()
         )
 
-        # Invalida la cache dei dati precedenti.
+        # Invalida i dati memorizzati in cache.
         invalida_cache_punteggio()
 
-        # Aggiorna subito lo stato della sessione.
+        # Aggiorna immediatamente lo stato locale.
         st.session_state.punteggio = 0
         st.session_state.giorni_completati = set()
 
-        # Elimina gli stati temporanei dei minigiochi.
-        chiavi_da_rimuovere = [
-            chiave
-            for chiave in list(st.session_state.keys())
-            if chiave.startswith("giorno")
-            and chiave != "giorno_aperto"
-        ]
-
-        for chiave in chiavi_da_rimuovere:
-            del st.session_state[chiave]
+        # Rimuove gli stati temporanei dei minigiochi.
+        for chiave in list(st.session_state.keys()):
+            if (
+                chiave.startswith("giorno")
+                and chiave != "giorno_aperto"
+            ):
+                del st.session_state[chiave]
 
         return True
 
     except Exception as e:
         st.error("Errore durante il reset del punteggio.")
         st.code(str(e))
-
         return False
+
