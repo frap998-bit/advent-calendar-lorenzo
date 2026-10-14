@@ -65,7 +65,7 @@ def mostra_gioco():
                 unsafe_allow_html=True
             )
 
-            st.write("🏆 **Hai conquistato 4 punti!**")
+            st.write("🏆 **Hai conquistato 5 punti!**")
 
         else:
 
@@ -131,7 +131,7 @@ def mostra_gioco():
         "Riuscirai a scoprirla? 👀"
     )
 
-    st.info("🎯 Se indovini la frase conquisti **4 punti!**")
+    st.info("🎯 Se indovini la frase conquisti **5 punti!**")
 
     # =====================================================
     # FRASE NASCOSTA
@@ -198,7 +198,7 @@ def mostra_gioco():
 
         if not st.session_state.giorno23_punti_salvati:
 
-            salvato = aggiungi_punti(23, 4)
+            salvato = aggiungi_punti(23, 5)
 
             if not salvato:
                 st.warning(
