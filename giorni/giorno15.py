@@ -16,7 +16,7 @@ def mostra_gioco():
     if giorno_completato(15):
 
         st.success("✅ Giorno 15 completato!")
-        st.write("🏆 Hai già conquistato i 5 punti di questa sfida.")
+        st.write("🏆 Hai già conquistato i 3 punti di questa sfida.")
 
         st.header("❤️ Giorno 15 — Una cosa per te")
 
@@ -112,7 +112,7 @@ def mostra_gioco():
             use_container_width=True
         ):
 
-            punti_assegnati = aggiungi_punti(15, 5)
+            punti_assegnati = aggiungi_punti(15, 3)
 
             st.success(
                 "🥰 Bravo. Te lo meriti oggi e tutti i giorni. ❤️"
@@ -122,7 +122,7 @@ def mostra_gioco():
 
             if punti_assegnati:
                 st.write(
-                    "🏆 **Hai conquistato 5 punti!**"
+                    "🏆 **Hai conquistato 3 punti!**"
                 )
 
             st.markdown(
