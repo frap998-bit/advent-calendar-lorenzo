@@ -10,8 +10,8 @@ from supabase import create_client
 @st.cache_resource
 def get_supabase():
     """
-    Crea il client una sola volta e lo riutilizza
-    nelle successive esecuzioni dell'app.
+    Crea il client Supabase una sola volta
+    e lo riutilizza nelle successive esecuzioni.
     """
     url = st.secrets["SUPABASE_URL"]
     key = st.secrets["SUPABASE_KEY"]
@@ -20,18 +20,47 @@ def get_supabase():
 
 
 # =========================================================
-# INIZIALIZZAZIONE DELLO STATO LOCALE
+# CARICAMENTO DATI CON CACHE
+# =========================================================
+
+@st.cache_data(ttl=60)
+def carica_dati_punteggio():
+    """
+    Recupera i dati da Supabase.
+
+    La cache dura 60 secondi e viene invalidata
+    dopo un salvataggio o un reset.
+    """
+    risposta = (
+        get_supabase()
+        .table("punteggio")
+        .select("giorno, punti, completato")
+        .execute()
+    )
+
+    return risposta.data or []
+
+
+def invalida_cache_punteggio():
+    """
+    Forza una nuova lettura dei dati alla prossima richiesta.
+    """
+    carica_dati_punteggio.clear()
+
+
+# =========================================================
+# AGGIORNAMENTO DELLO STATO LOCALE
 # =========================================================
 
 def inizializza_punteggio(forza_aggiornamento=False):
     """
-    Carica i dati da Supabase soltanto se necessario.
+    Inizializza il punteggio nella sessione Streamlit.
 
     forza_aggiornamento=True:
-        rilegge i dati dal database.
+        forza una nuova lettura da Supabase.
 
     forza_aggiornamento=False:
-        usa i dati già presenti nella sessione.
+        utilizza i dati già presenti nella sessione.
     """
 
     if (
@@ -41,17 +70,11 @@ def inizializza_punteggio(forza_aggiornamento=False):
     ):
         return
 
+    if forza_aggiornamento:
+        invalida_cache_punteggio()
+
     try:
-        supabase = get_supabase()
-
-        risposta = (
-            supabase
-            .table("punteggio")
-            .select("giorno, punti, completato")
-            .execute()
-        )
-
-        dati = risposta.data or []
+        dati = carica_dati_punteggio()
 
         dati_completati = [
             riga
@@ -59,22 +82,24 @@ def inizializza_punteggio(forza_aggiornamento=False):
             if riga.get("completato") is True
         ]
 
-        st.session_state.punteggio = sum(
+        punteggio = sum(
             int(riga.get("punti") or 0)
             for riga in dati_completati
         )
 
-        st.session_state.giorni_completati = {
+        giorni_completati = {
             int(riga["giorno"])
             for riga in dati_completati
         }
+
+        st.session_state.punteggio = punteggio
+        st.session_state.giorni_completati = giorni_completati
 
     except Exception as e:
         st.error("Errore durante il caricamento del punteggio.")
         st.code(str(e))
 
-        # Inizializza lo stato solo se non esiste già,
-        # evitando di cancellare dati validi in memoria.
+        # Non sovrascrive eventuali dati validi già in memoria.
         if "punteggio" not in st.session_state:
             st.session_state.punteggio = 0
 
@@ -89,9 +114,8 @@ def inizializza_punteggio(forza_aggiornamento=False):
 def get_punteggio():
     """
     Restituisce il punteggio dalla sessione.
-    Non effettua richieste al database se già caricato.
+    Non interroga il database a ogni chiamata.
     """
-
     inizializza_punteggio()
 
     return st.session_state.punteggio
@@ -104,9 +128,8 @@ def get_punteggio():
 def giorno_completato(giorno):
     """
     Controlla lo stato in memoria.
-    Non interroga Supabase per ogni casella del calendario.
+    Non esegue richieste a Supabase per ogni casella.
     """
-
     inizializza_punteggio()
 
     return int(giorno) in st.session_state.giorni_completati
@@ -130,17 +153,14 @@ def aggiungi_punti(giorno, punti):
     punti = int(punti)
 
     try:
-        # Verifica lo stato reale prima di salvare,
-        # per evitare di assegnare punti due volte.
+        # Verifica lo stato aggiornato prima del salvataggio.
         inizializza_punteggio(forza_aggiornamento=True)
 
         if giorno in st.session_state.giorni_completati:
             return False
 
-        supabase = get_supabase()
-
         risposta = (
-            supabase
+            get_supabase()
             .table("punteggio")
             .update({
                 "completato": True,
@@ -151,31 +171,31 @@ def aggiungi_punti(giorno, punti):
             .execute()
         )
 
-        # Se non è stata aggiornata alcuna riga,
-        # il salvataggio non è confermato.
         if not risposta.data:
+            # Rilegge i dati reali dal database.
             inizializza_punteggio(forza_aggiornamento=True)
 
             st.warning(
                 f"Il Giorno {giorno} non è stato salvato. "
-                "Controlla la riga corrispondente in Supabase."
+                "Verifica che esista una riga per questo giorno "
+                "e che non sia già completato."
             )
 
             return False
 
-        # Aggiorna immediatamente lo stato locale.
-        # Evita un'ulteriore lettura del database.
-        st.session_state.giorni_completati.add(giorno)
+        # Aggiorna la cache e lo stato locale.
+        invalida_cache_punteggio()
 
+        st.session_state.giorni_completati.add(giorno)
         st.session_state.punteggio += punti
 
         return True
 
     except Exception as e:
-        st.error("Errore durante il salvataggio su Supabase:")
+        st.error("Errore durante il salvataggio su Supabase.")
         st.code(str(e))
 
-        # Tenta di riallineare lo stato con il database.
+        # Tenta di riallineare la sessione con il database.
         try:
             inizializza_punteggio(forza_aggiornamento=True)
         except Exception:
@@ -194,10 +214,8 @@ def reset_punteggio():
     """
 
     try:
-        supabase = get_supabase()
-
         (
-            supabase
+            get_supabase()
             .table("punteggio")
             .update({
                 "completato": False,
@@ -207,15 +225,17 @@ def reset_punteggio():
             .execute()
         )
 
-        # Aggiorna subito la sessione.
+        # Invalida la cache dei dati precedenti.
+        invalida_cache_punteggio()
+
+        # Aggiorna subito lo stato della sessione.
         st.session_state.punteggio = 0
         st.session_state.giorni_completati = set()
 
-        # Pulisce gli eventuali risultati temporanei
-        # dei minigiochi per evitare schermate obsolete.
+        # Elimina gli stati temporanei dei minigiochi.
         chiavi_da_rimuovere = [
             chiave
-            for chiave in st.session_state.keys()
+            for chiave in list(st.session_state.keys())
             if chiave.startswith("giorno")
             and chiave != "giorno_aperto"
         ]
@@ -226,7 +246,7 @@ def reset_punteggio():
         return True
 
     except Exception as e:
-        st.error("Errore durante il reset del punteggio:")
+        st.error("Errore durante il reset del punteggio.")
         st.code(str(e))
 
         return False
