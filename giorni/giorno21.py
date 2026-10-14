@@ -54,7 +54,7 @@ def mostra_gioco():
             st.write("🏆 **Hai conquistato 0 punti.**")
 
         st.write("💡 La parola misteriosa era:")
-        st.success("🍪 **TOPI**")
+        st.success("**TOPI**")
 
         st.divider()
         st.subheader("💡 Rivediamo tutti gli indizi")
@@ -92,7 +92,7 @@ def mostra_gioco():
         st.divider()
         st.subheader("🎯 La soluzione")
 
-        st.success("🍪 **TOPI**")
+        st.success("**TOPI**")
 
         st.write("🏆 Hai già registrato il completamento della sfida.")
 
