@@ -14,12 +14,12 @@ def mostra_gioco():
     # =====================================================
 
     indizi = [
-        ("📍 DOVE", "A casa Pittoni", 4),
-        ("🧩 COME", "Attendendo con ansia", 3),
-        ("📅 QUANDO", "Una domenica sera", 2),
+        ("📍 DOVE", "Davanti a un panino", 4),
+        ("🧩 COME", "Con il pollo e il bacon", 3),
+        ("📅 QUANDO", "Una sera qualsiasi", 2),
         (
             "❤️ PERCHÉ",
-            "Perché quella di Marco è la mia preferita…",
+            "Perché il bel e bun è la nostra preferita!",
             1
         )
     ]
@@ -56,7 +56,7 @@ def mostra_gioco():
             st.subheader(titolo)
             st.info(testo)
 
-        st.success("🎉 Esatto! La parola era **PIZZA**! 🍕")
+        st.success("🎉 Esatto! La parola era **PIADINERIA**!")
 
         st.success(
             f"🏆 Hai conquistato "
@@ -76,7 +76,7 @@ def mostra_gioco():
 
         st.error("❌ Hai utilizzato tutti gli indizi!")
 
-        st.warning("🍕 La parola misteriosa era **PIZZA**!")
+        st.warning("La parola misteriosa era **PIADINERIA**!")
 
         st.write("🏆 Hai conquistato **0 punti**.")
 
@@ -110,11 +110,8 @@ def mostra_gioco():
             st.subheader(titolo)
             st.info(testo)
 
-        st.success("🎉 La parola misteriosa era **PIZZA**! 🍕")
+        st.success("🎉 La parola misteriosa era **PIADINERIA**!")
 
-        st.caption(
-            "A volte le cose più belle iniziano con una pizza. ❤️"
-        )
 
         return
 
@@ -163,7 +160,7 @@ def mostra_gioco():
         # RISPOSTA CORRETTA
         # -------------------------------------------------
 
-        if risposta_pulita == "pizza":
+        if risposta_pulita == "piadineria":
 
             punti = indizi[indizio][2]
 
