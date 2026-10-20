@@ -18,7 +18,7 @@ def mostra_gioco():
         st.success("✅ Giorno 11 completato!")
         st.write("🏆 Hai già conquistato i 3 punti di questa sfida.")
 
-        st.header("❤️ Giorno 11 — Una cosa per te")
+        st.header("❤️ Giorno 11 — Un pensiero per te")
 
         st.divider()
 
@@ -47,7 +47,7 @@ def mostra_gioco():
     # TITOLO E MESSAGGIO
     # =====================================================
 
-    st.header("❤️ Giorno 11 — Una cosa per te")
+    st.header("❤️ Giorno 11 — Un pensiero per te")
 
     st.write(
         "Oggi niente gioco, ti volevo solo ricordare una cosa..."
