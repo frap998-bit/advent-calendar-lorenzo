@@ -20,11 +20,6 @@ def mostra_gioco():
 
         st.header("❤️ Giorno 11 — Una cosa per te")
 
-        st.write(
-            "🌱 Prima di iniziare la giornata, ricordati "
-            "di dedicare un pensiero bello anche a te stesso."
-        )
-
         st.divider()
 
         st.markdown(
@@ -36,14 +31,10 @@ def mostra_gioco():
                 background-color: rgba(233, 30, 99, 0.08);
             ">
                 <h2 style="color: #e91e63;">
-                    🥰 Te lo meriti.
+                    🥰 Un bacino per te.
                 </h2>
                 <p style="font-size: 18px;">
-                    Oggi e tutti i giorni. ❤️
-                </p>
-                <p style="font-size: 16px;">
-                    Non devi essere perfetto per essere una persona speciale.
-                    Ricordatelo, soprattutto nei giorni più difficili.
+                    Ti amo ❤️
                 </p>
             </div>
             """,
