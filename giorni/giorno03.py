@@ -55,7 +55,7 @@ def mostra_gioco():
         st.success("✅ Giorno 3 completato!")
         st.write("🏆 Hai già conquistato i punti di questa sfida.")
 
-        st.header("❤️ Giorno 3 — Quanto ti ricordi?")
+        st.header("❤️ Giorno 3 — Quizzettino?")
 
         st.write(
             "Rivediamo le nostre piccole avventure... "
@@ -94,15 +94,7 @@ def mostra_gioco():
     # TITOLO
     # =====================================================
 
-    st.header("❤️ Giorno 3 — Quanto ti ricordi?")
-
-    st.write(
-        "Vediamo quanto ti ricordi delle nostre piccole avventure... 👀"
-    )
-
-    st.write(
-        "Rispondi alle domande e prova a indovinare tutte le parole!"
-    )
+    st.header("❤️ Giorno 3 — Quizzettino?")
 
     st.info(
         f"🎯 Hai a disposizione **3 tentativi**. "
