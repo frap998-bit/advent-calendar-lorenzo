@@ -17,7 +17,7 @@ def mostra_gioco():
         st.success("✅ Giorno 10 completato!")
         st.write("🏆 Hai già completato questa sfida.")
     
-        st.header("💍 Giorno 10 — L'impiccato")
+        st.header("Giorno 10 — L'impiccato")
     
         st.write("La parola misteriosa era...")
     
@@ -70,7 +70,7 @@ def mostra_gioco():
     # TITOLO
     # -------------------------
 
-    st.header("💍 Giorno 10 — L'impiccato")
+    st.header("Giorno 10 — L'impiccato")
 
     st.write(
         "C'è una parola misteriosa da indovinare..."
@@ -97,7 +97,7 @@ def mostra_gioco():
 
             st.success("🎉 HAI INDOVINATO!")
 
-            st.write("💍 Hai scoperto la parola misteriosa:")
+            st.write("Hai scoperto la parola misteriosa:")
 
             st.markdown(
                 """
