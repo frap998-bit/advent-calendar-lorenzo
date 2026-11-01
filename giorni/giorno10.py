@@ -82,7 +82,7 @@ def mostra_gioco():
     )
 
     st.info(
-        "🎯 Se indovini la parola conquisti **4 punti**!"
+        "🎯 Se indovini la parola conquisti **5 punti**!"
     )
 
     # -------------------------
@@ -112,7 +112,7 @@ def mostra_gioco():
                 unsafe_allow_html=True
             )
 
-            st.write("🏆 **Hai conquistato 4 punti!**")
+            st.write("🏆 **Hai conquistato 5 punti!**")
 
         else:
 
@@ -198,7 +198,7 @@ def mostra_gioco():
 
         completato = aggiungi_punti(
             10,
-            4
+            5
         )
 
         if completato:
@@ -215,7 +215,7 @@ def mostra_gioco():
             )
 
             st.write(
-                "🏆 **Hai conquistato 4 punti!**"
+                "🏆 **Hai conquistato 5 punti!**"
             )
 
             st.balloons()
