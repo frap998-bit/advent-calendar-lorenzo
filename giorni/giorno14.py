@@ -147,11 +147,15 @@ def mostra_gioco():
     # -------------------------
 
     parola_visualizzata = ""
-
+    
     for carattere in parola:
-
-        if carattere in lettere:
+    
+        if carattere == " ":
+            parola_visualizzata += "&nbsp;&nbsp;&nbsp;"
+    
+        elif carattere in lettere:
             parola_visualizzata += carattere + " "
+    
         else:
             parola_visualizzata += "_ "
 
