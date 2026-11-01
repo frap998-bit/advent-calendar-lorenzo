@@ -57,10 +57,6 @@ def mostra_gioco():
 
         st.header("❤️ Giorno 3 — Quizzettino?")
 
-        st.write(
-            "Rivediamo le nostre piccole avventure... "
-            "vediamo quante ne ricordavi! 👀❤️"
-        )
 
         st.divider()
 
