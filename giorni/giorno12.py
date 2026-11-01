@@ -227,7 +227,7 @@ def mostra_gioco():
 
             # 1 punto per ogni risposta corretta
             punti_assegnati = aggiungi_punti(
-                3,
+                12,
                 risposte_corrette
             )
 
