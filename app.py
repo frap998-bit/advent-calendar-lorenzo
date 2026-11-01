@@ -29,7 +29,7 @@ oggi = date.today()
 
 # True = tutti i giorni sono disponibili per i test
 # False = calendario normale, con apertura dal 1 al 24 dicembre
-modalita_test = True
+modalita_test = False
 
 inizializza_punteggio()
 
@@ -204,7 +204,7 @@ else:
 
                 data_apertura = date(
                     2026,
-                    12,
+                    11,
                     giorno
                 )
 
