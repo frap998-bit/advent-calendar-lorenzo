@@ -1,0 +1,333 @@
+
+import streamlit as st
+
+from utils.punteggio import (
+    aggiungi_punti,
+    giorno_completato
+)
+
+
+def mostra_gioco():
+
+    # =====================================================
+    # DOMANDE
+    # =====================================================
+
+    domande = [
+        {
+            "numero": 1,
+            "domanda": 'La passione della Robi in spiaggia.',
+            "lettere": 8,
+            "soluzione": "TRECCINE"
+        },
+        {
+            "numero": 2,
+            "domanda": "Da chi Luca1 ha preso una sorta di palo.",
+            "lettere": 6,
+            "soluzione": "SILVIA"
+        },
+        {
+            "numero": 3,
+            "domanda": "Quella che dico essere la miglior cosa che mi sono fatta lo scorso Giugno.",
+            "lettere": 5,
+            "soluzione": "LASER"
+        },
+        {
+            "numero": 4,
+            "domanda": "Ne ho uno in pausa da un po'.",
+            "lettere": 6,
+            "soluzione": "PUZZLE"
+        }
+    ]
+
+    # =====================================================
+    # CONTROLLO GIORNO GIÀ COMPLETATO
+    # =====================================================
+
+    if giorno_completato(18):
+
+        st.success("✅ Giorno 18 completato!")
+        st.write("🏆 Hai già conquistato i punti di questa sfida.")
+
+        st.header("❤️ Giorno 18 — Quizzettino?")
+
+
+        st.divider()
+
+        for domanda in domande:
+
+            st.markdown(
+                f"**{domanda['numero']}. {domanda['domanda']}**"
+            )
+
+            st.success(
+                f"💡 Risposta corretta: **{domanda['soluzione']}**"
+            )
+
+        return
+
+
+    # =====================================================
+    # INIZIALIZZAZIONE TENTATIVI
+    # =====================================================
+
+    if "giorno18_tentativi" not in st.session_state:
+        st.session_state.giorno18_tentativi = 0
+
+
+    tentativi = st.session_state.giorno18_tentativi
+
+    tentativi_rimasti = 3 - tentativi
+
+
+    # =====================================================
+    # TITOLO
+    # =====================================================
+
+    st.header("❤️ Giorno 18 — Quizzettino?")
+
+
+    st.write(
+        "Rispondi alle domande e prova a indovinare tutte le parole!"
+    )
+
+    st.info(
+        f"🎯 Hai a disposizione **3 tentativi**. "
+        f"Te ne rimangono **{tentativi_rimasti}**."
+    )
+
+
+
+
+    # =====================================================
+    # INPUT RISPOSTE
+    # =====================================================
+
+    risposte = {}
+
+
+    for domanda in domande:
+
+        numero = domanda["numero"]
+        testo = domanda["domanda"]
+        numero_lettere = domanda["lettere"]
+
+
+        # -------------------------------------------------
+        # DOMANDA
+        # -------------------------------------------------
+
+        st.markdown(
+            f"### {numero}. {testo}"
+        )
+
+        st.caption(
+            f"🔤 {numero_lettere} lettere"
+        )
+
+
+        # -------------------------------------------------
+        # INPUT
+        # -------------------------------------------------
+
+        risposte[numero] = st.text_input(
+            f"Risposta {numero}",
+            max_chars=numero_lettere,
+            key=f"giorno18_risposta_{numero}",
+            placeholder="Scrivi qui la risposta..."
+        )
+
+        st.write("")
+
+
+    # =====================================================
+    # CONTROLLO
+    # =====================================================
+
+    if st.button(
+        "🔎 Controlla risposte",
+        use_container_width=True
+    ):
+
+        # Aumenta il numero di tentativi
+        st.session_state.giorno18_tentativi += 1
+
+        tentativo_corrente = st.session_state.giorno18_tentativi
+
+
+        # -------------------------------------------------
+        # CALCOLO RISPOSTE CORRETTE
+        # -------------------------------------------------
+
+        risposte_corrette = 0
+
+        risultati = []
+
+
+        for domanda in domande:
+
+            numero = domanda["numero"]
+
+            soluzione = domanda["soluzione"]
+
+            risposta = (
+                risposte[numero]
+                .strip()
+                .upper()
+            )
+
+
+            corretta = risposta == soluzione
+
+
+            if corretta:
+                risposte_corrette += 1
+
+
+            risultati.append({
+                "numero": numero,
+                "domanda": domanda["domanda"],
+                "risposta": risposta,
+                "soluzione": soluzione,
+                "corretta": corretta
+            })
+
+        # =================================================
+        # TUTTO CORRETTO
+        # =================================================
+
+        if risposte_corrette == len(domande):
+
+            punti_assegnati = aggiungi_punti(
+                18,
+                risposte_corrette
+            )
+
+            st.divider()
+
+            st.success(
+                "🎉 PERFETTO! Hai indovinato tutte le risposte! ❤️"
+            )
+
+            st.balloons()
+
+            if punti_assegnati:
+                st.write(
+                    f"🏆 **Hai conquistato {risposte_corrette} punti!**"
+                )
+
+            return
+
+
+        # =================================================
+        # TERZO TENTATIVO
+        # =================================================
+
+        if tentativo_corrente >= 3:
+
+            # 1 punto per ogni risposta corretta
+            punti_assegnati = aggiungi_punti(
+                3,
+                risposte_corrette
+            )
+
+            st.divider()
+
+            st.warning(
+                f"😏 Tentativi terminati! "
+                f"Hai indovinato **{risposte_corrette} su "
+                f"{len(domande)}**."
+            )
+
+
+            # -------------------------------------------------
+            # PUNTEGGIO
+            # -------------------------------------------------
+
+            if punti_assegnati:
+
+                st.write(
+                    f"🏆 **Hai conquistato {risposte_corrette} punti!**"
+                )
+
+
+            # -------------------------------------------------
+            # RISPOSTE CORRETTE
+            # -------------------------------------------------
+
+            st.divider()
+
+            st.subheader(
+                "💡 Ecco le risposte corrette"
+            )
+
+
+            for risultato in risultati:
+
+                if risultato["corretta"]:
+
+                    st.success(
+                        f"✅ **{risultato['numero']}. "
+                        f"{risultato['domanda']}**\n\n"
+                        f"La tua risposta: "
+                        f"**{risultato['risposta']}**"
+                    )
+
+                else:
+
+                    risposta_data = risultato["risposta"]
+
+                    if risposta_data == "":
+                        risposta_data = "Nessuna risposta"
+
+                    st.error(
+                        f"❌ **{risultato['numero']}. "
+                        f"{risultato['domanda']}**\n\n"
+                        f"La tua risposta: **{risposta_data}**  \n"
+                        f"👉 La risposta corretta era: "
+                        f"**{risultato['soluzione']}**"
+                    )
+
+
+            return
+
+
+        # =================================================
+        # PRIMO / SECONDO TENTATIVO
+        # =================================================
+
+        st.divider()
+
+        st.warning(
+            f"😏 Hai indovinato **{risposte_corrette} su "
+            f"{len(domande)}**!"
+        )
+
+        st.info(
+            f"💡 Non è ancora finita! "
+            f"Hai ancora **{3 - tentativo_corrente} "
+            f"tentativo/i**. Riprova!"
+        )
+
+
+        # -------------------------------------------------
+        # MOSTRA SOLO LE RISPOSTE SBAGLIATE
+        # -------------------------------------------------
+
+        st.write("### 🔎 Piccolo aiuto...")
+
+        for risultato in risultati:
+
+            if risultato["corretta"]:
+
+                st.success(
+                    f"✅ {risultato['numero']}. "
+                    f"Questa era corretta!"
+                )
+
+            else:
+
+                st.warning(
+                    f"❌ {risultato['numero']}. "
+                    f"Questa non è corretta... 🤔"
+                )
