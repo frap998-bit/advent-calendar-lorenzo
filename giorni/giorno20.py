@@ -98,10 +98,6 @@ def mostra_gioco():
     st.header("❤️ Giorno 20 — Quizzettino?")
 
     st.write(
-        "Vediamo Quizzettino delle nostre piccole avventure... 👀"
-    )
-
-    st.write(
         "Rispondi alle domande e prova a indovinare tutte le parole!"
     )
 
