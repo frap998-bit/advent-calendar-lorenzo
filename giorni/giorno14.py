@@ -19,7 +19,7 @@ def mostra_gioco():
     
         st.header("Giorno 14 — L'impiccato")
     
-        st.write("La parola misteriosa era...")
+        st.write("La frase misteriosa era...")
     
         st.markdown(
             """
@@ -60,7 +60,7 @@ def mostra_gioco():
         st.session_state.giorno14_vinto = False
 
 
-    parola = "ULTIMO POSTO AL TORNEO"
+    frase = "ULTIMO POSTO AL TORNEO"
 
     errori = st.session_state.giorno14_errori
     lettere = st.session_state.giorno14_lettere
@@ -73,16 +73,16 @@ def mostra_gioco():
     st.header("Giorno 14 — L'impiccato")
 
     st.write(
-        "C'è una parola misteriosa da indovinare..."
+        "C'è una frase misteriosa da indovinare..."
     )
 
     st.write(
         "Hai a disposizione **6 errori**. "
-        "Riuscirai a scoprire la parola? 👀"
+        "Riuscirai a scoprire la frase? 👀"
     )
 
     st.info(
-        "🎯 Se indovini la parola conquisti **4 punti**!"
+        "🎯 Se indovini la frase conquisti **4 punti**!"
     )
 
     # -------------------------
@@ -97,7 +97,7 @@ def mostra_gioco():
 
             st.success("🎉 HAI INDOVINATO!")
 
-            st.write("Hai scoperto la parola misteriosa:")
+            st.write("Hai scoperto la frase misteriosa:")
 
             st.markdown(
                 """
@@ -118,7 +118,7 @@ def mostra_gioco():
 
             st.error("💀 Hai esaurito i 6 errori!")
 
-            st.write("La parola misteriosa era:")
+            st.write("La frase misteriosa era:")
 
             st.markdown(
                 """
@@ -143,26 +143,26 @@ def mostra_gioco():
 
 
     # -------------------------
-    # PAROLA NASCOSTA
+    # frase NASCOSTA
     # -------------------------
 
-    parola_visualizzata = ""
+    frase_visualizzata = ""
     
-    for carattere in parola:
+    for carattere in frase:
     
         if carattere == " ":
-            parola_visualizzata += "&nbsp;&nbsp;&nbsp;"
+            frase_visualizzata += "&nbsp;&nbsp;&nbsp;"
     
         elif carattere in lettere:
-            parola_visualizzata += carattere + " "
+            frase_visualizzata += carattere + " "
     
         else:
-            parola_visualizzata += "_ "
+            frase_visualizzata += "_ "
 
 
     st.divider()
 
-    st.subheader("🔤 La parola")
+    st.subheader("🔤 La frase")
 
     st.markdown(
         f"""
@@ -171,7 +171,7 @@ def mostra_gioco():
             letter-spacing: 8px;
             font-weight: bold;
         ">
-            {parola_visualizzata}
+            {frase_visualizzata}
         </h1>
         """,
         unsafe_allow_html=True
@@ -198,7 +198,7 @@ def mostra_gioco():
     # CONTROLLO VITTORIA
     # -------------------------
 
-    if all(lettera in lettere for lettera in parola):
+    if all(lettera in lettere for lettera in frase):
 
         completato = aggiungi_punti(
             14,
@@ -211,7 +211,7 @@ def mostra_gioco():
             st.session_state.giorno14_vinto = True
 
             st.success(
-                "🎉 BRAVISSIMO! Hai indovinato la parola!"
+                "🎉 BRAVISSIMO! Hai indovinato la frase!"
             )
 
             st.write(
@@ -302,7 +302,7 @@ def mostra_gioco():
         # LETTERA SBAGLIATA
         # -------------------------
 
-        if lettera not in parola:
+        if lettera not in frase:
 
             st.session_state.giorno14_errori += 1
 
