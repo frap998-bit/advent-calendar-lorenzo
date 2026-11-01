@@ -59,7 +59,7 @@ def mostra_gioco():
             st.markdown(
                 """
                 <h1 style="text-align: center; color: #e75480;">
-                    ❤️ ULTIMO POSTO AL TORNEO ❤️
+                    ULTIMO POSTO AL TORNEO
                 </h1>
                 """,
                 unsafe_allow_html=True
@@ -76,7 +76,7 @@ def mostra_gioco():
             st.markdown(
                 """
                 <h1 style="text-align: center; color: #e75680;">
-                    ❤️ ULTIMO POSTO AL TORNEO ❤️
+                    ULTIMO POSTO AL TORNEO
                 </h1>
                 """,
                 unsafe_allow_html=True
