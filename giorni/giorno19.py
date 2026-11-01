@@ -1,0 +1,226 @@
+import streamlit as st
+
+from utils.punteggio import (
+    aggiungi_punti,
+    giorno_completato
+)
+
+
+def mostra_gioco():
+
+    # -------------------------
+    # DOMANDE
+    # -------------------------
+
+    domande = [
+        {
+            "domanda": "Chi dei due ha sempre fame?",
+            "risposta": "Lorenzo"
+        },
+        {
+            "domanda": "Chi dei due occupa più spazio nel letto?",
+            "risposta": "Francesca"
+        },
+        {
+            "domanda": "Chi dei due è più freddoloso?",
+            "risposta": "Francesca"
+        },
+        {
+            "domanda": "Chi dei due ha più probabilità di spendere una fortuna per una cosa inutile?",
+            "risposta": "Lorenzo"
+        },
+        {
+            "domanda": "Chi dei due ha meno pazienza?",
+            "risposta": "Francesca"
+        }
+    ]
+
+    # -------------------------
+    # CONTROLLO GIORNO COMPLETATO
+    # -------------------------
+
+    if giorno_completato(19):
+
+        st.success("✅ Giorno 19 completato!")
+        st.write("🏆 Hai già conquistato i punti di questa sfida.")
+
+        st.header("❤️ Giorno 19 — Chi dei due?")
+
+        st.write(
+            "Ecco le risposte che avevo scelto io... "
+            "vediamo se sei d'accordo! 😏"
+        )
+
+        st.divider()
+
+        for i, domanda in enumerate(domande, start=1):
+
+            st.markdown(
+                f"**{i}. {domanda['domanda']}**"
+            )
+
+            st.success(
+                f"❤️ La risposta corretta era: **{domanda['risposta']}**"
+            )
+
+        st.caption(
+            "Per eventuali reclami o polemiche, "
+            "rivolgersi sempre non a me. 😂"
+        )
+
+        return
+
+
+    # -------------------------
+    # TITOLO
+    # -------------------------
+
+    st.header("❤️ Giorno 19 — Chi dei due?")
+
+    st.write(
+        "Per ogni domanda scegli chi dei due pensi sia la risposta corretta."
+    )
+
+    st.info(
+        "🎯 Ogni risposta corretta vale 1 punto! "
+        "Ovviamente ho scelto io quale sia la risposta corretta, "
+        "quindi per reclami o polemiche, rivolgersi non a me."
+    )
+
+
+
+    risposte = []
+
+
+    # -------------------------
+    # RISPOSTE
+    # -------------------------
+
+    for i, domanda in enumerate(domande, start=1):
+
+        st.write("")
+
+        st.subheader(
+            f"{i}. {domanda['domanda']}"
+        )
+
+        risposta = st.radio(
+            "Scegli:",
+            ["Francesca", "Lorenzo"],
+            key=f"giorno19_domanda{i}",
+            horizontal=True
+        )
+
+        risposte.append(risposta)
+
+
+    st.write("")
+
+
+    # -------------------------
+    # CONTROLLO
+    # -------------------------
+
+    if st.button(
+        "💘 Controlla le risposte",
+        use_container_width=True
+    ):
+
+        risposte_corrette = 0
+
+        for i, domanda in enumerate(domande):
+
+            if risposte[i] == domanda["risposta"]:
+                risposte_corrette += 1
+
+
+        # -------------------------
+        # ASSEGNAZIONE PUNTI
+        # -------------------------
+
+        aggiungi_punti(
+            19,
+            risposte_corrette
+        )
+
+
+        # -------------------------
+        # RISULTATO
+        # -------------------------
+
+        st.divider()
+
+        if risposte_corrette == 5:
+
+            st.success(
+                "🎉 PERFETTO! Le hai azzeccate tutte!"
+            )
+
+            st.balloons()
+
+        elif risposte_corrette == 4:
+
+            st.success(
+                "🥰 Quasi perfetto! Te ne è sfuggita solo una!"
+            )
+
+        elif risposte_corrette == 3:
+
+            st.info(
+                "😏 Niente male! Tre su cinque!"
+            )
+
+        elif risposte_corrette == 2:
+
+            st.warning(
+                "😂 Solo due? La pensiamo un po' diversamente ahaha"
+            )
+
+        elif risposte_corrette == 1:
+
+            st.warning(
+                "😂 Una almeno l'hai azzeccata!"
+            )
+
+        else:
+
+            st.error(
+                "Zero su cinque...!"
+            )
+
+
+        # -------------------------
+        # PUNTEGGIO
+        # -------------------------
+
+        st.write(
+            f"🏆 **Hai conquistato {risposte_corrette} punti!**"
+        )
+
+
+        # -------------------------
+        # RISPOSTE CORRETTE
+        # -------------------------
+
+        if risposte_corrette < 5:
+
+            st.divider()
+
+            st.subheader("💡 Ecco le risposte corrette")
+
+            for i, domanda in enumerate(domande):
+
+                if risposte[i] == domanda["risposta"]:
+
+                    st.success(
+                        f"✅ **{i + 1}. {domanda['domanda']}**  \n"
+                        f"Hai risposto: **{risposte[i]}** — Corretto! 🎉"
+                    )
+
+                else:
+
+                    st.error(
+                        f"❌ **{i + 1}. {domanda['domanda']}**  \n"
+                        f"Hai risposto: **{risposte[i]}**  \n"
+                        f"👉 La risposta giusta era: **{domanda['risposta']}**"
+                    )
