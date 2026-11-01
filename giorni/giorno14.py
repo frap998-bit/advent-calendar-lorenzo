@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 from utils.punteggio import (
@@ -7,45 +8,16 @@ from utils.punteggio import (
 
 
 def mostra_gioco():
-    
-    
-    # -------------------------
-    # CONTROLLO GIORNO GIÀ COMPLETATO
-    # -------------------------
-    
-    if giorno_completato(14):
-        st.success("✅ Giorno 14 completato!")
-        st.write("🏆 Hai già completato questa sfida.")
-    
-        st.header("Giorno 14 — L'impiccato")
-    
-        st.write("La frase misteriosa era...")
-    
-        st.markdown(
-            """
-            <h1 style="
-                text-align: center;
-                color: #e91e63;
-                letter-spacing: 8px;
-                font-weight: bold;
-            ">
-                ULTIMO POSTO AL TORNEO 
-            </h1>
-            """,
-            unsafe_allow_html=True
-        )
-    
-        st.write(
-            "Quello che sono abituata ad occupare io!"
-        )
-    
-        return
-    
 
+    # =====================================================
+    # FRASE DA INDOVINARE
+    # =====================================================
 
-    # -------------------------
+    frase = "ULTIMO POSTO AL TORNEO"
+
+    # =====================================================
     # INIZIALIZZAZIONE
-    # -------------------------
+    # =====================================================
 
     if "giorno14_errori" not in st.session_state:
         st.session_state.giorno14_errori = 0
@@ -59,35 +31,19 @@ def mostra_gioco():
     if "giorno14_vinto" not in st.session_state:
         st.session_state.giorno14_vinto = False
 
+    if "giorno14_punti_salvati" not in st.session_state:
+        st.session_state.giorno14_punti_salvati = False
 
-    frase = "ULTIMO POSTO AL TORNEO"
-
-    errori = st.session_state.giorno14_errori
-    lettere = st.session_state.giorno14_lettere
-
-
-    # -------------------------
+    # =====================================================
     # TITOLO
-    # -------------------------
+    # =====================================================
 
-    st.header("Giorno 14 — L'impiccato")
+    st.header("❤️ Giorno 14 — L'impiccato")
 
-    st.write(
-        "C'è una frase misteriosa da indovinare..."
-    )
-
-    st.write(
-        "Hai a disposizione **6 errori**. "
-        "Riuscirai a scoprire la frase? 👀"
-    )
-
-    st.info(
-        "🎯 Se indovini la frase conquisti **4 punti**!"
-    )
-
-    # -------------------------
-    # GIOCO GIÀ FINITO
-    # -------------------------
+    # =====================================================
+    # RISULTATO DELLA PARTITA APPENA TERMINATA
+    # Deve precedere giorno_completato()
+    # =====================================================
 
     if st.session_state.giorno14_finito:
 
@@ -95,73 +51,109 @@ def mostra_gioco():
 
         if st.session_state.giorno14_vinto:
 
+            st.balloons()
             st.success("🎉 HAI INDOVINATO!")
 
-            st.write("Hai scoperto la frase misteriosa:")
+            st.write("❤️ La frase era:")
 
             st.markdown(
                 """
-                <h1 style="
-                    text-align: center;
-                    color: #e91e63;
-                    letter-spacing: 8px;
-                ">
-                    ULTIMO POSTO AL TORNEO 
+                <h1 style="text-align: center; color: #e75480;">
+                    ❤️ ULTIMO POSTO AL TORNEO ❤️
                 </h1>
                 """,
                 unsafe_allow_html=True
             )
 
-            st.write("🏆 **Hai conquistato 4 punti!**")
+            st.write("🏆 **Hai conquistato 5 punti!**")
 
         else:
 
-            st.error("💀 Hai esaurito i 6 errori!")
+            st.error("💀 Hai fatto 6 errori!")
 
-            st.write("La frase misteriosa era:")
+            st.write("La frase era:")
 
             st.markdown(
                 """
-                <h1 style="
-                    text-align: center;
-                    color: #e91e63;
-                    letter-spacing: 8px;
-                ">
-                    ULTIMO POSTO AL TORNEO 
+                <h1 style="text-align: center; color: #e75680;">
+                    ❤️ ULTIMO POSTO AL TORNEO ❤️
                 </h1>
                 """,
                 unsafe_allow_html=True
-            )
-
-            st.write(
-                "Quello che sono abituata ad occupare io!"
             )
 
             st.write("🏆 **Hai conquistato 0 punti.**")
 
         return
 
+    # =====================================================
+    # CONTROLLO COMPLETAMENTO PRECEDENTE
+    # =====================================================
 
-    # -------------------------
-    # frase NASCOSTA
-    # -------------------------
+    if giorno_completato(14):
+
+        st.success("✅ Giorno 14 completato!")
+
+        st.write("La frase misteriosa era...")
+
+        st.markdown(
+            """
+            <div style="
+                text-align: center;
+                padding: 25px 10px;
+                border-radius: 15px;
+                background-color: rgba(255, 105, 180, 0.12);
+            ">
+                <div style="font-size: 42px;">❤️</div>
+                <div style="
+                    font-size: 32px;
+                    font-weight: bold;
+                    letter-spacing: 4px;
+                ">ULTIMO POSTO AL TORNEO</div>
+                <div style="font-size: 42px;">❤️</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        st.write("🏆 Hai già completato questa sfida.")
+
+        return
+
+    # =====================================================
+    # ISTRUZIONI
+    # =====================================================
+
+    st.write("C'è una frase misteriosa da indovinare...")
+
+    st.write(
+        "Hai a disposizione **6 errori**. "
+        "Riuscirai a scoprirla? 👀"
+    )
+
+    st.info("🎯 Se indovini la frase conquisti **5 punti!**")
+
+    # =====================================================
+    # FRASE NASCOSTA
+    # =====================================================
+
+    lettere = st.session_state.giorno14_lettere
+    errori = st.session_state.giorno14_errori
 
     frase_visualizzata = ""
-    
+
     for carattere in frase:
-    
+
         if carattere == " ":
             frase_visualizzata += "&nbsp;&nbsp;&nbsp;"
-    
+
         elif carattere in lettere:
             frase_visualizzata += carattere + " "
-    
+
         else:
             frase_visualizzata += "_ "
 
-
     st.divider()
-
     st.subheader("🔤 La frase")
 
     st.markdown(
@@ -177,59 +169,54 @@ def mostra_gioco():
         unsafe_allow_html=True
     )
 
-
-    # -------------------------
+    # =====================================================
     # STATO DEL GIOCO
-    # -------------------------
+    # =====================================================
 
-    st.write(
-        f"❌ Errori: **{errori} / 6**"
-    )
+    st.write(f"❌ Errori: **{errori} / 6**")
 
     if lettere:
-
         st.write(
             "🔠 Lettere già provate: "
             + ", ".join(lettere)
         )
 
-
-    # -------------------------
+    # =====================================================
     # CONTROLLO VITTORIA
-    # -------------------------
+    # =====================================================
 
-    if all(lettera in lettere for lettera in frase):
+    lettere_da_indovinare = [
+        carattere
+        for carattere in frase
+        if carattere != " "
+    ]
 
-        completato = aggiungi_punti(
-            14,
-            4
-        )
+    if all(
+        lettera in lettere
+        for lettera in lettere_da_indovinare
+    ):
 
-        if completato:
+        if not st.session_state.giorno14_punti_salvati:
 
-            st.session_state.giorno14_finito = True
-            st.session_state.giorno14_vinto = True
+            salvato = aggiungi_punti(14, 5)
 
-            st.success(
-                "🎉 BRAVISSIMO! Hai indovinato la frase!"
-            )
+            if not salvato:
+                st.warning(
+                    "Non è stato possibile registrare i punti. "
+                    "Controlla lo stato del Giorno 14 su Supabase."
+                )
+                return
 
-            st.write(
-                "**ULTIMO POSTO AL TORNEO**"
-            )
+            st.session_state.giorno14_punti_salvati = True
 
-            st.write(
-                "🏆 **Hai conquistato 4 punti!**"
-            )
+        st.session_state.giorno14_finito = True
+        st.session_state.giorno14_vinto = True
 
-            st.balloons()
+        st.rerun()
 
-        return
-
-
-    # -------------------------
+    # =====================================================
     # INSERIMENTO LETTERA
-    # -------------------------
+    # =====================================================
 
     st.divider()
 
@@ -239,110 +226,50 @@ def mostra_gioco():
         key=f"giorno14_input_{errori}_{len(lettere)}"
     )
 
-
-    # -------------------------
+    # =====================================================
     # PULSANTE
-    # -------------------------
+    # =====================================================
 
-    if st.button(
-        "🔎 Prova!",
-        use_container_width=True
-    ):
+    if st.button("🔎 Prova!", use_container_width=True):
 
         lettera = lettera.strip().upper()
 
-
-        # -------------------------
-        # INPUT VUOTO
-        # -------------------------
-
         if not lettera:
-
-            st.warning(
-                "Scrivi una lettera! 😏"
-            )
-
+            st.warning("Scrivi una lettera! 😏")
             return
-
-
-        # -------------------------
-        # CONTROLLO LETTERA
-        # -------------------------
 
         if not lettera.isalpha():
-
-            st.warning(
-                "Inserisci una lettera valida! 😏"
-            )
-
+            st.warning("Inserisci una lettera valida! 😏")
             return
-
-
-        # -------------------------
-        # LETTERA GIÀ PROVATA
-        # -------------------------
 
         if lettera in lettere:
-
-            st.warning(
-                "Questa lettera l'hai già provata! 👀"
-            )
-
+            st.warning("Questa lettera l'hai già provata! 👀")
             return
-
-
-        # -------------------------
-        # AGGIUNGI LETTERA
-        # -------------------------
 
         st.session_state.giorno14_lettere.append(lettera)
 
-
-        # -------------------------
+        # -------------------------------------------------
         # LETTERA SBAGLIATA
-        # -------------------------
+        # -------------------------------------------------
 
-        if lettera not in frase:
+        if lettera not in frase.replace(" ", ""):
 
             st.session_state.giorno14_errori += 1
 
-            errori = st.session_state.giorno14_errori
+            if st.session_state.giorno14_errori >= 6:
 
+                salvato = aggiungi_punti(14, 0)
 
-            # -------------------------
-            # SEI ERRORI → FINE
-            # -------------------------
-
-            if errori >= 6:
-
-                aggiungi_punti(
-                    14,
-                    0
-                )
+                if not salvato:
+                    st.warning(
+                        "Non è stato possibile registrare "
+                        "la conclusione della sfida su Supabase."
+                    )
+                    return
 
                 st.session_state.giorno14_finito = True
                 st.session_state.giorno14_vinto = False
 
-                st.rerun()
-
-            else:
-
-                st.warning(
-                    f"❌ Lettera sbagliata! "
-                    f"Hai ancora **{6 - errori} errori**."
-                )
-
-                st.rerun()
-
-
-        # -------------------------
-        # LETTERA CORRETTA
-        # -------------------------
-
-        else:
-
-            st.success(
-                f"✅ La lettera **{lettera}** c'è!"
-            )
-
-            st.rerun()
+        # Il rerun mostra il risultato prima del controllo
+        # di completamento persistente.
+        st.rerun()
