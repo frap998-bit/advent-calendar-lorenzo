@@ -74,12 +74,8 @@ def mostra_gioco():
 
         st.success("✅ Giorno 20 completato!")
 
-        st.header("❤️ Giorno 20 — Quanto ti ricordi?")
+        st.header("❤️ Giorno 20 — Quizzettino?")
 
-        st.write(
-            "Hai già affrontato questa sfida! "
-            "Ecco un ripasso delle nostre piccole avventure. 🥰"
-        )
 
         st.divider()
         st.subheader("💡 Le risposte corrette")
@@ -99,10 +95,10 @@ def mostra_gioco():
     # TITOLO
     # =====================================================
 
-    st.header("❤️ Giorno 20 — Quanto ti ricordi?")
+    st.header("❤️ Giorno 20 — Quizzettino?")
 
     st.write(
-        "Vediamo quanto ti ricordi delle nostre piccole avventure... 👀"
+        "Vediamo Quizzettino delle nostre piccole avventure... 👀"
     )
 
     st.write(
