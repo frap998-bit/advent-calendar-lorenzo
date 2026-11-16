@@ -85,7 +85,7 @@ def mostra_gioco():
     st.header("❤️ Giorno 4 — Quanto conosci Francesca?")
 
     st.write(
-        "Vediamo se riesci a capire quanto bene conosci "
+        "Vediamo quanto conosci "
         "i miei gusti... 👀"
     )
 
