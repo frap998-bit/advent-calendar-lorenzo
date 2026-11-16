@@ -111,8 +111,9 @@ def mostra_gioco():
                 """,
                 unsafe_allow_html=True
             )
-
-            st.write("🏆 **Hai conquistato 5 punti!**")
+        st.write(
+            "Tra cinque anni si intende ovviamente!")
+        st.write("🏆 **Hai conquistato 5 punti!**")
 
         else:
 
