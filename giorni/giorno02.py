@@ -15,7 +15,7 @@ def mostra_gioco():
 
     domande = [
         {
-            "domanda": "📖 Quale libro sto leggendo in questo momento?",
+            "domanda": "📖 Quale è l'ultimo libro che ho "letto"?,
             "opzioni": [
                 "Il nome della rosa — Umberto Eco",
                 "La gatta persiana — Alessandro Varaldo",
