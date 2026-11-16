@@ -67,10 +67,6 @@ def mostra_gioco():
         "verso te stesso per iniziare la giornata.**"
     )
 
-    st.write(
-        "Non deve essere perfetta. Deve essere qualcosa "
-        "che pensi davvero di te."
-    )
 
     st.write("")
 
