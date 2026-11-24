@@ -42,19 +42,19 @@ POSIZIONI_RIVELATE = {
 def numero_cifre_rivelate(punteggio):
 
     if punteggio < 70:
-        return 0
-
-    elif punteggio < 80:
         return 1
 
-    elif punteggio < 90:
+    elif punteggio < 80:
         return 2
 
-    elif punteggio < 100:
+    elif punteggio < 90:
         return 3
 
-    else:
+    elif punteggio < 100:
         return 4
+
+    else:
+        return 5
 
 
 # =====================================================
@@ -207,11 +207,11 @@ def mostra_gioco():
             "Il tuo punteggio determina quante cifre puoi vedere:"
         )
 
-        st.write("• **Meno di 70 punti** → nessuna cifra")
-        st.write("• **70–79 punti** → 1 cifra")
-        st.write("• **80–89 punti** → 2 cifre")
-        st.write("• **90–99 punti** → 3 cifre")
-        st.write("• **100+ punti** → 4 cifre")
+        st.write("• **Meno di 70 punti** → 1 cifra")
+        st.write("• **70–79 punti** → 2 cifre")
+        st.write("• **80–89 punti** → 3 cifre")
+        st.write("• **90–99 punti** → 4 cifre")
+        st.write("• **100+ punti** → 5 cifre")
 
 
     st.divider()
