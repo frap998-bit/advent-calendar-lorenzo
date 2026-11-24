@@ -359,7 +359,7 @@ def mostra_gioco():
                     <h2 style="text-align:center;">
                     E tra tutti i posti in cui potrei essere,
                     <br>
-                    il mio posto preferito è accanto a te. ❤️
+                    il mio posto preferito è accanto a te ❤️
                     </h2>
                     """,
                     unsafe_allow_html=True
@@ -370,7 +370,7 @@ def mostra_gioco():
                 st.markdown(
                     """
                     <h2 style="text-align:center;">
-                    Buon Natale, amore mio. 🎄❤️
+                    Buon Natale, amore mio, spero che i giochini di questi giorni di abbiano divertito🎄❤️
                     </h2>
                     """,
                     unsafe_allow_html=True
