@@ -201,7 +201,7 @@ def mostra_gioco():
     # REGOLE PUNTEGGIO
     # -------------------------------------------------
 
-    with st.expander("💡 Come funzionano gli aiuti?"):
+    with st.expander("💡 Come a cosa servivano i punti accumulati?"):
 
         st.write(
             "Il tuo punteggio determina quante cifre puoi vedere:"
@@ -246,7 +246,7 @@ def mostra_gioco():
     st.subheader("🔢 Inserisci la combinazione")
 
     codice = st.text_input(
-        "Inserisci le 8 cifre della cassaforte:",
+        "Inserisci le 8 cifre della cassaforte; non ti preoccupare se sbagli, si sbloccheranno nuovi indizi ad ogni tentativo:",
         max_chars=8,
         placeholder="••••••••",
         key="giorno24_codice"
