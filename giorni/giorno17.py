@@ -94,7 +94,6 @@ def mostra_gioco():
             unsafe_allow_html=True
         )
 
-        st.write("❤️ Spero che adesso sia tutto più chiaro!")
 
         return
 
@@ -134,7 +133,6 @@ def mostra_gioco():
             unsafe_allow_html=True
         )
 
-        st.write("❤️ Spero che adesso sia tutto più chiaro!")
 
         return
 
