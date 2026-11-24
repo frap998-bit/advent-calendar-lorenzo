@@ -75,7 +75,7 @@ def mostra_gioco():
         st.success("✅ Giorno 8 completato!")
         st.write("🏆 Hai già conquistato i punti di questa sfida.")
 
-        st.header("🚦 Giorno 8 — Il semaforo delle coppie")
+        st.header("🚦 Giorno 8 — Il semaforo")
 
         st.write(
             "Oggi dovevi cercare di capire come avrei reagito "
@@ -109,7 +109,7 @@ def mostra_gioco():
     # TITOLO
     # =====================================================
 
-    st.header("🚦 Giorno 8 — Il semaforo delle coppie")
+    st.header("🚦 Giorno 8 — Il semaforo")
 
     st.write(
         "Oggi devi cercare di capire **come reagirei io** "
@@ -208,7 +208,7 @@ def mostra_gioco():
         else:
 
             st.error(
-                "😂 Lorenzo, ma chi hai conosciuto in questi anni?!"
+                "😂 Lori, ma chi hai conosciuto in questi anni?!"
             )
 
 
