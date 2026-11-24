@@ -130,7 +130,7 @@ def mostra_gioco():
     st.header("🔐 Giorno 24 — La cassaforte finale")
 
     st.write(
-        "Sei arrivato all'ultimo giorno. ❤️"
+        "Sei arrivato all'ultimo giorno. ❤️ L'ultimo minigioco consiste nell'aprire la cassaforte, per ottenere il premio finale..."
     )
 
     st.write(
