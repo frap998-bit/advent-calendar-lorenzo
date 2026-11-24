@@ -201,7 +201,7 @@ def mostra_gioco():
     # REGOLE PUNTEGGIO
     # -------------------------------------------------
 
-    with st.expander("💡 Come a cosa servivano i punti accumulati?"):
+    with st.expander("💡 A cosa servivano i punti accumulati?"):
 
         st.write(
             "Il tuo punteggio determina quante cifre puoi vedere:"
