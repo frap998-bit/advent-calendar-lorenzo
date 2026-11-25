@@ -370,7 +370,7 @@ def mostra_gioco():
                 st.markdown(
                     """
                     <h2 style="text-align:center;">
-                    Buon Natale, amore mio, spero che i giochini di questi giorni di abbiano divertito🎄❤️
+                    Buon Natale Lori, spero che i giochini di questi giorni ti abbiano divertito🎄❤️
                     </h2>
                     """,
                     unsafe_allow_html=True
