@@ -112,9 +112,6 @@ def mostra_gioco():
 
         st.success("🎉 La parola misteriosa era **PIZZA**! 🍕")
 
-        st.caption(
-            "A volte le cose più belle iniziano con una pizza. ❤️"
-        )
 
         return
 
