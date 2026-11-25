@@ -44,9 +44,7 @@ def mostra_gioco():
             st.write(f"**{i}. {attivita}**")
 
         st.write("")
-        st.info(
-            "💕 Ora sai come avevo immaginato la tua classifica!"
-        )
+
 
         return
 
