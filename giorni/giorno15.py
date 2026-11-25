@@ -130,13 +130,13 @@ def mostra_gioco():
                     background-color: rgba(233, 30, 99, 0.08);
                 ">
                     <h2 style="color: #e91e63;">
-                        ❤️ Una cosa da ricordare
+                        ❤️ Ricordati..
                     </h2>
                     <p style="font-size: 18px;">
-                        Non devi essere perfetto per essere una persona speciale.
+                        Sei speciale per me, ma non solo. 
                     </p>
                     <p style="font-size: 18px;">
-                        Credici un po' di più. Te lo meriti.
+                        Per tutte le persone che ti circondano e che ti vogliono tanto bene ❤️
                     </p>
                 </div>
                 """,
