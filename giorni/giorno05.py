@@ -41,7 +41,7 @@ def mostra_gioco():
         st.success(risposta_corretta)
 
         st.caption(
-            "Ci sono certe scemate che entrano nella storia della coppia! 😂❤️"
+            "Questa non me dimenticherò mai mi sa.. 😂❤️"
         )
 
         return
