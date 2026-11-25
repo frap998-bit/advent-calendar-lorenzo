@@ -98,10 +98,6 @@ def mostra_gioco():
 
             st.write("")
 
-        st.caption(
-            "Ora sai come funziona il semaforo di Francesca! 😂❤️"
-        )
-
         return
 
 
