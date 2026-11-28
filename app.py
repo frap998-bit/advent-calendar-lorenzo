@@ -204,7 +204,7 @@ else:
 
                 data_apertura = date(
                     2026,
-                    11,
+                    12,
                     giorno
                 )
 
